@@ -1,11 +1,10 @@
 package de.cron.fluent;
 
 import de.cron.CronDefinition;
-import de.cron.element.CronElementDefinition;
-import de.cron.string.DayOfWeekStringRepresentation;
+import de.cron.string.CronDayOfWeek;
 
 public interface CronDayOfWeekPartTwo {
 	
-	CronDefinition until(CronElementDefinition<DayOfWeekStringRepresentation> dayOfWeek);
+	CronDefinition until(CronDayOfWeek dayOfWeek);
 
 }

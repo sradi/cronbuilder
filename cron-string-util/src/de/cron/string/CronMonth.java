@@ -2,11 +2,10 @@ package de.cron.string;
 
 import java.time.Month;
 
-public class MonthStringRepresentation implements DateTimeStringRepresentation {
+public class CronMonth {
 	
 	private Month month;
 	
-	@Override
 	public int getValue() {
 		return month.getValue();
 	}

@@ -1,14 +1,13 @@
 package de.cron.fluent;
 
-import de.cron.element.CronElementDefinition;
-import de.cron.string.MonthStringRepresentation;
+import de.cron.string.CronMonth;
 
 public interface CronMonthPartOne {
 	
 	CronDayOfWeekPartOne everyMonth();
 	
-	CronDayOfWeekPartOne inTheseMonths(CronElementDefinition<MonthStringRepresentation>... months);
+	CronDayOfWeekPartOne inTheseMonths(CronMonth... months);
 	
-	CronMonthPartTwo from(CronElementDefinition<MonthStringRepresentation> month);
+	CronMonthPartTwo from(CronMonth month);
 
 }

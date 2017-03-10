@@ -1,8 +1,7 @@
 package de.cron.string;
 
-public class DayOfWeekStringRepresentation implements DateTimeStringRepresentation {
+public class CronDayOfWeek {
 
-	@Override
 	public int getValue() {
 		// TODO Auto-generated method stub
 		return 0;

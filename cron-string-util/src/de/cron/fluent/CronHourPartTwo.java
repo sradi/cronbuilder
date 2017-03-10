@@ -1,10 +1,9 @@
 package de.cron.fluent;
 
-import de.cron.element.CronElementDefinition;
-import de.cron.string.DayStringRepresentation;
+import de.cron.string.CronDay;
 
 public interface CronHourPartTwo {
 	
-	CronDayPartOne until(CronElementDefinition<DayStringRepresentation> day);
+	CronDayPartOne until(CronDay day);
 
 }

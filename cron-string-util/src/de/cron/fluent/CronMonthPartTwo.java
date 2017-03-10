@@ -1,10 +1,9 @@
 package de.cron.fluent;
 
-import de.cron.element.CronElementDefinition;
-import de.cron.string.MonthStringRepresentation;
+import de.cron.string.CronMonth;
 
 public interface CronMonthPartTwo {
 	
-	CronDayOfWeekPartOne until(CronElementDefinition<MonthStringRepresentation> month);
+	CronDayOfWeekPartOne until(CronMonth month);
 
 }
