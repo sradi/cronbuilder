@@ -9,6 +9,6 @@ public interface CronDayOfWeekPartOne {
 	
 	CronDefinition onTheseDaysOfTheWeek(CronDayOfWeek... daysOfWeek);
 	
-	CronDayOfWeekPartTwo from(CronDayOfWeek dayOfWeek);
+	CronDayOfWeekPartTwo fromDayOfWeek(CronDayOfWeek dayOfWeek);
 
 }

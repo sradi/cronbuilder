@@ -4,6 +4,6 @@ import de.cron.string.CronDay;
 
 public interface CronDayPartTwo {
 	
-	CronMonthPartOne until(CronDay day);
+	CronMonthPartOne untilDay(CronDay day);
 
 }

@@ -5,6 +5,6 @@ import de.cron.string.CronDayOfWeek;
 
 public interface CronDayOfWeekPartTwo {
 	
-	CronDefinition until(CronDayOfWeek dayOfWeek);
+	CronDefinition untilDayOfWeek(CronDayOfWeek dayOfWeek);
 
 }

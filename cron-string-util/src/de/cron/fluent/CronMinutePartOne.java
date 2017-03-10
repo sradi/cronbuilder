@@ -8,6 +8,6 @@ public interface CronMinutePartOne {
 	
 	CronHourPartOne inTheseMinutes(CronMinute... minutes);
 	
-	CronMinutePartTwo from(CronMinute minute);
+	CronMinutePartTwo fromMinute(CronMinute minute);
 
 }

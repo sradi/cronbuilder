@@ -4,6 +4,6 @@ import de.cron.string.CronMinute;
 
 public interface CronMinutePartTwo {
 	
-	CronHourPartOne until(CronMinute minute);
+	CronHourPartOne untilMinute(CronMinute minute);
 
 }

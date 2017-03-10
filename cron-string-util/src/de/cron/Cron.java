@@ -18,6 +18,10 @@ import de.cron.string.CronMonth;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 	
+	public static CronMinutePartOne cron() {
+		return null;
+	}
+	
 	@Override
 	public CronHourPartOne everyMinute() {
 		// TODO Auto-generated method stub
@@ -31,13 +35,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronMinutePartTwo from(CronMinute minute) {
+	public CronMinutePartTwo fromMinute(CronMinute minute) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public CronHourPartOne until(CronMinute minute) {
+	public CronHourPartOne untilMinute(CronMinute minute) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -57,13 +61,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronHourPartTwo from(CronHour hour) {
+	public CronHourPartTwo fromHour(CronHour hour) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public CronDayPartOne until(CronHour hour) {
+	public CronDayPartOne untilHour(CronHour hour) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -82,13 +86,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronDayPartTwo from(CronDay day) {
+	public CronDayPartTwo fromDay(CronDay day) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public CronMonthPartOne until(CronDay day) {
+	public CronMonthPartOne untilDay(CronDay day) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -107,13 +111,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronMonthPartTwo from(CronMonth month) {
+	public CronMonthPartTwo fromMonth(CronMonth month) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public CronDayOfWeekPartOne until(CronMonth month) {
+	public CronDayOfWeekPartOne untilMonth(CronMonth month) {
 		// TODO Auto-generated method stub
 		return null;
 	}	
@@ -132,13 +136,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronDayOfWeekPartTwo from(CronDayOfWeek dayOfWeek) {
+	public CronDayOfWeekPartTwo fromDayOfWeek(CronDayOfWeek dayOfWeek) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CronDefinition until(CronDayOfWeek dayOfWeek) {
+	public CronDefinition untilDayOfWeek(CronDayOfWeek dayOfWeek) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,6 +8,6 @@ public interface CronMonthPartOne {
 	
 	CronDayOfWeekPartOne inTheseMonths(CronMonth... months);
 	
-	CronMonthPartTwo from(CronMonth month);
+	CronMonthPartTwo fromMonth(CronMonth month);
 
 }
