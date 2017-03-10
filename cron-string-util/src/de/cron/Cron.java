@@ -10,7 +10,137 @@ import de.cron.fluent.CronMinutePartOne;
 import de.cron.fluent.CronMinutePartTwo;
 import de.cron.fluent.CronMonthPartOne;
 import de.cron.fluent.CronMonthPartTwo;
+import de.cron.string.CronDay;
+import de.cron.string.CronDayOfWeek;
+import de.cron.string.CronHour;
+import de.cron.string.CronMinute;
+import de.cron.string.CronMonth;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
+	
+	@Override
+	public CronHourPartOne everyMinute() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronHourPartOne inTheseMinutes(CronMinute... minutes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronMinutePartTwo from(CronMinute minute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronHourPartOne until(CronMinute minute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	
+	//***************************************************************
+	@Override
+	public CronDayPartOne everyHour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronDayPartOne inTheseHours(CronHour... hours) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronHourPartTwo from(CronHour hour) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronDayPartOne until(CronHour hour) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//***************************************************************	
+	@Override
+	public CronMonthPartOne everyDay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronMonthPartOne onTheseDays(CronDay... days) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronDayPartTwo from(CronDay day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronMonthPartOne until(CronDay day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//***************************************************************
+	@Override
+	public CronDayOfWeekPartOne everyMonth() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronDayOfWeekPartOne inTheseMonths(CronMonth... months) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronMonthPartTwo from(CronMonth month) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CronDayOfWeekPartOne until(CronMonth month) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+
+	//***************************************************************
+	@Override
+	public CronDefinition everyDayofWeek() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CronDefinition onTheseDaysOfTheWeek(CronDayOfWeek... daysOfWeek) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CronDayOfWeekPartTwo from(CronDayOfWeek dayOfWeek) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CronDefinition until(CronDayOfWeek dayOfWeek) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
