@@ -5,7 +5,7 @@ import de.cron.string.CronDayOfWeek;
 
 public interface CronDayOfWeekPartOne {
 	
-	CronDefinition everyDayofWeek();
+	CronDefinition everyDayOfWeek();
 	
 	CronDefinition onTheseDaysOfTheWeek(CronDayOfWeek... daysOfWeek);
 	

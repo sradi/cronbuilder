@@ -143,7 +143,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	//***************************************************************
 	@Override
-	public CronDefinition everyDayofWeek() {
+	public CronDefinition everyDayOfWeek() {
 		// TODO Auto-generated method stub
 		return null;
 	}
