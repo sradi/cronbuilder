@@ -2,9 +2,9 @@ package de.cron.string.minutes;
 
 import java.util.Arrays;
 
-import de.cron.util.CronStringUtils;
+import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificMinutes implements CronMinute {
+public class CronSpecificMinutes extends CronElementSpecificValues<Integer> implements CronMinute {
 
 	private int[] minutes;
 
@@ -14,7 +14,9 @@ public class CronSpecificMinutes implements CronMinute {
 
 	@Override
 	public String toString() {
-		return CronStringUtils.removeWhitespacesAndEnclosingBrackets(Arrays.toString(minutes));
+		return getStringRepresentation(
+				Arrays.stream( minutes ).boxed().toArray( Integer[]::new )
+			);
 	}
 	
 	

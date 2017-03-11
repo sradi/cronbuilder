@@ -1,11 +1,10 @@
 package de.cron.string.month;
 
 import java.time.Month;
-import java.util.Arrays;
 
-import de.cron.util.CronStringUtils;
+import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificMonths implements CronMonth {
+public class CronSpecificMonths extends CronElementSpecificValues<Month> implements CronMonth {
 
 	private Month[] months;
 
@@ -15,7 +14,7 @@ public class CronSpecificMonths implements CronMonth {
 
 	@Override
 	public String toString() {
-		return CronStringUtils.removeWhitespacesAndEnclosingBrackets(Arrays.toString(months));
+		return getStringRepresentation(months);
 	}
 
 }

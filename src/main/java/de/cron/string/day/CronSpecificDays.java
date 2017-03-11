@@ -2,9 +2,9 @@ package de.cron.string.day;
 
 import java.util.Arrays;
 
-import de.cron.util.CronStringUtils;
+import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificDays implements CronDay {
+public class CronSpecificDays extends CronElementSpecificValues<Integer> implements CronDay {
 
 	private int[] days;
 
@@ -14,7 +14,9 @@ public class CronSpecificDays implements CronDay {
 
 	@Override
 	public String toString() {
-		return CronStringUtils.removeWhitespacesAndEnclosingBrackets(Arrays.toString(days));
+		return getStringRepresentation(
+				Arrays.stream( days ).boxed().toArray( Integer[]::new )
+			);
 	}
 	
 }

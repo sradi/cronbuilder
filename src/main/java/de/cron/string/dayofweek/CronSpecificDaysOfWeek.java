@@ -1,11 +1,10 @@
 package de.cron.string.dayofweek;
 
 import java.time.DayOfWeek;
-import java.util.Arrays;
 
-import de.cron.util.CronStringUtils;
+import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificDaysOfWeek implements CronDayOfWeek {
+public class CronSpecificDaysOfWeek extends CronElementSpecificValues<DayOfWeek> implements CronDayOfWeek {
 
 	private DayOfWeek[] daysOfWeek;
 
@@ -15,7 +14,7 @@ public class CronSpecificDaysOfWeek implements CronDayOfWeek {
 
 	@Override
 	public String toString() {
-		return CronStringUtils.removeWhitespacesAndEnclosingBrackets(Arrays.toString(daysOfWeek));
+		return getStringRepresentation(daysOfWeek);
 	}
 
 }
