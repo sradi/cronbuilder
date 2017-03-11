@@ -3,12 +3,12 @@ package de.cron.string.minutes;
 public class CronMinuteRange implements CronMinute {
 
 	private int from;
-	private CronMinute until;
+	private int until;
 
-	public CronMinuteRange(int fromMinute, CronMinute untilMinute) {
+	public CronMinuteRange(int fromMinute, int minute) {
 		// TODO Assert from < until
 		this.from = fromMinute;
-		this.until = untilMinute;
+		this.until = minute;
 	}
 
 	@Override

@@ -2,11 +2,11 @@ package de.cron.string.day;
 
 public class CronDayRange implements CronDay {
 
-	private CronDay fromDay;
-	private CronDay untilDay;
+	private int fromDay;
+	private int untilDay;
 
-	public CronDayRange(CronDay fromDay, CronDay untilDay) {
-		this.fromDay = fromDay;
+	public CronDayRange(int fromDay2, int untilDay) {
+		this.fromDay = fromDay2;
 		this.untilDay = untilDay;
 	}
 

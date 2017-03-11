@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class CronSpecificDays implements CronDay {
 
-	private CronDay[] days;
+	private int[] days;
 
-	public CronSpecificDays(CronDay[] days) {
-		this.days = days;
+	public CronSpecificDays(int[] days2) {
+		this.days = days2;
 	}
 
 	@Override
