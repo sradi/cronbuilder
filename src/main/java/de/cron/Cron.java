@@ -1,5 +1,7 @@
 package de.cron;
 
+import java.time.Month;
+
 import de.cron.fluent.CronDayOfWeekPartOne;
 import de.cron.fluent.CronDayOfWeekPartTwo;
 import de.cron.fluent.CronDayPartOne;
@@ -11,7 +13,6 @@ import de.cron.fluent.CronMinutePartTwo;
 import de.cron.fluent.CronMonthPartOne;
 import de.cron.fluent.CronMonthPartTwo;
 import de.cron.string.CronDayOfWeek;
-import de.cron.string.CronMonth;
 import de.cron.string.day.CronDay;
 import de.cron.string.day.CronDayRange;
 import de.cron.string.day.CronSpecificDays;
@@ -21,6 +22,9 @@ import de.cron.string.hours.CronSpecificHours;
 import de.cron.string.minutes.CronMinute;
 import de.cron.string.minutes.CronMinuteRange;
 import de.cron.string.minutes.CronSpecificMinutes;
+import de.cron.string.month.CronMonth;
+import de.cron.string.month.CronMonthRange;
+import de.cron.string.month.CronSpecificMonths;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 	
@@ -30,6 +34,8 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	private int fromHour;
 	private CronDay day;
 	private CronDay fromDay;
+	private CronMonth month;
+	private Month fromMonth;
 	
 	public static CronMinutePartOne cron() {
 		return null;
@@ -113,25 +119,25 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	//***************************************************************
 	@Override
 	public CronDayOfWeekPartOne everyMonth() {
-		// TODO Auto-generated method stub
+		this.month = CronMonth.EVERY_MONTH;
 		return this;
 	}
 	
 	@Override
-	public CronDayOfWeekPartOne inTheseMonths(CronMonth... months) {
-		// TODO Auto-generated method stub
+	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
+		this.month = new CronSpecificMonths(months);
 		return this;
 	}
 	
 	@Override
-	public CronMonthPartTwo fromMonth(CronMonth month) {
-		// TODO Auto-generated method stub
+	public CronMonthPartTwo fromMonth(Month month) {
+		this.fromMonth = month;
 		return this;
 	}
 	
 	@Override
-	public CronDayOfWeekPartOne untilMonth(CronMonth month) {
-		// TODO Auto-generated method stub
+	public CronDayOfWeekPartOne untilMonth(Month month) {
+		this.month = new CronMonthRange(fromMonth, month);
 		return this;
 	}	
 

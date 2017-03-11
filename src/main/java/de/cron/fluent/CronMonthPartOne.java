@@ -1,13 +1,13 @@
 package de.cron.fluent;
 
-import de.cron.string.CronMonth;
+import java.time.Month;
 
 public interface CronMonthPartOne {
 	
 	CronDayOfWeekPartOne everyMonth();
 	
-	CronDayOfWeekPartOne inTheseMonths(CronMonth... months);
+	CronDayOfWeekPartOne inTheseMonths(Month... months);
 	
-	CronMonthPartTwo fromMonth(CronMonth month);
+	CronMonthPartTwo fromMonth(Month month);
 
 }
