@@ -1,6 +1,6 @@
 package de.cron.fluent;
 
-import de.cron.string.CronDay;
+import de.cron.string.day.CronDay;
 
 public interface CronDayPartTwo {
 	
