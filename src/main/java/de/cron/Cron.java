@@ -14,36 +14,41 @@ import de.cron.string.CronDay;
 import de.cron.string.CronDayOfWeek;
 import de.cron.string.CronHour;
 import de.cron.string.CronMinute;
+import de.cron.string.CronMinuteRange;
 import de.cron.string.CronMonth;
+import de.cron.string.CronSpecificMinutes;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
+	
+	private CronMinute minute;
+	private int fromMinute;
 	
 	public static CronMinutePartOne cron() {
 		return null;
 	}
-	
+
 	@Override
 	public CronHourPartOne everyMinute() {
-		// TODO Auto-generated method stub
-		return null;
+		this.minute = CronMinute.EVERY_MINUTE;
+		return this;
 	}
 	
 	@Override
-	public CronHourPartOne inTheseMinutes(CronMinute... minutes) {
-		// TODO Auto-generated method stub
-		return null;
+	public CronHourPartOne inTheseMinutes(int... minutes) {
+		this.minute = new CronSpecificMinutes(minutes);
+		return this;
 	}
 	
 	@Override
-	public CronMinutePartTwo fromMinute(CronMinute minute) {
-		// TODO Auto-generated method stub
-		return null;
+	public CronMinutePartTwo fromMinute(int minute) {
+		this.fromMinute = minute;
+		return this;
 	}
 	
 	@Override
 	public CronHourPartOne untilMinute(CronMinute minute) {
-		// TODO Auto-generated method stub
-		return null;
+		this.minute = new CronMinuteRange(fromMinute, minute);
+		return this;
 	}
 
 	

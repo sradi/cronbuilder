@@ -1,11 +1,7 @@
 package de.cron.string;
 
-public class CronMinute {
+public interface CronMinute {
 	
-	int minute;
-
-	public int getValue() {
-		return minute;
-	}
+	public static final CronMinute EVERY_MINUTE = new CronEveryMinute();
 
 }

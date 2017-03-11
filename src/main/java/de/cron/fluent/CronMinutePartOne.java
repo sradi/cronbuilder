@@ -6,8 +6,8 @@ public interface CronMinutePartOne {
 	
 	CronHourPartOne everyMinute();
 	
-	CronHourPartOne inTheseMinutes(CronMinute... minutes);
+	CronHourPartOne inTheseMinutes(int... minutes);
 	
-	CronMinutePartTwo fromMinute(CronMinute minute);
+	CronMinutePartTwo fromMinute(int minute);
 
 }
