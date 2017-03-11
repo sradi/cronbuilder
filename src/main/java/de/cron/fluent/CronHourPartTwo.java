@@ -1,9 +1,9 @@
 package de.cron.fluent;
 
-import de.cron.string.CronHour;
+import de.cron.string.hours.CronHour;
 
 public interface CronHourPartTwo {
 	
-	CronDayPartOne untilHour(CronHour hour);
+	CronDayPartOne untilHour(int hour);
 
 }

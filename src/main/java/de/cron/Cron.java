@@ -12,16 +12,20 @@ import de.cron.fluent.CronMonthPartOne;
 import de.cron.fluent.CronMonthPartTwo;
 import de.cron.string.CronDay;
 import de.cron.string.CronDayOfWeek;
-import de.cron.string.CronHour;
-import de.cron.string.CronMinute;
-import de.cron.string.CronMinuteRange;
 import de.cron.string.CronMonth;
-import de.cron.string.CronSpecificMinutes;
+import de.cron.string.hours.CronHour;
+import de.cron.string.hours.CronHourRange;
+import de.cron.string.hours.CronSpecificHours;
+import de.cron.string.minutes.CronMinute;
+import de.cron.string.minutes.CronMinuteRange;
+import de.cron.string.minutes.CronSpecificMinutes;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 	
 	private CronMinute minute;
 	private int fromMinute;
+	private CronHour hour;
+	private int fromHour;
 	
 	public static CronMinutePartOne cron() {
 		return null;
@@ -55,26 +59,26 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	//***************************************************************
 	@Override
 	public CronDayPartOne everyHour() {
-		// TODO Auto-generated method stub
-		return null;
+		this.hour = CronHour.EVERY_HOUR;
+		return this;
 	}
 	
 	@Override
-	public CronDayPartOne inTheseHours(CronHour... hours) {
-		// TODO Auto-generated method stub
-		return null;
+	public CronDayPartOne inTheseHours(int... hours) {
+		this.hour = new CronSpecificHours(hours);
+		return this;
 	}
 	
 	@Override
-	public CronHourPartTwo fromHour(CronHour hour) {
-		// TODO Auto-generated method stub
-		return null;
+	public CronHourPartTwo fromHour(int hour) {
+		this.fromHour = hour;
+		return this;
 	}
 	
 	@Override
-	public CronDayPartOne untilHour(CronHour hour) {
-		// TODO Auto-generated method stub
-		return null;
+	public CronDayPartOne untilHour(int hour) {
+		this.hour = new CronHourRange(fromHour, hour);
+		return this;
 	}
 
 	//***************************************************************	

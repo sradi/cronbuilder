@@ -1,4 +1,4 @@
-package de.cron.string;
+package de.cron.string.minutes;
 
 public class CronMinuteRange implements CronMinute {
 
