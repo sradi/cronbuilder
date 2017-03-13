@@ -50,6 +50,30 @@ public class CronTest {
 		}
 	}
 	
+	@Test
+	public void testMinuteRange() {
+		CronDefinition cron = Cron.cron().fromMinute(Minute.fromInt(2)).untilMinute(Minute.fromInt(3)).everyHour().everyDay().everyMonth().everyDayOfWeek();
+		assertEquals("2-3 * * * *", cron.toString());
+	}
+	
+	@Test
+	public void testMinuteRangeEqualValues() {
+		try {
+			Cron.cron().fromMinute(Minute.fromInt(12)).untilMinute(Minute.fromInt(12)).everyHour().everyDay().everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testMinuteRangeFromGreaterThanUntil() {
+		try {
+			Cron.cron().fromMinute(Minute.fromInt(24)).untilMinute(Minute.fromInt(23)).everyHour().everyDay().everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
 	//*************************************************
 	@Test
 	public void testSeveralSpecificHours() {
@@ -76,6 +100,30 @@ public class CronTest {
 	public void testInvalidSpecificHours() {
 		try {
 			Cron.cron().everyMinute().inTheseHours(Hour.fromInt(25)).everyDay().everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testHourRange() {
+		CronDefinition cron = Cron.cron().everyMinute().fromHour(Hour.fromInt(6)).untilHour(Hour.fromInt(12)).everyDay().everyMonth().everyDayOfWeek();
+		assertEquals("* 6-12 * * *", cron.toString());
+	}
+	
+	@Test
+	public void testHourRangeEqualValues() {
+		try {
+			Cron.cron().everyMinute().fromHour(Hour.fromInt(20)).untilHour(Hour.fromInt(20)).everyDay().everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testHourRangeFromGreaterThanUntil() {
+		try {
+			Cron.cron().everyMinute().fromHour(Hour.fromInt(15)).untilHour(Hour.fromInt(14)).everyDay().everyMonth().everyDayOfWeek();
 			fail();
 		} catch (Exception e) {
 		}
@@ -112,6 +160,30 @@ public class CronTest {
 		}
 	}
 	
+	@Test
+	public void testDayRange() {
+		CronDefinition cron = Cron.cron().everyMinute().everyHour().fromDay(Day.fromInt(30)).untilDay(Day.fromInt(31)).everyMonth().everyDayOfWeek();
+		assertEquals("* * 30-31 * *", cron.toString());
+	}
+	
+	@Test
+	public void testDayRangeEqualValues() {
+		try {
+			Cron.cron().everyMinute().everyHour().fromDay(Day.fromInt(1)).untilDay(Day.fromInt(1)).everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testDayRangeFromGreaterThanUntil() {
+		try {
+			Cron.cron().everyMinute().everyHour().fromDay(Day.fromInt(10)).untilDay(Day.fromInt(9)).everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
 	//*************************************************
 	@Test
 	public void testSeveralSpecificMonths() {
@@ -134,6 +206,30 @@ public class CronTest {
 		}
 	}
 	
+	@Test
+	public void testMonthRange() {
+		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.MAY).untilMonth(Month.JUNE).everyDayOfWeek();
+		assertEquals("* * * 5-6 *", cron.toString());
+	}
+	
+	@Test
+	public void testMonthRangeEqualValues() {
+		try {
+			Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.OCTOBER).untilMonth(Month.OCTOBER).everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testMonthRangeFromGreaterThanUntil() {
+		try {
+			Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.DECEMBER).untilMonth(Month.NOVEMBER).everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
 	//*************************************************
 	@Test
 	public void testSeveralSpecificDaysOfTheWeek() {
@@ -151,6 +247,30 @@ public class CronTest {
 	public void testEmptySpecificDayOfTheWeek() {
 		try {
 			Cron.cron().everyMinute().everyHour().everyDay().everyMonth().onTheseDaysOfTheWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testDayOfWeekRange() {
+		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY);
+		assertEquals("* * * * 6-7", cron.toString());
+	}
+	
+	@Test
+	public void testDayOfWeekRangeEqualValues() {
+		try {
+			Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.WEDNESDAY).untilDayOfWeek(DayOfWeek.WEDNESDAY);
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testDayOfWeekRangeFromGreaterThanUntil() {
+		try {
+			Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.TUESDAY).untilDayOfWeek(DayOfWeek.MONDAY);
 			fail();
 		} catch (Exception e) {
 		}
