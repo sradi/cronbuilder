@@ -33,7 +33,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	private CronDefinition cronDefinition;
 	private Minute fromMinute;
-	private int fromHour;
+	private Hour fromHour;
 	private int fromDay;
 	private Month fromMonth;
 
@@ -80,19 +80,19 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronDayPartOne inTheseHours(int... hours) {
+	public CronDayPartOne inTheseHours(Hour... hours) {
 		this.cronDefinition.setHour(new CronSpecificHours(hours));
 		return this;
 	}
 	
 	@Override
-	public CronHourPartTwo fromHour(int hour) {
+	public CronHourPartTwo fromHour(Hour hour) {
 		this.fromHour = hour;
 		return this;
 	}
 	
 	@Override
-	public CronDayPartOne untilHour(int hour) {
+	public CronDayPartOne untilHour(Hour hour) {
 		this.cronDefinition.setHour(new CronHourRange(fromHour, hour));
 		return this;
 	}

@@ -1,26 +1,23 @@
 package de.cron.string.hours;
 
-import java.util.Arrays;
-
+import de.cron.Hour;
 import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificHours extends CronElementSpecificValues<Integer> implements CronHour {
+public class CronSpecificHours extends CronElementSpecificValues<Hour> implements CronHour {
 
-	private int[] hours;
+	private Hour[] hours;
 
-	public CronSpecificHours(int[] hours) {
+	public CronSpecificHours(Hour[] hours) {
 		this.hours = hours;
 	}
 
 	@Override
 	public String toString() {
-		return getStringRepresentation(
-				Arrays.stream( hours ).boxed().toArray( Integer[]::new )
-			);
+		return getStringRepresentation(hours);
 	}
 
 	@Override
-	protected String getElementAsString(Integer element) {
+	protected String getElementAsString(Hour element) {
 		return element.toString();
 	}
 

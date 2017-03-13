@@ -1,11 +1,13 @@
 package de.cron.fluent;
 
+import de.cron.Hour;
+
 public interface CronHourPartOne {
 	
 	CronDayPartOne everyHour();
 	
-	CronDayPartOne inTheseHours(int... hours);
+	CronDayPartOne inTheseHours(Hour... hours);
 	
-	CronHourPartTwo fromHour(int hour);
+	CronHourPartTwo fromHour(Hour hour);
 
 }

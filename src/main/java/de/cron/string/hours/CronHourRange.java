@@ -1,11 +1,13 @@
 package de.cron.string.hours;
 
+import de.cron.Hour;
+
 public class CronHourRange implements CronHour {
 
-	private int from;
-	private int until;
+	private Hour from;
+	private Hour until;
 
-	public CronHourRange(int fromHour, int untilHour) {
+	public CronHourRange(Hour fromHour, Hour untilHour) {
 		// TODO assert from < until
 		this.from = fromHour;
 		this.until = untilHour;
