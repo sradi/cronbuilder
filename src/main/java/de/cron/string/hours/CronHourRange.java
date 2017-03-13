@@ -1,5 +1,7 @@
 package de.cron.string.hours;
 
+import com.google.common.base.Preconditions;
+
 import de.cron.Hour;
 
 public class CronHourRange implements CronHour {
@@ -8,7 +10,7 @@ public class CronHourRange implements CronHour {
 	private Hour until;
 
 	public CronHourRange(Hour fromHour, Hour untilHour) {
-		// TODO assert from < until
+		Preconditions.checkArgument(fromHour.isBefore(untilHour));
 		this.from = fromHour;
 		this.until = untilHour;
 	}

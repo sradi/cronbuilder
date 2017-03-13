@@ -225,8 +225,8 @@ public class CronTest {
 	public void testMonthRangeFromGreaterThanUntil() {
 		try {
 			Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.DECEMBER).untilMonth(Month.NOVEMBER).everyDayOfWeek();
-			fail();
 		} catch (Exception e) {
+			fail("Bei Monaten sol z. B. 11-2 (Nov-Feb) erlaubt sein.");
 		}
 	}
 	
@@ -271,8 +271,8 @@ public class CronTest {
 	public void testDayOfWeekRangeFromGreaterThanUntil() {
 		try {
 			Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.TUESDAY).untilDayOfWeek(DayOfWeek.MONDAY);
-			fail();
 		} catch (Exception e) {
+			fail("Bei Wochentagen soll z. B. 6-2 (Sa - Di) erlaubt sein.");
 		}
 	}
 	
