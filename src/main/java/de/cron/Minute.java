@@ -19,5 +19,9 @@ public class Minute {
 	public String toString() {
 		return Integer.toString(minute);
 	}
-	
+
+	public boolean isBefore(Minute minute2) {
+		return this.minute < minute2.minute;
+	}
+
 }
