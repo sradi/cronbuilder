@@ -18,5 +18,10 @@ public class CronSpecificDays extends CronElementSpecificValues<Integer> impleme
 				Arrays.stream( days ).boxed().toArray( Integer[]::new )
 			);
 	}
+
+	@Override
+	protected String getElementAsString(Integer element) {
+		return element.toString();
+	}
 	
 }

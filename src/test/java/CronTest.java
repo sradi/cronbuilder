@@ -25,8 +25,8 @@ public class CronTest {
 	
 	@Test
 	public void testOneSpecificMinute() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(0, 3, 59).everyHour().everyDay().everyMonth().everyDayOfWeek();
-		assertEquals("3 * * * *", cron.toString());
+		CronDefinition cron = Cron.cron().inTheseMinutes(30).everyHour().everyDay().everyMonth().everyDayOfWeek();
+		assertEquals("30 * * * *", cron.toString());
 	}
 	
 	@Test

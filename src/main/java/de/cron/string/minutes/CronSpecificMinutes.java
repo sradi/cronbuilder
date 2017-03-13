@@ -18,6 +18,11 @@ public class CronSpecificMinutes extends CronElementSpecificValues<Integer> impl
 				Arrays.stream( minutes ).boxed().toArray( Integer[]::new )
 			);
 	}
+
+	@Override
+	protected String getElementAsString(Integer element) {
+		return element.toString();
+	}
 	
 	
 	

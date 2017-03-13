@@ -19,4 +19,9 @@ public class CronSpecificHours extends CronElementSpecificValues<Integer> implem
 			);
 	}
 
+	@Override
+	protected String getElementAsString(Integer element) {
+		return element.toString();
+	}
+
 }

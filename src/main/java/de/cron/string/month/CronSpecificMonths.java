@@ -17,4 +17,9 @@ public class CronSpecificMonths extends CronElementSpecificValues<Month> impleme
 		return getStringRepresentation(months);
 	}
 
+	@Override
+	protected String getElementAsString(Month element) {
+		return Integer.valueOf(element.getValue()).toString();
+	}
+
 }

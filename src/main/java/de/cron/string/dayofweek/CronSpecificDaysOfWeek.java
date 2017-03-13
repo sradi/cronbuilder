@@ -17,4 +17,9 @@ public class CronSpecificDaysOfWeek extends CronElementSpecificValues<DayOfWeek>
 		return getStringRepresentation(daysOfWeek);
 	}
 
+	@Override
+	protected String getElementAsString(DayOfWeek element) {
+		return Integer.valueOf(element.getValue()).toString();
+	}
+
 }
