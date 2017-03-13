@@ -32,7 +32,7 @@ import de.cron.string.month.CronSpecificMonths;
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 	
 	private CronDefinition cronDefinition;
-	private int fromMinute;
+	private Minute fromMinute;
 	private int fromHour;
 	private int fromDay;
 	private Month fromMonth;
@@ -54,19 +54,19 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronHourPartOne inTheseMinutes(int... minutes) {
+	public CronHourPartOne inTheseMinutes(Minute... minutes) {
 		this.cronDefinition.setMinute(new CronSpecificMinutes(minutes));
 		return this;
 	}
 	
 	@Override
-	public CronMinutePartTwo fromMinute(int minute) {
+	public CronMinutePartTwo fromMinute(Minute minute) {
 		this.fromMinute = minute;
 		return this;
 	}
 	
 	@Override
-	public CronHourPartOne untilMinute(int minute) {
+	public CronHourPartOne untilMinute(Minute minute) {
 		this.cronDefinition.setMinute(new CronMinuteRange(fromMinute, minute));
 		return this;
 	}
