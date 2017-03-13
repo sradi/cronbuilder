@@ -2,26 +2,15 @@ package de.cron;
 
 import com.google.common.base.Preconditions;
 
-public class Minute {
+public class Minute extends CronUnit<Minute> {
 
-	private int minute;
-	
 	private Minute(int minute) {
-		this.minute = minute;
+		this.setUnit(minute);
 	}
 	
 	public static Minute fromInt(int minute) {
 		Preconditions.checkArgument(minute >= 0 && minute <= 59);
 		return new Minute(minute);
-	}
-
-	@Override
-	public String toString() {
-		return Integer.toString(minute);
-	}
-
-	public boolean isBefore(Minute minute2) {
-		return this.minute < minute2.minute;
 	}
 
 }
