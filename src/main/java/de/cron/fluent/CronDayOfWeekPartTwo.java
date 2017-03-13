@@ -1,10 +1,11 @@
 package de.cron.fluent;
 
+import java.time.DayOfWeek;
+
 import de.cron.CronDefinition;
-import de.cron.string.dayofweek.CronDayOfWeek;
 
 public interface CronDayOfWeekPartTwo {
 	
-	CronDefinition untilDayOfWeek(CronDayOfWeek dayOfWeek);
+	CronDefinition untilDayOfWeek(DayOfWeek dayOfWeek);
 
 }

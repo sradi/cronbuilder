@@ -174,7 +174,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronDefinition untilDayOfWeek(CronDayOfWeek dayOfWeek) {
+	public CronDefinition untilDayOfWeek(DayOfWeek dayOfWeek) {
 		this.cronDefinition.setDayOfWeek(new CronDayOfWeekRange(fromDayOfWeek, dayOfWeek));
 		return this.cronDefinition;
 	}

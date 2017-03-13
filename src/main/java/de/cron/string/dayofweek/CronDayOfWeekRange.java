@@ -5,9 +5,9 @@ import java.time.DayOfWeek;
 public class CronDayOfWeekRange implements CronDayOfWeek {
 
 	private DayOfWeek fromDayOfWeek;
-	private CronDayOfWeek untilDayOfWeek;
+	private DayOfWeek untilDayOfWeek;
 
-	public CronDayOfWeekRange(DayOfWeek fromDayOfWeek, CronDayOfWeek untilDayOfWeek) {
+	public CronDayOfWeekRange(DayOfWeek fromDayOfWeek, DayOfWeek untilDayOfWeek) {
 		this.fromDayOfWeek = fromDayOfWeek;
 		this.untilDayOfWeek = untilDayOfWeek;
 	}
