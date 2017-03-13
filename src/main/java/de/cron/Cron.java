@@ -3,6 +3,8 @@ package de.cron;
 import java.time.DayOfWeek;
 import java.time.Month;
 
+import com.google.common.base.Preconditions;
+
 import de.cron.fluent.CronDayOfWeekPartOne;
 import de.cron.fluent.CronDayOfWeekPartTwo;
 import de.cron.fluent.CronDayPartOne;
@@ -55,6 +57,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronHourPartOne inTheseMinutes(Minute... minutes) {
+		Preconditions.checkArgument(minutes.length > 0);
 		this.cronDefinition.setMinute(new CronSpecificMinutes(minutes));
 		return this;
 	}
@@ -81,6 +84,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronDayPartOne inTheseHours(Hour... hours) {
+		Preconditions.checkArgument(hours.length > 0);
 		this.cronDefinition.setHour(new CronSpecificHours(hours));
 		return this;
 	}
@@ -106,6 +110,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronMonthPartOne onTheseDays(Day... days) {
+		Preconditions.checkArgument(days.length > 0);
 		this.cronDefinition.setDay(new CronSpecificDays(days));
 		return this;
 	}
@@ -131,6 +136,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
+		Preconditions.checkArgument(months.length > 0);
 		this.cronDefinition.setMonth(new CronSpecificMonths(months));
 		return this;
 	}
@@ -156,6 +162,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	@Override
 	public CronDefinition onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
+		Preconditions.checkArgument(daysOfWeek.length > 0);
 		this.cronDefinition.setDayOfWeek(new CronSpecificDaysOfWeek(daysOfWeek));
 		return this.cronDefinition;
 	}
