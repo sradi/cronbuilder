@@ -1,9 +1,9 @@
 package de.cron.fluent;
 
-import de.cron.string.day.CronDay;
+import de.cron.Day;
 
 public interface CronDayPartTwo {
 	
-	CronMonthPartOne untilDay(int day);
+	CronMonthPartOne untilDay(Day day);
 
 }

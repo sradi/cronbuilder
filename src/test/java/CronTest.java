@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import de.cron.Cron;
 import de.cron.CronDefinition;
+import de.cron.Day;
 import de.cron.Hour;
 import de.cron.Minute;
 
@@ -83,13 +84,13 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testSeveralSpecificDays() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(1,15,31).everyMonth().everyDayOfWeek();
+		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(Day.fromInt(1),Day.fromInt(15),Day.fromInt(31)).everyMonth().everyDayOfWeek();
 		assertEquals("* * 1,15,31 * *", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificDay() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(13).everyMonth().everyDayOfWeek();
+		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(Day.fromInt(13)).everyMonth().everyDayOfWeek();
 		assertEquals("* * 13 * *", cron.toString());
 	}
 	
@@ -105,7 +106,7 @@ public class CronTest {
 	@Test
 	public void testInvalidSpecificDays() {
 		try {
-			Cron.cron().everyMinute().everyHour().onTheseDays(32).everyMonth().everyDayOfWeek();
+			Cron.cron().everyMinute().everyHour().onTheseDays(Day.fromInt(32)).everyMonth().everyDayOfWeek();
 			fail();
 		} catch (Exception e) {
 		}

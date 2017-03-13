@@ -1,26 +1,23 @@
 package de.cron.string.day;
 
-import java.util.Arrays;
-
+import de.cron.Day;
 import de.cron.string.CronElementSpecificValues;
 
-public class CronSpecificDays extends CronElementSpecificValues<Integer> implements CronDay {
+public class CronSpecificDays extends CronElementSpecificValues<Day> implements CronDay {
 
-	private int[] days;
+	private Day[] days;
 
-	public CronSpecificDays(int[] days2) {
+	public CronSpecificDays(Day[] days2) {
 		this.days = days2;
 	}
 
 	@Override
 	public String toString() {
-		return getStringRepresentation(
-				Arrays.stream( days ).boxed().toArray( Integer[]::new )
-			);
+		return getStringRepresentation(days);
 	}
 
 	@Override
-	protected String getElementAsString(Integer element) {
+	protected String getElementAsString(Day element) {
 		return element.toString();
 	}
 	

@@ -1,11 +1,13 @@
 package de.cron.fluent;
 
+import de.cron.Day;
+
 public interface CronDayPartOne {
 	
 	CronMonthPartOne everyDay();
 	
-	CronMonthPartOne onTheseDays(int... days);
+	CronMonthPartOne onTheseDays(Day... days);
 	
-	CronDayPartTwo fromDay(int day);
+	CronDayPartTwo fromDay(Day day);
 
 }

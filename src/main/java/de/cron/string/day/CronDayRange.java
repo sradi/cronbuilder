@@ -1,12 +1,14 @@
 package de.cron.string.day;
 
+import de.cron.Day;
+
 public class CronDayRange implements CronDay {
 
-	private int fromDay;
-	private int untilDay;
+	private Day fromDay;
+	private Day untilDay;
 
-	public CronDayRange(int fromDay2, int untilDay) {
-		this.fromDay = fromDay2;
+	public CronDayRange(Day fromDay, Day untilDay) {
+		this.fromDay = fromDay;
 		this.untilDay = untilDay;
 	}
 
