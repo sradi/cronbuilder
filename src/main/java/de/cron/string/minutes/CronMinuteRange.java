@@ -3,21 +3,18 @@ package de.cron.string.minutes;
 import com.google.common.base.Preconditions;
 
 import de.cron.Minute;
+import de.cron.string.CronElementRange;
 
-public class CronMinuteRange implements CronMinute {
+public class CronMinuteRange extends CronElementRange<Minute> implements CronMinute {
 
-	private Minute from;
-	private Minute until;
-
-	public CronMinuteRange(Minute fromMinute, Minute minute) {
-		Preconditions.checkArgument(fromMinute.isBefore(minute));
-		this.from = fromMinute;
-		this.until = minute;
+	public CronMinuteRange(Minute fromMinute, Minute untilMinute) {
+		Preconditions.checkArgument(fromMinute.isBefore(untilMinute));
+		this.setRange(fromMinute, untilMinute);
 	}
 
 	@Override
-	public String toString() {
-		return from + "-" + until;
+	protected String getElementAsString(Minute element) {
+		return element.toString();
 	}
 	
 	

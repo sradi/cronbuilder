@@ -4,20 +4,18 @@ import java.time.Month;
 
 import com.google.common.base.Preconditions;
 
-public class CronMonthRange implements CronMonth {
+import de.cron.string.CronElementRange;
 
-	private Month fromMonth;
-	private Month untilMonth;
+public class CronMonthRange extends CronElementRange<Month> implements CronMonth {
 
 	public CronMonthRange(Month fromMonth, Month untilMonth) {
 		Preconditions.checkArgument(!fromMonth.equals(untilMonth));
-		this.fromMonth = fromMonth;
-		this.untilMonth = untilMonth;
+		this.setRange(fromMonth, untilMonth);
 	}
 
 	@Override
-	public String toString() {
-		return fromMonth.getValue() + "-" + untilMonth.getValue();
+	protected String getElementAsString(Month element) {
+		return Integer.toString(element.getValue());
 	}
 
 }

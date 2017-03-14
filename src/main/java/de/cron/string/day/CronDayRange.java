@@ -3,21 +3,18 @@ package de.cron.string.day;
 import com.google.common.base.Preconditions;
 
 import de.cron.Day;
+import de.cron.string.CronElementRange;
 
-public class CronDayRange implements CronDay {
-
-	private Day fromDay;
-	private Day untilDay;
+public class CronDayRange extends CronElementRange<Day> implements CronDay {
 
 	public CronDayRange(Day fromDay, Day untilDay) {
 		Preconditions.checkArgument(fromDay.isBefore(untilDay));
-		this.fromDay = fromDay;
-		this.untilDay = untilDay;
+		this.setRange(fromDay, untilDay);
 	}
 
 	@Override
-	public String toString() {
-		return fromDay + "-" + untilDay;
+	protected String getElementAsString(Day element) {
+		return element.toString();
 	}
 
 }
