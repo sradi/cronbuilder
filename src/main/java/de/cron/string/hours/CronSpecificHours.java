@@ -5,15 +5,8 @@ import de.cron.string.CronElementSpecificValues;
 
 public class CronSpecificHours extends CronElementSpecificValues<Hour> implements CronHour {
 
-	private Hour[] hours;
-
 	public CronSpecificHours(Hour[] hours) {
-		this.hours = hours;
-	}
-
-	@Override
-	public String toString() {
-		return getStringRepresentation(hours);
+		this.setElements(hours);;
 	}
 
 	@Override
