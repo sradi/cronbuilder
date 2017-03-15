@@ -33,16 +33,19 @@ import de.cron.string.month.CronSpecificMonths;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 	
-	private CronDefinition cronDefinition;
 	private Minute fromMinute;
 	private Hour fromHour;
 	private Day fromDay;
 	private Month fromMonth;
-
 	private DayOfWeek fromDayOfWeek;
 	
+	private CronMinute minute;
+	private CronHour hour;
+	private CronDay day;
+	private CronMonth month;
+	private CronDayOfWeek dayOfWeek;
+	
 	private Cron() {
-		this.cronDefinition = new CronDefinition();
 	}
 	
 	public static CronMinutePartOne cron() {
@@ -51,14 +54,14 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	@Override
 	public CronHourPartOne everyMinute() {
-		this.cronDefinition.setMinute(CronMinute.EVERY_MINUTE);
+		this.minute = CronMinute.EVERY_MINUTE;
 		return this;
 	}
 	
 	@Override
 	public CronHourPartOne inTheseMinutes(Minute... minutes) {
 		Preconditions.checkArgument(minutes.length > 0);
-		this.cronDefinition.setMinute(new CronSpecificMinutes(minutes));
+		this.minute = new CronSpecificMinutes(minutes);
 		return this;
 	}
 	
@@ -70,7 +73,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronHourPartOne untilMinute(Minute minute) {
-		this.cronDefinition.setMinute(new CronMinuteRange(fromMinute, minute));
+		this.minute = new CronMinuteRange(fromMinute, minute);
 		return this;
 	}
 
@@ -78,14 +81,14 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	//***************************************************************
 	@Override
 	public CronDayPartOne everyHour() {
-		this.cronDefinition.setHour(CronHour.EVERY_HOUR);
+		this.hour = CronHour.EVERY_HOUR;
 		return this;
 	}
 	
 	@Override
 	public CronDayPartOne inTheseHours(Hour... hours) {
 		Preconditions.checkArgument(hours.length > 0);
-		this.cronDefinition.setHour(new CronSpecificHours(hours));
+		this.hour = new CronSpecificHours(hours);
 		return this;
 	}
 	
@@ -97,21 +100,21 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronDayPartOne untilHour(Hour hour) {
-		this.cronDefinition.setHour(new CronHourRange(fromHour, hour));
+		this.hour = new CronHourRange(fromHour, hour);
 		return this;
 	}
 
 	//***************************************************************	
 	@Override
 	public CronMonthPartOne everyDay() {
-		this.cronDefinition.setDay(CronDay.EVERY_DAY);
+		this.day = CronDay.EVERY_DAY;
 		return this;
 	}
 	
 	@Override
 	public CronMonthPartOne onTheseDays(Day... days) {
 		Preconditions.checkArgument(days.length > 0);
-		this.cronDefinition.setDay(new CronSpecificDays(days));
+		this.day = new CronSpecificDays(days);
 		return this;
 	}
 	
@@ -123,21 +126,21 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronMonthPartOne untilDay(Day day) {
-		this.cronDefinition.setDay(new CronDayRange(fromDay, day));
+		this.day = new CronDayRange(fromDay, day);
 		return this;
 	}
 
 	//***************************************************************
 	@Override
 	public CronDayOfWeekPartOne everyMonth() {
-		this.cronDefinition.setMonth(CronMonth.EVERY_MONTH);
+		this.month = CronMonth.EVERY_MONTH;
 		return this;
 	}
 	
 	@Override
 	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
 		Preconditions.checkArgument(months.length > 0);
-		this.cronDefinition.setMonth(new CronSpecificMonths(months));
+		this.month = new CronSpecificMonths(months);
 		return this;
 	}
 	
@@ -149,22 +152,22 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronDayOfWeekPartOne untilMonth(Month month) {
-		this.cronDefinition.setMonth(new CronMonthRange(fromMonth, month));
+		this.month = new CronMonthRange(fromMonth, month);
 		return this;
 	}	
 
 	//***************************************************************
 	@Override
 	public CronDefinition everyDayOfWeek() {
-		this.cronDefinition.setDayOfWeek(CronDayOfWeek.EVERY_DAY_OF_THE_WEEK);
-		return this.cronDefinition;
+		this.dayOfWeek = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+		return new SimpleCronDefinition(minute, hour, day, month, dayOfWeek);
 	}
 
 	@Override
 	public CronDefinition onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		Preconditions.checkArgument(daysOfWeek.length > 0);
-		this.cronDefinition.setDayOfWeek(new CronSpecificDaysOfWeek(daysOfWeek));
-		return this.cronDefinition;
+		this.dayOfWeek = new CronSpecificDaysOfWeek(daysOfWeek);
+		return new SimpleCronDefinition(minute, hour, day, month, dayOfWeek);
 	}
 
 	@Override
@@ -174,9 +177,9 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronDefinition untilDayOfWeek(DayOfWeek dayOfWeek) {
-		this.cronDefinition.setDayOfWeek(new CronDayOfWeekRange(fromDayOfWeek, dayOfWeek));
-		return this.cronDefinition;
+	public CronDefinition untilDayOfWeek(DayOfWeek untilDayOfWeek) {
+		this.dayOfWeek = new CronDayOfWeekRange(fromDayOfWeek, untilDayOfWeek);
+		return new SimpleCronDefinition(minute, hour, day, month, dayOfWeek);
 	}
 	
 }
