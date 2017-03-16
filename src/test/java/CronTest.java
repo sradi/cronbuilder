@@ -140,9 +140,12 @@ public class CronTest {
 	
 	@Test
 	public void testEveryMinuteEveryHourDatePeriodFromEqualsUntil() {
-		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 15));
-		assertEquals(1, cron.size());
-		assertEquals("* * 15 6 *", cron.get(0).toString());
+		try {
+			LocalDate date = LocalDate.of(2017, 6, 15);
+			Cron.cron().everyMinute().everyHour().from(date).until(date);
+			fail();
+		} catch (Exception e) {
+		}
 	}
 	
 	@Test
@@ -153,6 +156,13 @@ public class CronTest {
 		} catch (Exception e) {
 		}
 	}
+	
+//	@Test
+//	public void testEveryMinuteEveryHourDatePeriodCertainDaysOfWeek() {
+//		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 15)).fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY);
+//		assertEquals(1, cron.size());
+//		assertEquals("* * 15 6 *", cron.get(0).toString());
+//	}
 	
 	//*************************************************
 	@Test

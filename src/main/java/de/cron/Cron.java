@@ -48,6 +48,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	private CronDay dayDefinition;
 	private CronMonth monthDefinition;
 	private CronDayOfWeek dayOfWeekDefinition;
+	private LocalDate fromDate;
 
 	private Cron() {
 	}
@@ -111,12 +112,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	
 	@Override
 	public CronDatePeriodPart from(LocalDate from) {
-		return null;
+		this.fromDate = from;
+		return this;
 	}
 	
 	@Override
 	public ComplexCronDefinition until(LocalDate until) {
-		return null;
+		return new ComplexCronDefinition(new SimpleCronDefinition.SimpleCronDefinitionBuilder().setMinuteDefinition(minuteDefinition).setHourDefinition(hourDefinition).build(), fromDate, until);
 	}
 
 	// ***************************************************************
