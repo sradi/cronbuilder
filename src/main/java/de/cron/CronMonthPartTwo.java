@@ -2,7 +2,7 @@ package de.cron;
 
 import java.time.Month;
 
-public interface CronMonthPartTwo {
+interface CronMonthPartTwo {
 	
 	CronDayOfWeekPartOne untilMonth(Month month);
 

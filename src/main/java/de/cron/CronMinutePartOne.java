@@ -1,6 +1,6 @@
 package de.cron;
 
-public interface CronMinutePartOne {
+interface CronMinutePartOne {
 	
 	CronHourPartOne everyMinute();
 	

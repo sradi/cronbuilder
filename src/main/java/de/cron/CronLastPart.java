@@ -1,6 +1,6 @@
 package de.cron;
 
-public interface CronLastPart {
+interface CronLastPart {
 	
 	CronDefinition get();
 

@@ -1,6 +1,6 @@
 package de.cron;
 
-public interface CronHourPartOne extends CronLastPart {
+interface CronHourPartOne extends CronLastPart {
 	
 	CronDayPartOne everyHour();
 	

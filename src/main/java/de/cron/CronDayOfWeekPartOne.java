@@ -2,7 +2,7 @@ package de.cron;
 
 import java.time.DayOfWeek;
 
-public interface CronDayOfWeekPartOne extends CronLastPart {
+interface CronDayOfWeekPartOne extends CronLastPart {
 	
 	CronLastPart everyDayOfWeek();
 	

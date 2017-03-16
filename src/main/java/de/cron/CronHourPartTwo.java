@@ -1,6 +1,6 @@
 package de.cron;
 
-public interface CronHourPartTwo {
+interface CronHourPartTwo {
 	
 	CronDayPartOne untilHour(int hour);
 

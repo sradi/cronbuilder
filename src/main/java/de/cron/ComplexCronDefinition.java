@@ -22,7 +22,7 @@ import de.cron.units.Day;
  * @author sradi
  *
  */
-public class ComplexCronDefinition implements Iterable<CronDefinition> {
+class ComplexCronDefinition implements Iterable<CronDefinition> {
 
 	private List<CronDefinition> crons = new ArrayList<>();
 	private SimpleCronDefinition baseCronDefinition;
