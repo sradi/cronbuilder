@@ -131,11 +131,28 @@ public class CronTest {
 	
 	//*************************************************
 	@Test
+	public void testEveryMinuteEveryHourDatePeriodWithinOneMonth() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 20));
+		assertEquals(1, cron.size());
+		assertEquals("* * 15-20 6 *", cron.get(0).toString());
+	}
+	
+	@Test
 	public void testEveryMinuteEveryHourDatePeriod() {
 		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 7, 15));
 		assertEquals(2, cron.size());
 		assertEquals("* * 15-30 6 *", cron.get(0).toString());
 		assertEquals("* * 1-15 7 *", cron.get(1).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteEveryHourDatePeriodOverMultipleMonths() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 9, 5));
+		assertEquals(4, cron.size());
+		assertEquals("* * 15-30 6 *", cron.get(0).toString());
+		assertEquals("* * * 7 *", cron.get(1).toString());
+		assertEquals("* * * 8 *", cron.get(2).toString());
+		assertEquals("* * 1-5 9 *", cron.get(3).toString());
 	}
 	
 	@Test

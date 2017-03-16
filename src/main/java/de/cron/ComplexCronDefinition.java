@@ -12,7 +12,6 @@ import com.google.common.base.Preconditions;
 
 import de.cron.string.day.CronDay;
 import de.cron.string.day.CronDayRange;
-import de.cron.string.day.CronSpecificDays;
 import de.cron.string.month.CronSpecificMonths;
 
 /**
@@ -25,51 +24,57 @@ import de.cron.string.month.CronSpecificMonths;
 public class ComplexCronDefinition implements Iterable<CronDefinition> {
 
 	private List<CronDefinition> crons = new ArrayList<>();
+	private SimpleCronDefinition baseCronDefinition;
+	private LocalDate fromDate;
+	private LocalDate untilDate;
 
 	public ComplexCronDefinition(SimpleCronDefinition baseCronDefinition, LocalDate fromDate, LocalDate untilDate) {
+		this.baseCronDefinition = baseCronDefinition;
+		this.fromDate = fromDate;
+		this.untilDate = untilDate;
+		ensureFromIsBeforeUntil();
+		
+		crons.addAll(getCronsForMonths());
+	}
+
+	private void ensureFromIsBeforeUntil() {
 		int fromMonth = fromDate.get(ChronoField.MONTH_OF_YEAR);
 		int untilMonth = untilDate.get(ChronoField.MONTH_OF_YEAR);
 		Preconditions.checkArgument(fromMonth <= untilMonth);
-		
-		if (fromMonth == untilMonth) {
-			int fromDay = fromDate.get(ChronoField.DAY_OF_MONTH);
-			int untilDay = untilDate.get(ChronoField.DAY_OF_MONTH);
-			// TODO Diese Precondigion wird auch im Day-Objekt geprueft. Hier entfernen? Best Practice?
-			Preconditions
-					.checkArgument(fromDay < untilDay, "If ");
-			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-					.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
-					.setHourDefinition(baseCronDefinition.getHourDefinition())
-					.setDayDefinition(new CronDayRange(Day.fromInt(fromDay), Day.fromInt(untilDay)))
-					.setMonthDefinition(new CronSpecificMonths(fromDate.getMonth()))
-					.build());
-		} else {
-			crons.addAll(getCronsForMonths(baseCronDefinition, fromDate, untilDate));
 		}
-	}
 
-	private Collection<? extends CronDefinition> getCronsForMonths(SimpleCronDefinition baseCronDefinition,
-			LocalDate fromDate, LocalDate untilDate) {
+	private Collection<? extends CronDefinition> getCronsForMonths() {
 		List<CronDefinition> crons = new ArrayList<>();
+		int fromDay = fromDate.get(ChronoField.DAY_OF_MONTH);
+		int untilDay = untilDate.get(ChronoField.DAY_OF_MONTH);
 		
 		int currentMonth = fromDate.getMonthValue();
 		while (currentMonth <= untilDate.getMonthValue()) {
-			if (isFirstMonth(fromDate, currentMonth)) {
+			if (isOnlyOneMonth()) {
+				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
+						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
+						.setHourDefinition(baseCronDefinition.getHourDefinition())
+						.setDayDefinition(new CronDayRange(Day.fromInt(fromDay), Day.fromInt(untilDay)))
+						.setMonthDefinition(new CronSpecificMonths(fromDate.getMonth()))
+						.build());
+				break;
+			}
+			if (isFirstMonth(currentMonth)) {
 				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
 						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
 						.setHourDefinition(baseCronDefinition.getHourDefinition())
 						.setDayDefinition(new CronDayRange(
-								Day.fromInt(fromDate.get(ChronoField.DAY_OF_MONTH)),
+								Day.fromInt(fromDay),
 								Day.fromInt(fromDate.getMonth().maxLength())))
 						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
 						.build());
-			} else if (isLastMonth(untilDate, currentMonth)) {
+			} else if (isLastMonth(currentMonth)) {
 				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
 						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
 						.setHourDefinition(baseCronDefinition.getHourDefinition())
 						.setDayDefinition(new CronDayRange(
 								Day.fromInt(1),
-								Day.fromInt(untilDate.get(ChronoField.DAY_OF_MONTH))))
+								Day.fromInt(untilDay)))
 						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
 						.build());
 			} else {
@@ -86,12 +91,18 @@ public class ComplexCronDefinition implements Iterable<CronDefinition> {
 		return crons;
 	}
 
-	private boolean isFirstMonth(LocalDate fromDate, int currentMonth) {
-		return fromDate.getMonthValue() == currentMonth;
+	private boolean isOnlyOneMonth() {
+		int fromMonth = fromDate.get(ChronoField.MONTH_OF_YEAR);
+		int untilMonth = untilDate.get(ChronoField.MONTH_OF_YEAR);
+		return fromMonth == untilMonth;
+	}
+
+	private boolean isFirstMonth(int month) {
+		return fromDate.getMonthValue() == month;
 	}
 	
-	private boolean isLastMonth(LocalDate untilDate, int currentMonth) {
-		return untilDate.getMonthValue() == currentMonth;
+	private boolean isLastMonth(int month) {
+		return untilDate.getMonthValue() == month;
 	}
 
 	public CronDefinition get(int i) {
