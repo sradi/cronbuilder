@@ -1,11 +1,13 @@
 package de.cron;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.stream.IntStream;
 
 import com.google.common.base.Preconditions;
 
+import de.cron.fluent.CronDatePeriodPart;
 import de.cron.fluent.CronDayOfWeekPartOne;
 import de.cron.fluent.CronDayOfWeekPartTwo;
 import de.cron.fluent.CronDayPartOne;
@@ -33,7 +35,7 @@ import de.cron.string.month.CronMonthRange;
 import de.cron.string.month.CronSpecificMonths;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,
-		CronDayPartTwo, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
+		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne, CronDayOfWeekPartTwo {
 
 	private Minute fromMinute;
 	private Hour fromHour;
@@ -105,6 +107,16 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	public CronDayPartOne untilHour(int hour) {
 		this.hourDefinition = new CronHourRange(fromHour, Hour.fromInt(hour));
 		return this;
+	}
+	
+	@Override
+	public CronDatePeriodPart from(LocalDate from) {
+		return null;
+	}
+	
+	@Override
+	public ComplexCronDefinition until(LocalDate until) {
+		return null;
 	}
 
 	// ***************************************************************

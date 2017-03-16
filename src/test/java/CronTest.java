@@ -2,10 +2,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.Month;
 
 import org.junit.Test;
 
+import de.cron.ComplexCronDefinition;
 import de.cron.Cron;
 import de.cron.CronDefinition;
 
@@ -122,6 +124,31 @@ public class CronTest {
 	public void testHourRangeFromGreaterThanUntil() {
 		try {
 			Cron.cron().everyMinute().fromHour(15).untilHour(14).everyDay().everyMonth().everyDayOfWeek();
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	//*************************************************
+	@Test
+	public void testEveryMinuteEveryHourDatePeriod() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 7, 15));
+		assertEquals(2, cron.size());
+		assertEquals("* * 15-30 6 *", cron.get(0).toString());
+		assertEquals("* * 1-15 7 *", cron.get(1).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteEveryHourDatePeriodFromEqualsUntil() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 15));
+		assertEquals(1, cron.size());
+		assertEquals("* * 15 6 *", cron.get(0).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteEveryHourDatePeriodUntilBeforeFrom() {
+		try {
+			Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 14));
 			fail();
 		} catch (Exception e) {
 		}
