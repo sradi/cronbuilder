@@ -25,6 +25,31 @@ public class SimpleCronDefinition implements CronDefinition {
 	}
 
 	@Override
+	public CronMinute getMinuteDefinition() {
+		return minuteDefinition;
+	}
+
+	@Override
+	public CronHour getHourDefinition() {
+		return hourDefinition;
+	}
+
+	@Override
+	public CronDay getDayDefinition() {
+		return dayDefinition;
+	}
+
+	@Override
+	public CronMonth getMonthDefinition() {
+		return monthDefinition;
+	}
+
+	@Override
+	public CronDayOfWeek getDayOfWeekDefinition() {
+		return dayOfWeekDefinition;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder cronStringBuilder = new StringBuilder();
 		cronStringBuilder
