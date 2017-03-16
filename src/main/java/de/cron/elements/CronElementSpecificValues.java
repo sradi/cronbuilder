@@ -1,4 +1,4 @@
-package de.cron.string;
+package de.cron.elements;
 
 public abstract class CronElementSpecificValues<T> {
 	

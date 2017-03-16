@@ -1,7 +1,7 @@
-package de.cron.string.hours;
+package de.cron.elements.hours;
 
 import de.cron.Hour;
-import de.cron.string.CronElementSpecificValues;
+import de.cron.elements.CronElementSpecificValues;
 
 public class CronSpecificHours extends CronElementSpecificValues<Hour> implements CronHour {
 

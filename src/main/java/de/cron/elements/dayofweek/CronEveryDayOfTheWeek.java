@@ -1,4 +1,4 @@
-package de.cron.string.dayofweek;
+package de.cron.elements.dayofweek;
 
 public class CronEveryDayOfTheWeek implements CronDayOfWeek {
 

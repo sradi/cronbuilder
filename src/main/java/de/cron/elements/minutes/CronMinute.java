@@ -1,4 +1,4 @@
-package de.cron.string.minutes;
+package de.cron.elements.minutes;
 
 public interface CronMinute {
 	

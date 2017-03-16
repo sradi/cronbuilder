@@ -1,8 +1,8 @@
-package de.cron.string.month;
+package de.cron.elements.month;
 
 import java.time.Month;
 
-import de.cron.string.CronElementSpecificValues;
+import de.cron.elements.CronElementSpecificValues;
 
 public class CronSpecificMonths extends CronElementSpecificValues<Month> implements CronMonth {
 

@@ -1,4 +1,4 @@
-package de.cron.string.day;
+package de.cron.elements.day;
 
 public interface CronDay {
 	

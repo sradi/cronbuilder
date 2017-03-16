@@ -1,4 +1,4 @@
-package de.cron.string.month;
+package de.cron.elements.month;
 
 public interface CronMonth {
 	

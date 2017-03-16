@@ -7,6 +7,21 @@ import java.util.stream.IntStream;
 
 import com.google.common.base.Preconditions;
 
+import de.cron.elements.day.CronDay;
+import de.cron.elements.day.CronDayRange;
+import de.cron.elements.day.CronSpecificDays;
+import de.cron.elements.dayofweek.CronDayOfWeek;
+import de.cron.elements.dayofweek.CronDayOfWeekRange;
+import de.cron.elements.dayofweek.CronSpecificDaysOfWeek;
+import de.cron.elements.hours.CronHour;
+import de.cron.elements.hours.CronHourRange;
+import de.cron.elements.hours.CronSpecificHours;
+import de.cron.elements.minutes.CronMinute;
+import de.cron.elements.minutes.CronMinuteRange;
+import de.cron.elements.minutes.CronSpecificMinutes;
+import de.cron.elements.month.CronMonth;
+import de.cron.elements.month.CronMonthRange;
+import de.cron.elements.month.CronSpecificMonths;
 import de.cron.fluent.CronDatePeriodPart;
 import de.cron.fluent.CronDayOfWeekPartOne;
 import de.cron.fluent.CronDayOfWeekPartTwo;
@@ -19,21 +34,6 @@ import de.cron.fluent.CronMinutePartOne;
 import de.cron.fluent.CronMinutePartTwo;
 import de.cron.fluent.CronMonthPartOne;
 import de.cron.fluent.CronMonthPartTwo;
-import de.cron.string.day.CronDay;
-import de.cron.string.day.CronDayRange;
-import de.cron.string.day.CronSpecificDays;
-import de.cron.string.dayofweek.CronDayOfWeek;
-import de.cron.string.dayofweek.CronDayOfWeekRange;
-import de.cron.string.dayofweek.CronSpecificDaysOfWeek;
-import de.cron.string.hours.CronHour;
-import de.cron.string.hours.CronHourRange;
-import de.cron.string.hours.CronSpecificHours;
-import de.cron.string.minutes.CronMinute;
-import de.cron.string.minutes.CronMinuteRange;
-import de.cron.string.minutes.CronSpecificMinutes;
-import de.cron.string.month.CronMonth;
-import de.cron.string.month.CronMonthRange;
-import de.cron.string.month.CronSpecificMonths;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,
 		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,

@@ -2,13 +2,13 @@ package de.cron;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.string.day.CronDay;
-import de.cron.string.dayofweek.CronDayOfWeek;
-import de.cron.string.hours.CronHour;
-import de.cron.string.minutes.CronMinute;
-import de.cron.string.month.CronMonth;
+import de.cron.elements.day.CronDay;
+import de.cron.elements.dayofweek.CronDayOfWeek;
+import de.cron.elements.hours.CronHour;
+import de.cron.elements.minutes.CronMinute;
+import de.cron.elements.month.CronMonth;
 
-public class SimpleCronDefinition implements CronDefinition {
+class SimpleCronDefinition implements CronDefinition {
 
 	private static final String CRON_ELEMENT_SEPARATOR = " ";
 	

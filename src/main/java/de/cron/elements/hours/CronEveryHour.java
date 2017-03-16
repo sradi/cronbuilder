@@ -1,4 +1,4 @@
-package de.cron.string.hours;
+package de.cron.elements.hours;
 
 public class CronEveryHour implements CronHour {
 

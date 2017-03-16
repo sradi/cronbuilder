@@ -1,10 +1,10 @@
-package de.cron.string.month;
+package de.cron.elements.month;
 
 import java.time.Month;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.string.CronElementRange;
+import de.cron.elements.CronElementRange;
 
 public class CronMonthRange extends CronElementRange<Month> implements CronMonth {
 

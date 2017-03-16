@@ -10,9 +10,9 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.string.day.CronDay;
-import de.cron.string.day.CronDayRange;
-import de.cron.string.month.CronSpecificMonths;
+import de.cron.elements.day.CronDay;
+import de.cron.elements.day.CronDayRange;
+import de.cron.elements.month.CronSpecificMonths;
 
 /**
  * <b>Please note:</b> The year of LocalDate instances, used by this class, is
