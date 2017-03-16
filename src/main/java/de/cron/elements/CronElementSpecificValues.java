@@ -1,6 +1,6 @@
 package de.cron.elements;
 
-public abstract class CronElementSpecificValues<T> {
+abstract class CronElementSpecificValues<T> {
 	
 	private T[] elements;
 	

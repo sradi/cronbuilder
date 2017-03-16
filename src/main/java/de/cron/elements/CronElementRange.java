@@ -1,6 +1,6 @@
 package de.cron.elements;
 
-public abstract class CronElementRange<T> {
+abstract class CronElementRange<T> {
 	
 	private T from;
 	private T until;
