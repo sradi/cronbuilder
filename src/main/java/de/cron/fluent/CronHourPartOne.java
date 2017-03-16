@@ -1,6 +1,6 @@
 package de.cron.fluent;
 
-public interface CronHourPartOne {
+public interface CronHourPartOne extends CronLastPart {
 	
 	CronDayPartOne everyHour();
 	

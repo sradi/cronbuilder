@@ -2,13 +2,11 @@ package de.cron.fluent;
 
 import java.time.DayOfWeek;
 
-import de.cron.CronDefinition;
-
-public interface CronDayOfWeekPartOne {
+public interface CronDayOfWeekPartOne extends CronLastPart {
 	
-	CronDefinition everyDayOfWeek();
+	CronLastPart everyDayOfWeek();
 	
-	CronDefinition onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek);
+	CronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek);
 	
 	CronDayOfWeekPartTwo fromDayOfWeek(DayOfWeek dayOfWeek);
 

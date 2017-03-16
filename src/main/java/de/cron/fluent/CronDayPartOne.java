@@ -2,7 +2,7 @@ package de.cron.fluent;
 
 import java.time.LocalDate;
 
-public interface CronDayPartOne {
+public interface CronDayPartOne extends CronLastPart {
 	
 	CronMonthPartOne everyDay();
 	
