@@ -1,4 +1,4 @@
-package de.cron.elements.day;
+package de.cron.elements;
 
 public class CronEveryDay implements CronDay {
 

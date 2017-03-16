@@ -1,8 +1,6 @@
-package de.cron.elements.dayofweek;
+package de.cron.elements;
 
 import java.time.DayOfWeek;
-
-import de.cron.elements.CronElementSpecificValues;
 
 public class CronSpecificDaysOfWeek extends CronElementSpecificValues<DayOfWeek> implements CronDayOfWeek {
 

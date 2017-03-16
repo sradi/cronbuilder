@@ -10,9 +10,9 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.elements.day.CronDay;
-import de.cron.elements.day.CronDayRange;
-import de.cron.elements.month.CronSpecificMonths;
+import de.cron.elements.CronDay;
+import de.cron.elements.CronDayRange;
+import de.cron.elements.CronSpecificMonths;
 import de.cron.units.Day;
 
 /**

@@ -1,6 +1,5 @@
-package de.cron.elements.minutes;
+package de.cron.elements;
 
-import de.cron.elements.CronElementSpecificValues;
 import de.cron.units.Minute;
 
 public class CronSpecificMinutes extends CronElementSpecificValues<Minute> implements CronMinute {

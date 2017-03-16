@@ -1,4 +1,4 @@
-package de.cron.elements.dayofweek;
+package de.cron.elements;
 
 public interface CronDayOfWeek {
 	

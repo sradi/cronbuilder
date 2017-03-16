@@ -1,10 +1,8 @@
-package de.cron.elements.dayofweek;
+package de.cron.elements;
 
 import java.time.DayOfWeek;
 
 import com.google.common.base.Preconditions;
-
-import de.cron.elements.CronElementRange;
 
 public class CronDayOfWeekRange extends CronElementRange<DayOfWeek> implements CronDayOfWeek {
 

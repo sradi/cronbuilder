@@ -1,4 +1,4 @@
-package de.cron.elements.month;
+package de.cron.elements;
 
 public class CronEveryMonth implements CronMonth {
 

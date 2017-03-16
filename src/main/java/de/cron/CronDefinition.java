@@ -1,10 +1,10 @@
 package de.cron;
 
-import de.cron.elements.day.CronDay;
-import de.cron.elements.dayofweek.CronDayOfWeek;
-import de.cron.elements.hours.CronHour;
-import de.cron.elements.minutes.CronMinute;
-import de.cron.elements.month.CronMonth;
+import de.cron.elements.CronDay;
+import de.cron.elements.CronDayOfWeek;
+import de.cron.elements.CronHour;
+import de.cron.elements.CronMinute;
+import de.cron.elements.CronMonth;
 
 interface CronDefinition {
 	

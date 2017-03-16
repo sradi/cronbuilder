@@ -1,6 +1,5 @@
-package de.cron.elements.day;
+package de.cron.elements;
 
-import de.cron.elements.CronElementSpecificValues;
 import de.cron.units.Day;
 
 public class CronSpecificDays extends CronElementSpecificValues<Day> implements CronDay {

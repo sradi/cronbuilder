@@ -1,8 +1,7 @@
-package de.cron.elements.minutes;
+package de.cron.elements;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.elements.CronElementRange;
 import de.cron.units.Minute;
 
 public class CronMinuteRange extends CronElementRange<Minute> implements CronMinute {

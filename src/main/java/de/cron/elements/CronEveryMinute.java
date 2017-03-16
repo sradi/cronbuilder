@@ -1,4 +1,4 @@
-package de.cron.elements.minutes;
+package de.cron.elements;
 
 public class CronEveryMinute implements CronMinute {
 
