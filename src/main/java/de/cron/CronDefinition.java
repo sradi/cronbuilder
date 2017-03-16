@@ -6,7 +6,7 @@ import de.cron.elements.hours.CronHour;
 import de.cron.elements.minutes.CronMinute;
 import de.cron.elements.month.CronMonth;
 
-public interface CronDefinition {
+interface CronDefinition {
 	
 	CronMinute getMinuteDefinition();
 	

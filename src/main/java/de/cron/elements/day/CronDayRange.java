@@ -2,8 +2,8 @@ package de.cron.elements.day;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.Day;
 import de.cron.elements.CronElementRange;
+import de.cron.units.Day;
 
 public class CronDayRange extends CronElementRange<Day> implements CronDay {
 

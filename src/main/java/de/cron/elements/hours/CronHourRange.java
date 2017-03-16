@@ -2,8 +2,8 @@ package de.cron.elements.hours;
 
 import com.google.common.base.Preconditions;
 
-import de.cron.Hour;
 import de.cron.elements.CronElementRange;
+import de.cron.units.Hour;
 
 public class CronHourRange extends CronElementRange<Hour> implements CronHour {
 

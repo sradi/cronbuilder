@@ -13,6 +13,7 @@ import com.google.common.base.Preconditions;
 import de.cron.elements.day.CronDay;
 import de.cron.elements.day.CronDayRange;
 import de.cron.elements.month.CronSpecificMonths;
+import de.cron.units.Day;
 
 /**
  * <b>Please note:</b> The year of LocalDate instances, used by this class, is

@@ -1,8 +1,6 @@
-package de.cron.fluent;
+package de.cron;
 
 import java.time.LocalDate;
-
-import de.cron.ComplexCronDefinition;
 
 public interface CronDatePeriodPart {
 	

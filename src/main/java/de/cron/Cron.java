@@ -22,18 +22,9 @@ import de.cron.elements.minutes.CronSpecificMinutes;
 import de.cron.elements.month.CronMonth;
 import de.cron.elements.month.CronMonthRange;
 import de.cron.elements.month.CronSpecificMonths;
-import de.cron.fluent.CronDatePeriodPart;
-import de.cron.fluent.CronDayOfWeekPartOne;
-import de.cron.fluent.CronDayOfWeekPartTwo;
-import de.cron.fluent.CronDayPartOne;
-import de.cron.fluent.CronDayPartTwo;
-import de.cron.fluent.CronHourPartOne;
-import de.cron.fluent.CronHourPartTwo;
-import de.cron.fluent.CronLastPart;
-import de.cron.fluent.CronMinutePartOne;
-import de.cron.fluent.CronMinutePartTwo;
-import de.cron.fluent.CronMonthPartOne;
-import de.cron.fluent.CronMonthPartTwo;
+import de.cron.units.Day;
+import de.cron.units.Hour;
+import de.cron.units.Minute;
 
 public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,
 		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,

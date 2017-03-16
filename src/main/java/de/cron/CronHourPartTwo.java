@@ -1,4 +1,4 @@
-package de.cron.fluent;
+package de.cron;
 
 public interface CronHourPartTwo {
 	

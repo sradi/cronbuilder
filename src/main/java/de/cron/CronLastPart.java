@@ -1,6 +1,4 @@
-package de.cron.fluent;
-
-import de.cron.CronDefinition;
+package de.cron;
 
 public interface CronLastPart {
 	

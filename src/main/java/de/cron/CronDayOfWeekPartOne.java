@@ -1,4 +1,4 @@
-package de.cron.fluent;
+package de.cron;
 
 import java.time.DayOfWeek;
 
