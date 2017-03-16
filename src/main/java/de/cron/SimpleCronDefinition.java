@@ -10,33 +10,33 @@ public class SimpleCronDefinition implements CronDefinition {
 
 	private static final String CRON_ELEMENT_SEPARATOR = " ";
 	
-	private CronMinute minute;
-	private CronHour hour;
-	private CronDay day;
-	private CronMonth month;
-	private CronDayOfWeek dayOfWeek;
+	private CronMinute minuteDefinition;
+	private CronHour hourDefinition;
+	private CronDay dayDefinition;
+	private CronMonth monthDefinition;
+	private CronDayOfWeek dayOfWeekDefinition;
 	
 	public SimpleCronDefinition(CronMinute minute, CronHour hour, CronDay day, CronMonth month, CronDayOfWeek dayOfWeek) {
-		this.minute = minute;
-		this.hour = hour;
-		this.day = day;
-		this.month = month;
-		this.dayOfWeek = dayOfWeek;
+		this.minuteDefinition = minute;
+		this.hourDefinition = hour;
+		this.dayDefinition = day;
+		this.monthDefinition = month;
+		this.dayOfWeekDefinition = dayOfWeek;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder cronStringBuilder = new StringBuilder();
 		cronStringBuilder
-			.append(minute)
+			.append(minuteDefinition)
 			.append(CRON_ELEMENT_SEPARATOR)
-			.append(hour)
+			.append(hourDefinition)
 			.append(CRON_ELEMENT_SEPARATOR)
-			.append(day)
+			.append(dayDefinition)
 			.append(CRON_ELEMENT_SEPARATOR)
-			.append(month)
+			.append(monthDefinition)
 			.append(CRON_ELEMENT_SEPARATOR)
-			.append(dayOfWeek);
+			.append(dayOfWeekDefinition);
 		return cronStringBuilder.toString();
 	}
 
