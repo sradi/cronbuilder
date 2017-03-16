@@ -14,6 +14,7 @@ import de.cron.elements.CronDay;
 import de.cron.elements.CronDayRange;
 import de.cron.elements.CronSpecificMonths;
 import de.cron.units.Day;
+import de.cron.units.Hour;
 
 /**
  * <b>Please note:</b> The year of LocalDate instances, used by this class, is
@@ -36,6 +37,11 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 		ensureFromIsBeforeUntil();
 		
 		crons.addAll(getCronsForMonths());
+	}
+
+	public ComplexCronDefinition(SimpleCronDefinition currentCronDefinition, Hour fromHour, Hour untilHour, LocalDate fromDate2,
+			LocalDate until) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private Collection<? extends CronDefinition> getCronsForMonths() {

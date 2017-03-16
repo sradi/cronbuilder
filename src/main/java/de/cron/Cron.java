@@ -26,7 +26,7 @@ import de.cron.units.Day;
 import de.cron.units.Hour;
 import de.cron.units.Minute;
 
-public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayPartOne,
+public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayAndDatePeriodPart, CronDayPartOne,
 		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,
 		CronDayOfWeekPartTwo, CronLastPart {
 
@@ -77,6 +77,18 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 				.setMinuteDefinition(new CronMinuteRange(fromMinute, Minute.fromInt(minute)))
 				.build();
 		return this;
+	}
+	
+	@Override
+	public CronDayAndDatePeriodPart from(int hour, LocalDate from) {
+		this.fromHour = Hour.fromInt(hour);
+		this.fromDate = from;
+		return this;
+	}
+
+	@Override
+	public ComplexCronDefinition until(int hour, LocalDate until) {
+		return new ComplexCronDefinition(currentCronDefinition, fromHour, Hour.fromInt(hour), fromDate, until);
 	}
 
 	// ***************************************************************

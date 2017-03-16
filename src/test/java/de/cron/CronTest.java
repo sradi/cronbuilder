@@ -77,6 +77,80 @@ public class CronTest {
 	
 	//*************************************************
 	@Test
+	public void testEveryMinuteWithDayAndDatePeriodWithinOneDay() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().from(12, LocalDate.of(2017, 6, 15)).until(20, LocalDate.of(2017, 6, 15));
+		assertEquals(1, cron.size());
+		assertEquals("* 12-20 15 6 *", cron.get(0).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriod() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().from(12, LocalDate.of(2017, 6, 15)).until(15, LocalDate.of(2017, 6, 16));
+		assertEquals(2, cron.size());
+		assertEquals("* 12-24 15 6 *", cron.get(0).toString());
+		assertEquals("* 1-15 16 6 *", cron.get(1).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriodOverMultipleDays() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().from(12, LocalDate.of(2017, 6, 15)).until(15, LocalDate.of(2017, 6, 20));
+		assertEquals(3, cron.size());
+		assertEquals("* 12-24 15 6 *", cron.get(0).toString());
+		assertEquals("* * 16-19 6 *", cron.get(1).toString());
+		assertEquals("* 1-6 20 6 *", cron.get(2).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriodOverMultipleDaysAndMultipleMonths() {
+		ComplexCronDefinition cron = Cron.cron().everyMinute().from(18, LocalDate.of(2017, 6, 15)).until(6, LocalDate.of(2017, 9, 5));
+		assertEquals(6, cron.size());
+		assertEquals("* 18-24 15 6 *", cron.get(0).toString());
+		assertEquals("* * 16-30 6 *", cron.get(1).toString());
+		assertEquals("* * * 7 *", cron.get(2).toString());
+		assertEquals("* * * 8 *", cron.get(3).toString());
+		assertEquals("* * 1-4 9 *", cron.get(4).toString());
+		assertEquals("* 1-6 5 9 *", cron.get(5).toString());
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriodFromEqualsUntil() {
+		try {
+			int hour = 13;
+			LocalDate date = LocalDate.of(2017, 6, 15);
+			Cron.cron().everyMinute().from(hour, date).until(hour, date);
+			fail();
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void testEveryMinuteWithDayAndDatePeriodUntilHourBeforeFromHour() {
+		try {
+			Cron.cron().everyMinute().from(12, LocalDate.of(2017, 6, 15)).until(6, LocalDate.of(2017, 6, 15));
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriodUntilDateBeforeFromDate() {
+		try {
+			Cron.cron().everyMinute().from(6, LocalDate.of(2017, 6, 15)).until(12, LocalDate.of(2017, 6, 14));
+			fail();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testEveryMinuteDayAndDatePeriodCertainDaysOfWeek() {
+//		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 15)).fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY);
+//		assertEquals(1, cron.size());
+//		assertEquals("* * 15 6 *", cron.get(0).toString());
+		fail("TODO: implement dayOfWeek for ComplexCronDefinitions");
+	}
+	
+	//*************************************************
+	@Test
 	public void testSeveralSpecificHours() {
 		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(6, 12, 18).everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("* 6,12,18 * * *", cron.toString());
@@ -175,12 +249,13 @@ public class CronTest {
 		}
 	}
 	
-//	@Test
-//	public void testEveryMinuteEveryHourDatePeriodCertainDaysOfWeek() {
+	@Test
+	public void testEveryMinuteEveryHourDatePeriodCertainDaysOfWeek() {
 //		ComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 6, 15)).fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY);
 //		assertEquals(1, cron.size());
 //		assertEquals("* * 15 6 *", cron.get(0).toString());
-//	}
+		fail("TODO: implement dayOfWeek for ComplexCronDefinitions");
+	}
 	
 	//*************************************************
 	@Test
