@@ -9,6 +9,9 @@ public class CronSpecificMonths extends CronElementSpecificValues<Month> impleme
 	public CronSpecificMonths(Month[] months) {
 		this.setElements(months);
 	}
+	public CronSpecificMonths(Month month) {
+		this.setElements(new Month[] { month });
+	}
 
 	@Override
 	protected String getElementAsString(Month element) {
