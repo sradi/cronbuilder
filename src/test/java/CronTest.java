@@ -364,9 +364,40 @@ public class CronTest {
 		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).get();
 		assertEquals("22-24 6-9 * * *", cron.toString());
 	}
+
+	@Test
+	public void testEveryDayWithDefaultValues() {
+		CronDefinition cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().get();
+		assertEquals("0,59 * * * *", cron.toString());
+	}
 	
 	@Test
-	public void testMoreCasesWithDefaultValues() {
-		fail();
+	public void testSpecificDaysWithDefaultValues() {
+		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).onTheseDays(1, 2, 3).get();
+		assertEquals("* 19,21,23 1,2,3 * *", cron.toString());
+	}
+	
+	@Test
+	public void testDayRangeWithDefaultValues() {
+		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).fromDay(2).untilDay(4).get();
+		assertEquals("22-24 6-9 2-4 * *", cron.toString());
+	}
+
+	@Test
+	public void testEveryMonthWithDefaultValues() {
+		CronDefinition cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().everyMonth().get();
+		assertEquals("0,59 * * * *", cron.toString());
+	}
+	
+	@Test
+	public void testSpecificMonthsWithDefaultValues() {
+		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).everyDay().inTheseMonths(Month.MARCH, Month.JUNE).get();
+		assertEquals("* 19,21,23 * 3,6 *", cron.toString());
+	}
+	
+	@Test
+	public void testMonthRangeWithDefaultValues() {
+		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).everyHour().fromDay(2).untilDay(4).fromMonth(Month.APRIL).untilMonth(Month.SEPTEMBER).get();
+		assertEquals("22-24 * 2-4 4-9 *", cron.toString());
 	}
 }

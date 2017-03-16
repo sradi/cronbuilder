@@ -37,12 +37,6 @@ public class ComplexCronDefinition implements Iterable<CronDefinition> {
 		crons.addAll(getCronsForMonths());
 	}
 
-	private void ensureFromIsBeforeUntil() {
-		int fromMonth = fromDate.get(ChronoField.MONTH_OF_YEAR);
-		int untilMonth = untilDate.get(ChronoField.MONTH_OF_YEAR);
-		Preconditions.checkArgument(fromMonth <= untilMonth);
-		}
-
 	private Collection<? extends CronDefinition> getCronsForMonths() {
 		List<CronDefinition> crons = new ArrayList<>();
 		int fromDay = fromDate.get(ChronoField.DAY_OF_MONTH);
@@ -51,36 +45,28 @@ public class ComplexCronDefinition implements Iterable<CronDefinition> {
 		int currentMonth = fromDate.getMonthValue();
 		while (currentMonth <= untilDate.getMonthValue()) {
 			if (isOnlyOneMonth()) {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
-						.setHourDefinition(baseCronDefinition.getHourDefinition())
+				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 						.setDayDefinition(new CronDayRange(Day.fromInt(fromDay), Day.fromInt(untilDay)))
 						.setMonthDefinition(new CronSpecificMonths(fromDate.getMonth()))
 						.build());
 				break;
 			}
 			if (isFirstMonth(currentMonth)) {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
-						.setHourDefinition(baseCronDefinition.getHourDefinition())
+				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 						.setDayDefinition(new CronDayRange(
 								Day.fromInt(fromDay),
 								Day.fromInt(fromDate.getMonth().maxLength())))
 						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
 						.build());
 			} else if (isLastMonth(currentMonth)) {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
-						.setHourDefinition(baseCronDefinition.getHourDefinition())
+				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 						.setDayDefinition(new CronDayRange(
 								Day.fromInt(1),
 								Day.fromInt(untilDay)))
 						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
 						.build());
 			} else {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-						.setMinuteDefinition(baseCronDefinition.getMinuteDefinition())
-						.setHourDefinition(baseCronDefinition.getHourDefinition())
+				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 						.setDayDefinition(CronDay.EVERY_DAY)
 						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
 						.build());
@@ -89,6 +75,12 @@ public class ComplexCronDefinition implements Iterable<CronDefinition> {
 		}
 		
 		return crons;
+	}
+
+	private void ensureFromIsBeforeUntil() {
+		int fromMonth = fromDate.get(ChronoField.MONTH_OF_YEAR);
+		int untilMonth = untilDate.get(ChronoField.MONTH_OF_YEAR);
+		Preconditions.checkArgument(fromMonth <= untilMonth);
 	}
 
 	private boolean isOnlyOneMonth() {
