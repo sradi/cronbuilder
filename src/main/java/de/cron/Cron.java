@@ -139,20 +139,20 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 		this.monthDefinition = CronMonth.EVERY_MONTH;
 		return this;
 	}
-	
+
 	@Override
 	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
 		Preconditions.checkArgument(months.length > 0);
 		this.monthDefinition = new CronSpecificMonths(months);
 		return this;
 	}
-	
+
 	@Override
 	public CronMonthPartTwo fromMonth(Month month) {
 		this.fromMonth = month;
 		return this;
 	}
-	
+
 	@Override
 	public CronDayOfWeekPartOne untilMonth(Month month) {
 		this.monthDefinition = new CronMonthRange(fromMonth, month);
@@ -163,16 +163,18 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	@Override
 	public CronDefinition everyDayOfWeek() {
 		this.dayOfWeekDefinition = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
-		return new SimpleCronDefinition(minuteDefinition, hourDefinition, dayDefinition, monthDefinition,
-				dayOfWeekDefinition);
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder().setMinuteDefinition(minuteDefinition)
+				.setHourDefinition(hourDefinition).setDayDefinition(dayDefinition).setMonthDefinition(monthDefinition)
+				.setDayOfWeekDefinition(dayOfWeekDefinition).build();
 	}
 
 	@Override
 	public CronDefinition onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		Preconditions.checkArgument(daysOfWeek.length > 0);
 		this.dayOfWeekDefinition = new CronSpecificDaysOfWeek(daysOfWeek);
-		return new SimpleCronDefinition(minuteDefinition, hourDefinition, dayDefinition, monthDefinition,
-				dayOfWeekDefinition);
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder().setMinuteDefinition(minuteDefinition)
+				.setHourDefinition(hourDefinition).setDayDefinition(dayDefinition).setMonthDefinition(monthDefinition)
+				.setDayOfWeekDefinition(dayOfWeekDefinition).build();
 	}
 
 	@Override
@@ -184,8 +186,9 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	@Override
 	public CronDefinition untilDayOfWeek(DayOfWeek untilDayOfWeek) {
 		this.dayOfWeekDefinition = new CronDayOfWeekRange(fromDayOfWeek, untilDayOfWeek);
-		return new SimpleCronDefinition(minuteDefinition, hourDefinition, dayDefinition, monthDefinition,
-				dayOfWeekDefinition);
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder().setMinuteDefinition(minuteDefinition)
+				.setHourDefinition(hourDefinition).setDayDefinition(dayDefinition).setMonthDefinition(monthDefinition)
+				.setDayOfWeekDefinition(dayOfWeekDefinition).build();
 	}
 
 }

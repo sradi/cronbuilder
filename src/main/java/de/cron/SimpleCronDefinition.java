@@ -16,7 +16,7 @@ public class SimpleCronDefinition implements CronDefinition {
 	private CronMonth monthDefinition;
 	private CronDayOfWeek dayOfWeekDefinition;
 	
-	public SimpleCronDefinition(CronMinute minute, CronHour hour, CronDay day, CronMonth month, CronDayOfWeek dayOfWeek) {
+	private SimpleCronDefinition(CronMinute minute, CronHour hour, CronDay day, CronMonth month, CronDayOfWeek dayOfWeek) {
 		this.minuteDefinition = minute;
 		this.hourDefinition = hour;
 		this.dayDefinition = day;
@@ -38,6 +38,45 @@ public class SimpleCronDefinition implements CronDefinition {
 			.append(CRON_ELEMENT_SEPARATOR)
 			.append(dayOfWeekDefinition);
 		return cronStringBuilder.toString();
+	}
+	
+	public static class SimpleCronDefinitionBuilder {
+		
+		private CronMinute minuteDefinition;
+		private CronHour hourDefinition;
+		private CronDay dayDefinition;
+		private CronMonth monthDefinition;
+		private CronDayOfWeek dayOfWeekDefinition;
+		
+		public SimpleCronDefinitionBuilder setMinuteDefinition(CronMinute minuteDefinition) {
+			this.minuteDefinition = minuteDefinition;
+			return this;
+		}
+
+		public SimpleCronDefinitionBuilder setHourDefinition(CronHour hourDefinition) {
+			this.hourDefinition = hourDefinition;
+			return this;
+		}
+
+		public SimpleCronDefinitionBuilder setDayDefinition(CronDay dayDefinition) {
+			this.dayDefinition = dayDefinition;
+			return this;
+		}
+
+		public SimpleCronDefinitionBuilder setMonthDefinition(CronMonth monthDefinition) {
+			this.monthDefinition = monthDefinition;
+			return this;
+		}
+
+		public SimpleCronDefinitionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekDefinition) {
+			this.dayOfWeekDefinition = dayOfWeekDefinition;
+			return this;
+		}
+		
+		public SimpleCronDefinition build() {
+			return new SimpleCronDefinition(minuteDefinition, hourDefinition, dayDefinition, monthDefinition, dayOfWeekDefinition);
+		}
+		
 	}
 
 }
