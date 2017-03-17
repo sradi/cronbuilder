@@ -5,12 +5,13 @@ import com.google.common.base.Preconditions;
 public class Hour extends CronUnit<Hour> {
 
 	private Hour(int hour) {
-		this.setUnit(hour);
+		this.setUnit(hour, 0, 24);
 	}
 	
 	public static Hour fromInt(int hour) {
-		Preconditions.checkArgument(hour >= 0 && hour <= 24);
-		return new Hour(hour);
+		Hour newHour = new Hour(hour);
+		Preconditions.checkArgument(hour >= newHour.getMinValue() && hour <= newHour.getMaxValue());
+		return newHour;
 	}
 
 }
