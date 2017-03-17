@@ -97,19 +97,18 @@ public class CronTest {
 		assertEquals(3, cron.size());
 		assertEquals("* 12-24 15 6 *", cron.get(0).toString());
 		assertEquals("* * 16-19 6 *", cron.get(1).toString());
-		assertEquals("* 1-6 20 6 *", cron.get(2).toString());
+		assertEquals("* 1-15 20 6 *", cron.get(2).toString());
 	}
 	
 	@Test
 	public void testEveryMinuteDayAndDatePeriodOverMultipleDaysAndMultipleMonths() {
-		ComplexCronDefinition cron = Cron.cron().everyMinute().from(18, LocalDate.of(2017, 6, 15)).until(6, LocalDate.of(2017, 9, 5));
-		assertEquals(6, cron.size());
+		ComplexCronDefinition cron = Cron.cron().everyMinute().from(18, LocalDate.of(2017, 6, 15)).until(6, LocalDate.of(2017, 10, 5));
+		assertEquals(5, cron.size());
 		assertEquals("* 18-24 15 6 *", cron.get(0).toString());
 		assertEquals("* * 16-30 6 *", cron.get(1).toString());
-		assertEquals("* * * 7 *", cron.get(2).toString());
-		assertEquals("* * * 8 *", cron.get(3).toString());
-		assertEquals("* * 1-4 9 *", cron.get(4).toString());
-		assertEquals("* 1-6 5 9 *", cron.get(5).toString());
+		assertEquals("* * * 7-9 *", cron.get(2).toString());
+		assertEquals("* * 1-4 10 *", cron.get(3).toString());
+		assertEquals("* 1-6 5 10 *", cron.get(4).toString());
 	}
 	
 	@Test
