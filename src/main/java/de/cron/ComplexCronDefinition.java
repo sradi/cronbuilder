@@ -66,30 +66,20 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 
 		Iterator<SimpleCronDefinition> monthLevelCronsIterator = monthLevelCrons.iterator();
 		if (monthLevelCrons.size() == 1) {
-//			List<SimpleCronDefinition> dayLevelCrons = new ArrayList<>();
 			SimpleCronDefinition cronOfSingleMonth = monthLevelCronsIterator.next();
 			crons.addAll(geDayLevelCronsOfSingleMonth(cronOfSingleMonth));
-			
-//			crons.addAll(getH);
+
 		} else if (monthLevelCrons.size() > 1) {
-//			List<SimpleCronDefinition> dayLevelCrons = new ArrayList<>();
 			SimpleCronDefinition cronOfFirstMonth = monthLevelCronsIterator.next();
 			crons.addAll(getDayLevelCronsOfFirstMonth(cronOfFirstMonth));
-			
-//			crons.addAll(getHourLevelCrons(dayLevelCrons));
 
 			if (monthLevelCrons.size() > 2) {
-//				dayLevelCrons = new ArrayList<>();
 				SimpleCronDefinition cronOfIntermediateMonth = monthLevelCronsIterator.next();
 				crons.addAll(getCronsOfIntermediateMonth(cronOfIntermediateMonth));
-				
-//				crons.addAll(getHourLevelCrons(dayLevelCrons));
 			}
-//			dayLevelCrons = new ArrayList<>();
+
 			SimpleCronDefinition cronOfLastMonth = monthLevelCronsIterator.next();
 			crons.addAll(getDayLevelCronsOfLastMonth(cronOfLastMonth));
-			
-//			crons.addAll(getHourLevelCrons(dayLevelCrons));
 		}
 
 		return crons;
@@ -178,32 +168,6 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 		return dayLevelCrons;
 	}
 
-//	private List<SimpleCronDefinition> getHourLevelCrons(List<SimpleCronDefinition> dayLevelCrons) {
-//		List<SimpleCronDefinition> crons = new ArrayList<>();
-//		
-//		if (dayLevelCrons.size() > 3) {
-//			throw new RuntimeException("More than three day definitions hould never happen per month");
-//		}
-//		
-//		Iterator<SimpleCronDefinition> dayLevelCronsIterator = dayLevelCrons.iterator();
-//		if (dayLevelCrons.size() == 1) {
-//			// TODO minuten fuer einen einzigen Tag ermitteln
-//		} else if (dayLevelCrons.size() > 1) {
-//			SimpleCronDefinition cronOfFirstDay = dayLevelCronsIterator.next();
-//			crons.addAll(getHourLevelCronsOfFirstDay(cronOfFirstDay));
-//
-//			if (dayLevelCrons.size() > 2) {
-//				SimpleCronDefinition cronOfIntermediateDay = dayLevelCronsIterator.next();
-//				crons.addAll(getHourLevelCronsOfIntermediateDay(cronOfIntermediateDay));
-//			}
-//			
-//			SimpleCronDefinition cronOfLastDay = dayLevelCronsIterator.next();
-//			crons.addAll(getHourLevelCronsOfLastDay(cronOfLastDay));
-//		}
-//		
-//		return crons;
-//	}
-
 	private Collection<SimpleCronDefinition> getDayLevelCronsOfFirstMonth(SimpleCronDefinition cronOfFirstMonth) {
 		Collection<SimpleCronDefinition> crons = new ArrayList<>();
 
@@ -254,21 +218,6 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 				.setHourDefinition(new CronHourRange(Hour.fromInt(fromHour.getIntValue()), Hour.fromInt(fromHour.getMaxValue())))
 				.build());
 
-//		int currentHour = fromHour.getIntValue();
-//		while (currentHour <= fromHour.getMaxValue()) {
-//			if (isOnlyOneHour() || isFirstHour(fromDate.getMonth(), fromDate.getDayOfMonth(), currentHour)) {
-//				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfFirstDay)
-//						.setHourDefinition(new CronSpecificHours(Hour.fromInt(currentHour)))
-//						.build());
-//			} else {
-//				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfFirstDay)
-//						.setHourDefinition(new CronHourRange(Hour.fromInt(currentHour), Hour.fromInt(fromHour.getIntValue())))
-//						.build());
-//				currentHour = fromHour.getIntValue();
-//			}
-//			currentHour++;
-//		}
-
 		return crons;
 	}
 
@@ -277,20 +226,6 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastDay)
 				.setHourDefinition(new CronHourRange(Hour.fromInt(1), Hour.fromInt(untilHour.getIntValue())))
 				.build());
-
-//		int currentHour = 1;
-//		while (currentHour <= untilHour.getIntValue()) {
-//			if (isOnlyOneHour() || isLastHour(untilDate.getMonth(), untilDate.getDayOfMonth(), currentHour)) {
-//				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastDay)
-//						.setHourDefinition(new CronSpecificHours(Hour.fromInt(currentHour))).build());
-//			} else {
-//				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastDay)
-//						.setHourDefinition(new CronHourRange(Hour.fromInt(1), Hour.fromInt(untilHour.getIntValue() - 1)))
-//						.build());
-//				currentHour = untilHour.getIntValue() - 1;
-//			}
-//			currentHour++;
-//		}
 
 		return crons;
 	}
@@ -317,19 +252,6 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 
 		return crons;
 	}
-
-	// private Collection<? extends CronDefinition> getCronsForDays() {
-	// List<CronDefinition> crons = new ArrayList<>();
-	// int fromHour = this.fromHour;
-	// int untilHour = this.untilHour;
-	//
-	// int currentDay = fromDate.getDayOfMonth();
-	// while (currentDay <= untilDate.getDayOfMonth()) {
-	//
-	// }
-	//
-	// return crons;
-	// }
 
 	private boolean isFromHourBeforeUntilHourOnEqualDates() {
 		if (fromDate.isEqual(untilDate)) {
