@@ -2,7 +2,7 @@ package de.cron;
 
 import java.time.Month;
 
-interface CronMonthPartOne extends CronLastPart {
+interface CronMonthPartOne extends SimpleCronLastPart {
 	
 	CronDayOfWeekPartOne everyMonth();
 	

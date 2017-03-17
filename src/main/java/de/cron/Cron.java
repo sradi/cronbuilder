@@ -26,9 +26,9 @@ import de.cron.units.Day;
 import de.cron.units.Hour;
 import de.cron.units.Minute;
 
-public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayAndDatePeriodPart, CronDayPartOne,
+public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronDayAndDatePeriodPartOne, CronDayPartOne,
 		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,
-		CronDayOfWeekPartTwo, CronLastPart {
+		CronDayOfWeekPartTwo {
 
 	private Minute fromMinute;
 	private Hour fromHour;
@@ -80,7 +80,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 	
 	@Override
-	public CronDayAndDatePeriodPart from(int hour, LocalDate from) {
+	public CronDayAndDatePeriodPartOne from(int hour, LocalDate from) {
 		this.fromHour = Hour.fromInt(hour);
 		this.fromDate = from;
 		return this;
@@ -204,7 +204,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	// ***************************************************************
 	@Override
-	public CronLastPart everyDayOfWeek() {
+	public SimpleCronLastPart everyDayOfWeek() {
 		this.currentCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder(currentCronDefinition)
 				.setDayOfWeekDefinition(CronDayOfWeek.EVERY_DAY_OF_THE_WEEK)
 				.build();
@@ -212,7 +212,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
+	public SimpleCronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		Preconditions.checkArgument(daysOfWeek.length > 0);
 		
 		this.currentCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder(currentCronDefinition)
@@ -228,7 +228,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronLastPart untilDayOfWeek(DayOfWeek untilDayOfWeek) {
+	public SimpleCronLastPart untilDayOfWeek(DayOfWeek untilDayOfWeek) {
 		this.currentCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder(currentCronDefinition)
 				.setDayOfWeekDefinition(new CronDayOfWeekRange(fromDayOfWeek, untilDayOfWeek))
 				.build();

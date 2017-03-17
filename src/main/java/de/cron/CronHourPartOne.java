@@ -2,7 +2,7 @@ package de.cron;
 
 import java.time.LocalDate;
 
-interface CronHourPartOne extends CronLastPart {
+interface CronHourPartOne extends SimpleCronLastPart {
 	
 	CronDayPartOne everyHour();
 	
@@ -10,5 +10,5 @@ interface CronHourPartOne extends CronLastPart {
 	
 	CronHourPartTwo fromHour(int hour);
 
-	CronDayAndDatePeriodPart from(int hour, LocalDate from);
+	CronDayAndDatePeriodPartOne from(int hour, LocalDate from);
 }

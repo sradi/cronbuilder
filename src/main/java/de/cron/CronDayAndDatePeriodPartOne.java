@@ -2,7 +2,7 @@ package de.cron;
 
 import java.time.LocalDate;
 
-public interface CronDayAndDatePeriodPart {
+public interface CronDayAndDatePeriodPartOne {
 	
 	ComplexCronDefinition until(int hour, LocalDate until);
 

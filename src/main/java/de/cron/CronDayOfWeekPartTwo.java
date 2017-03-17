@@ -4,6 +4,6 @@ import java.time.DayOfWeek;
 
 interface CronDayOfWeekPartTwo {
 	
-	CronLastPart untilDayOfWeek(DayOfWeek dayOfWeek);
+	SimpleCronLastPart untilDayOfWeek(DayOfWeek dayOfWeek);
 
 }
