@@ -13,6 +13,7 @@ import de.cron.elements.CronDay;
 import de.cron.elements.CronDayRange;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronHourRange;
+import de.cron.elements.CronMinute;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificDays;
 import de.cron.elements.CronSpecificMonths;
@@ -35,8 +36,11 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 	private Hour fromHour;
 	private Hour untilHour;
 
-	public ComplexCronDefinition(SimpleCronDefinition baseCronDefinition, LocalDate fromDate, LocalDate untilDate) {
-		this.baseCronDefinition = baseCronDefinition;
+	private ComplexCronDefinition(CronMinute minuteDefinition, CronHour hourDefininition, LocalDate fromDate, LocalDate untilDate) {
+		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
+				.setMinuteDefinition(minuteDefinition)
+				.setHourDefinition(hourDefininition)
+				.build();
 		this.fromDate = fromDate;
 		this.untilDate = untilDate;
 		Preconditions.checkArgument(fromDate.isBefore(untilDate));
@@ -44,9 +48,11 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 		crons.addAll(getCrons());
 	}
 
-	public ComplexCronDefinition(SimpleCronDefinition baseCronDefinition, Hour fromHour, Hour untilHour,
+	private ComplexCronDefinition(CronMinute minuteDefinition, Hour fromHour, Hour untilHour,
 			LocalDate fromDate, LocalDate untilDate) {
-		this.baseCronDefinition = baseCronDefinition;
+		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
+				.setMinuteDefinition(minuteDefinition)
+				.build();
 		this.fromHour = fromHour;
 		this.untilHour = untilHour;
 		this.fromDate = fromDate;
@@ -301,6 +307,87 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 	@Override
 	public Iterator<CronDefinition> iterator() {
 		return crons.iterator();
+	}
+	
+	public static class ComplexCronDefinitionBuilder {
+		private CronMinute minuteDefinition;
+		private CronHour hourDefinition;
+		private Hour fromHour;
+		private Hour untilHour;
+
+		private LocalDate fromDate;
+		private LocalDate untilDate;
+		
+		public ComplexCronDefinitionBuilder() {
+		}
+		
+		public ComplexCronDefinitionBuilder(ComplexCronDefinition baseDefinition) {
+			Preconditions.checkArgument(baseDefinition != null);
+			
+			this.minuteDefinition = baseDefinition.baseCronDefinition.getMinuteDefinition();
+			this.hourDefinition = baseDefinition.baseCronDefinition.getHourDefinition();
+			this.fromHour = baseDefinition.fromHour;
+			this.untilHour = baseDefinition.untilHour;
+			this.fromDate = baseDefinition.fromDate;
+			this.untilDate = baseDefinition.untilDate;
+		}
+		
+		public ComplexCronDefinitionBuilder setMinuteDefinition(CronMinute minuteDefinition) {
+			Preconditions.checkArgument(minuteDefinition != null);
+			this.minuteDefinition = minuteDefinition;
+			return this;
+		}
+		
+		public ComplexCronDefinitionBuilder setHourDefinition(CronHour hourDefinition) {
+			Preconditions.checkArgument(hourDefinition != null);
+			this.hourDefinition = hourDefinition;
+			return this;
+		}
+
+		public ComplexCronDefinitionBuilder setFromDate(LocalDate fromDate) {
+			Preconditions.checkArgument(fromDate != null);
+			this.fromDate = fromDate;
+			return this;
+		}
+		
+		public ComplexCronDefinitionBuilder setUntilDate(LocalDate untilDate) {
+			Preconditions.checkArgument(untilDate != null);
+			this.untilDate = untilDate;
+			return this;
+		}
+		
+		public ComplexCronDefinitionBuilder setFromHour(Hour fromHour) {
+			Preconditions.checkArgument(fromHour != null);
+			this.fromHour = fromHour;
+			return this;
+		}
+		
+		public ComplexCronDefinitionBuilder setUntilHour(Hour untilHour) {
+			Preconditions.checkArgument(untilHour != null);
+			this.untilHour = untilHour;
+			return this;
+		}
+		
+		public ComplexCronDefinition build() {
+			Preconditions.checkState(fromDate != null);
+			Preconditions.checkState(untilDate != null);
+			ensureEitherHourBasedPeriodOrHourDefinition();
+			
+			if ((fromHour == null) || (untilHour == null)) {
+				return new ComplexCronDefinition(minuteDefinition, hourDefinition, fromDate, untilDate);
+			} else {
+				return new ComplexCronDefinition(minuteDefinition, fromHour, untilHour, fromDate, untilDate);
+			}
+		}
+
+		private void ensureEitherHourBasedPeriodOrHourDefinition() {
+			if (hourDefinition != null) {
+				Preconditions.checkState((fromHour == null) && (untilHour == null));
+			} else {
+				Preconditions.checkState((fromHour != null) && (untilHour != null));
+			}
+		}
+		
 	}
 
 }

@@ -84,6 +84,8 @@ class SimpleCronDefinition implements CronDefinition {
 		public SimpleCronDefinitionBuilder() {}
 		
 		public SimpleCronDefinitionBuilder(SimpleCronDefinition baseDefinition) {
+			Preconditions.checkArgument(baseDefinition != null);
+			
 			this.minuteDefinition = baseDefinition.minuteDefinition;
 			this.hourDefinition = baseDefinition.hourDefinition;
 			this.dayDefinition = baseDefinition.dayDefinition;
