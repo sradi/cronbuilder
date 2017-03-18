@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import de.cron.elements.CronDay;
+import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayRange;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronHourRange;
@@ -36,22 +37,25 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 	private Hour fromHour;
 	private Hour untilHour;
 
-	private ComplexCronDefinition(CronMinute minuteDefinition, CronHour hourDefininition, LocalDate fromDate, LocalDate untilDate) {
+	private ComplexCronDefinition(CronMinute minuteDefinition, CronHour hourDefininition, LocalDate fromDate, LocalDate untilDate, CronDayOfWeek dayOfWeekDefinition) {
+		Preconditions.checkArgument(fromDate.isBefore(untilDate));
+		
 		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
 				.setMinuteDefinition(minuteDefinition)
 				.setHourDefinition(hourDefininition)
+				.setDayOfWeekDefinition(dayOfWeekDefinition)
 				.build();
 		this.fromDate = fromDate;
 		this.untilDate = untilDate;
-		Preconditions.checkArgument(fromDate.isBefore(untilDate));
 
 		crons.addAll(getCrons());
 	}
 
 	private ComplexCronDefinition(CronMinute minuteDefinition, Hour fromHour, Hour untilHour,
-			LocalDate fromDate, LocalDate untilDate) {
+			LocalDate fromDate, LocalDate untilDate, CronDayOfWeek dayOfWeekDefinition) {
 		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
 				.setMinuteDefinition(minuteDefinition)
+				.setDayOfWeekDefinition(dayOfWeekDefinition)
 				.build();
 		this.fromHour = fromHour;
 		this.untilHour = untilHour;
@@ -317,6 +321,7 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 
 		private LocalDate fromDate;
 		private LocalDate untilDate;
+		private CronDayOfWeek dayOfWeekDefinition;
 		
 		public ComplexCronDefinitionBuilder() {
 		}
@@ -330,6 +335,7 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 			this.untilHour = baseDefinition.untilHour;
 			this.fromDate = baseDefinition.fromDate;
 			this.untilDate = baseDefinition.untilDate;
+			this.dayOfWeekDefinition = baseDefinition.baseCronDefinition.getDayOfWeekDefinition();
 		}
 		
 		public ComplexCronDefinitionBuilder setMinuteDefinition(CronMinute minuteDefinition) {
@@ -367,16 +373,25 @@ class ComplexCronDefinition implements Iterable<CronDefinition> {
 			this.untilHour = untilHour;
 			return this;
 		}
+
+		public ComplexCronDefinitionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekDefinition) {
+			Preconditions.checkArgument(dayOfWeekDefinition != null);
+			this.dayOfWeekDefinition = dayOfWeekDefinition;
+			return this;
+		}
 		
 		public ComplexCronDefinition build() {
 			Preconditions.checkState(fromDate != null);
 			Preconditions.checkState(untilDate != null);
 			ensureEitherHourBasedPeriodOrHourDefinition();
+			if (this.dayOfWeekDefinition == null) {
+				this.dayOfWeekDefinition = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+			}
 			
 			if ((fromHour == null) || (untilHour == null)) {
-				return new ComplexCronDefinition(minuteDefinition, hourDefinition, fromDate, untilDate);
+				return new ComplexCronDefinition(minuteDefinition, hourDefinition, fromDate, untilDate, dayOfWeekDefinition);
 			} else {
-				return new ComplexCronDefinition(minuteDefinition, fromHour, untilHour, fromDate, untilDate);
+				return new ComplexCronDefinition(minuteDefinition, fromHour, untilHour, fromDate, untilDate, dayOfWeekDefinition);
 			}
 		}
 
