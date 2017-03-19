@@ -4,12 +4,8 @@ import de.cron.units.Hour;
 
 public class CronSpecificHours extends CronElementSpecificValues<Hour> implements CronHour {
 
-	public CronSpecificHours(Hour[] hours) {
+	public CronSpecificHours(Hour... hours) {
 		this.setElements(hours);
-	}
-
-	public CronSpecificHours(Hour hour) {
-		this.setElements(new Hour[] { hour });
 	}
 
 	@Override

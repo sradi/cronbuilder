@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 
 public class CronSpecificDaysOfWeek extends CronElementSpecificValues<DayOfWeek> implements CronDayOfWeek {
 
-	public CronSpecificDaysOfWeek(DayOfWeek[] daysOfWeek) {
+	public CronSpecificDaysOfWeek(DayOfWeek... daysOfWeek) {
 		this.setElements(daysOfWeek);
 	}
 

@@ -4,7 +4,7 @@ import de.cron.units.Minute;
 
 public class CronSpecificMinutes extends CronElementSpecificValues<Minute> implements CronMinute {
 
-	public CronSpecificMinutes(Minute[] minutes) {
+	public CronSpecificMinutes(Minute... minutes) {
 		this.setElements(minutes);;
 	}
 

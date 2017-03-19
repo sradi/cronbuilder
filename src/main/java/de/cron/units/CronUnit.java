@@ -50,6 +50,7 @@ abstract class CronUnit<U> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		@SuppressWarnings("rawtypes")
 		CronUnit other = (CronUnit) obj;
 		if (maxValue != other.maxValue)
 			return false;
