@@ -22,14 +22,15 @@ import de.cron.units.Day;
  * @author sradi
  *
  */
-class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements ComplexCronDefinition, Iterable<CronDefinition> {
+class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<CronDefinition> {
 
+	private MonthLevelComplexCronDefinition monthLevelCronDefinition;
 	private List<CronDefinition> crons = new ArrayList<>();
 	private Day fromDay;
 	private Day untilDay;
 	
-	public DayLevelComplexCronDefinition(ComplexCronDefinition nextLevelCronDefinition, Day fromDay, Day untilDay) {
-		super(nextLevelCronDefinition);
+	public DayLevelComplexCronDefinition(MonthLevelComplexCronDefinition monthLevelCronDefinition, Day fromDay, Day untilDay) {
+		this.monthLevelCronDefinition = monthLevelCronDefinition;
 		Preconditions.checkArgument(fromDay.isBefore(untilDay));
 		
 		this.fromDay = fromDay;
@@ -50,13 +51,13 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 
 	@Override
 	public SimpleCronDefinition getFirstElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getFirstElement())
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getFirstElement())
 				.setDayDefinition(getAllDaysOfFirstMonth())
 				.build();
 	}
 	
 	private CronDay getAllDaysOfFirstMonth() {
-		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(super.cronDefinition.getMaxValueOfNextLevelElement()));
+		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(monthLevelCronDefinition.getMaxValueOfNextLevelElement()));
 	}
 
 	@Override
@@ -68,7 +69,7 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 
 	@Override
 	public SimpleCronDefinition getLastElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getLastElement())
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElement())
 				.setDayDefinition(getAllDaysOfLastMonth())
 				.build();
 	}
@@ -79,7 +80,7 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 
 	private List<SimpleCronDefinition> addEveryDayToIntermediateMonthElements() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		for (SimpleCronDefinition monthLevelCron : super.cronDefinition.getIntermediateElement()) {
+		for (SimpleCronDefinition monthLevelCron : monthLevelCronDefinition.getIntermediateElement()) {
 			new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCron)
 			.setDayDefinition(CronDay.EVERY_DAY)
 			.build();
@@ -90,9 +91,9 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 	@Override
 	public List<SimpleCronDefinition> getCrons() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		SimpleCronDefinition firstMonthDefinition = super.cronDefinition.getFirstElement();
+		SimpleCronDefinition firstMonthDefinition = monthLevelCronDefinition.getFirstElement();
 		
-		if (super.cronDefinition.isSingleElement()) {
+		if (monthLevelCronDefinition.isSingleElement()) {
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
 					.setDayDefinition(getAllDays())
 					.build());
@@ -100,10 +101,10 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
 					.setDayDefinition(getAllDaysOfFirstMonth())
 					.build());
-			if (super.cronDefinition.hasIntermediateElements()) {
+			if (monthLevelCronDefinition.hasIntermediateElements()) {
 				crons.addAll(addEveryDayToIntermediateMonthElements());
 			}
-			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getLastElement())
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElement())
 					.setDayDefinition(getAllDaysOfLastMonth())
 					.build());
 		}
@@ -128,7 +129,7 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 
 	@Override
 	public int getCountOfElements() {
-		if (super.cronDefinition.getCountOfElements() == 1) {
+		if (monthLevelCronDefinition.getCountOfElements() == 1) {
 			if (fromDay.equals(untilDay)) {
 				return 1;
 			} else if (untilDay.getIntValue() - fromDay.getIntValue() == 1) {
@@ -137,13 +138,13 @@ class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements
 				return 3; // first specific month, month range, last specific
 			}
 		} else {
-			return super.cronDefinition.getCountOfElements();
+			return monthLevelCronDefinition.getCountOfElements();
 		}
 	}
 
 	@Override
 	public boolean isSingleElement() {
-		return super.cronDefinition.isSingleElement() && (fromDay.equals(untilDay));
+		return monthLevelCronDefinition.isSingleElement() && (fromDay.equals(untilDay));
 	}
 
 	@Override
