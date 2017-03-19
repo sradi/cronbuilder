@@ -46,7 +46,7 @@ public class MonthLevelComplexCronDefinitionTest {
 	}
 	
 	@Test
-	public void testOneMonthPeriod() {
+	public void testTwoMonthPeriod() {
 		MonthLevelComplexCronDefinition monthLevelCron = new MonthLevelComplexCronDefinition(everyMinuteCron, Month.MARCH, Month.APRIL);
 		List<SimpleCronDefinition> crons = monthLevelCron.getCrons();
 		assertEquals(1, crons.size());

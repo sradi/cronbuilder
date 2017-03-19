@@ -1,9 +1,8 @@
 package de.cron;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,13 +12,8 @@ import de.cron.elements.CronDay;
 import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayRange;
 import de.cron.elements.CronHour;
-import de.cron.elements.CronHourRange;
 import de.cron.elements.CronMinute;
-import de.cron.elements.CronMonthRange;
-import de.cron.elements.CronSpecificDays;
-import de.cron.elements.CronSpecificMonths;
 import de.cron.units.Day;
-import de.cron.units.Hour;
 
 /**
  * <b>Please note:</b> The year of LocalDate instances, used by this class, is
@@ -28,276 +22,93 @@ import de.cron.units.Hour;
  * @author sradi
  *
  */
-class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<CronDefinition> {
+class DayLevelComplexCronDefinition extends BaseComplexCronDefinition implements ComplexCronDefinition, Iterable<CronDefinition> {
 
 	private List<CronDefinition> crons = new ArrayList<>();
-	private SimpleCronDefinition baseCronDefinition;
-	private LocalDate fromDate;
-	private LocalDate untilDate;
-	private Hour fromHour;
-	private Hour untilHour;
-
-	private DayLevelComplexCronDefinition(CronMinute minuteDefinition, CronHour hourDefininition, LocalDate fromDate, LocalDate untilDate, CronDayOfWeek dayOfWeekDefinition) {
-		Preconditions.checkArgument(fromDate.isBefore(untilDate));
+	private Day fromDay;
+	private Day untilDay;
+	
+	public DayLevelComplexCronDefinition(ComplexCronDefinition nextLevelCronDefinition, Day fromDay, Day untilDay) {
+		super(nextLevelCronDefinition);
+		Preconditions.checkArgument(fromDay.isBefore(untilDay));
 		
-		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-				.setMinuteDefinition(minuteDefinition)
-				.setHourDefinition(hourDefininition)
-				.setDayOfWeekDefinition(dayOfWeekDefinition)
-				.build();
-		this.fromDate = fromDate;
-		this.untilDate = untilDate;
+		this.fromDay = fromDay;
+		this.untilDay = untilDay;
 
 		crons.addAll(getCrons());
 	}
 
-	private DayLevelComplexCronDefinition(CronMinute minuteDefinition, Hour fromHour, Hour untilHour,
-			LocalDate fromDate, LocalDate untilDate, CronDayOfWeek dayOfWeekDefinition) {
-		this.baseCronDefinition = new SimpleCronDefinition.SimpleCronDefinitionBuilder()
-				.setMinuteDefinition(minuteDefinition)
-				.setDayOfWeekDefinition(dayOfWeekDefinition)
-				.build();
-		this.fromHour = fromHour;
-		this.untilHour = untilHour;
-		this.fromDate = fromDate;
-		this.untilDate = untilDate;
-		Preconditions.checkArgument(fromDate.isBefore(untilDate) || isFromHourBeforeUntilHourOnEqualDates());
-
-		crons.addAll(getCrons());
-	}
-
-	private Collection<? extends CronDefinition> getCrons() {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-		List<SimpleCronDefinition> monthLevelCrons = getMonthLevelCrons();
-
-		if (monthLevelCrons.size() > 3) {
-			throw new RuntimeException("More than three month definitions hould never happen");
-		}
-
-		Iterator<SimpleCronDefinition> monthLevelCronsIterator = monthLevelCrons.iterator();
-		if (monthLevelCrons.size() == 1) {
-			SimpleCronDefinition cronOfSingleMonth = monthLevelCronsIterator.next();
-			crons.addAll(geDayLevelCronsOfSingleMonth(cronOfSingleMonth));
-
-		} else if (monthLevelCrons.size() > 1) {
-			SimpleCronDefinition cronOfFirstMonth = monthLevelCronsIterator.next();
-			crons.addAll(getDayLevelCronsOfFirstMonth(cronOfFirstMonth));
-
-			if (monthLevelCrons.size() > 2) {
-				SimpleCronDefinition cronOfIntermediateMonth = monthLevelCronsIterator.next();
-				crons.addAll(getCronsOfIntermediateMonth(cronOfIntermediateMonth));
-			}
-
-			SimpleCronDefinition cronOfLastMonth = monthLevelCronsIterator.next();
-			crons.addAll(getDayLevelCronsOfLastMonth(cronOfLastMonth));
-		}
-
-		return crons;
-	}
-
-	private Collection<? extends SimpleCronDefinition> geDayLevelCronsOfSingleMonth(
-			SimpleCronDefinition cronOfSingleMonth) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-		List<SimpleCronDefinition> dayLevelCrons = getDayLevelCrons(cronOfSingleMonth);
-
-		if (dayLevelCrons.size() > 3) {
-			throw new RuntimeException("More than three day definitions hould never happen per month");
-		}
-
-		Iterator<SimpleCronDefinition> dayLevelCronsIterator = dayLevelCrons.iterator();
-		if (dayLevelCrons.size() == 1) {
-			SimpleCronDefinition cronOfSingleDay = dayLevelCronsIterator.next();
-			crons.addAll(geHourLevelCronsOfSingleDay(cronOfSingleDay));
-
-		} else if (dayLevelCrons.size() > 1) {
-			SimpleCronDefinition cronOfFirstDay = dayLevelCronsIterator.next();
-			crons.addAll(getHourLevelCronsOfFirstDay(cronOfFirstDay));
-
-			if (dayLevelCrons.size() > 2) {
-				SimpleCronDefinition cronOfIntermediateDay = dayLevelCronsIterator.next();
-				crons.addAll(getCronsOfIntermediateDay(cronOfIntermediateDay));
-			}
-			
-			SimpleCronDefinition cronOfLastDay = dayLevelCronsIterator.next();
-			crons.addAll(getHourLevelCronsOfLastDay(cronOfLastDay));
-		}
-
-		return crons;
-	}
-
-	private Collection<? extends SimpleCronDefinition> geHourLevelCronsOfSingleDay(
-			SimpleCronDefinition cronOfSingleDay) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfSingleDay)
-				.setHourDefinition(new CronHourRange(fromHour, untilHour))
-				.build());
-
-		return crons;
-	}
-
-	private List<SimpleCronDefinition> getMonthLevelCrons() {
-		List<SimpleCronDefinition> monthLevelCrons = new ArrayList<>();
-		
-		int currentMonth = fromDate.getMonthValue();
-		while (currentMonth <= untilDate.getMonthValue()) {
-			if (isOnlyOneMonth() || isFirstMonth(currentMonth) || isLastMonth(currentMonth)) {
-				monthLevelCrons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
-						.setMonthDefinition(new CronSpecificMonths(Month.of(currentMonth)))
-						.build());
-			} else {
-				monthLevelCrons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
-						.setMonthDefinition(new CronMonthRange(Month.of(currentMonth), Month.of(untilDate.getMonthValue() - 1)))
-						.build());
-				currentMonth = untilDate.getMonthValue() - 1;
-			}
-			currentMonth++;
-		}
-
-		return monthLevelCrons;
-	}
-
-	// TODO reduce method visibility
 	@Override
-	public List<SimpleCronDefinition> getDayLevelCrons(SimpleCronDefinition cronOfSingleMonth) {
-		List<SimpleCronDefinition> dayLevelCrons = new ArrayList<>();
+	public SimpleCronDefinition getRangeElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private CronDay getAllDays() {
+		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(untilDay.getIntValue()));
+	}
+
+	@Override
+	public SimpleCronDefinition getFirstElement() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getFirstElement())
+				.setDayDefinition(getAllDaysOfFirstMonth())
+				.build();
+	}
+	
+	private CronDay getAllDaysOfFirstMonth() {
+		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(super.cronDefinition.getMaxValueOfNextLevelElement()));
+	}
+
+	@Override
+	public List<SimpleCronDefinition> getIntermediateElement() {
+		return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
+				.setDayDefinition(new CronDayRange(Day.fromInt(fromDay.getIntValue() + 1), Day.fromInt(untilDay.getIntValue() - 1)))
+				.build());
+	}
+
+	@Override
+	public SimpleCronDefinition getLastElement() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getLastElement())
+				.setDayDefinition(getAllDaysOfLastMonth())
+				.build();
+	}
+	
+	private CronDay getAllDaysOfLastMonth() {
+		return new CronDayRange(Day.fromInt(1), Day.fromInt(untilDay.getIntValue()));
+	}
+
+	private List<SimpleCronDefinition> addEveryDayToIntermediateMonthElements() {
+		List<SimpleCronDefinition> crons = new ArrayList<>();
+		for (SimpleCronDefinition monthLevelCron : super.cronDefinition.getIntermediateElement()) {
+			new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCron)
+			.setDayDefinition(CronDay.EVERY_DAY)
+			.build();
+		}
+		return crons;
+	}
+
+	@Override
+	public List<SimpleCronDefinition> getCrons() {
+		List<SimpleCronDefinition> crons = new ArrayList<>();
+		SimpleCronDefinition firstMonthDefinition = super.cronDefinition.getFirstElement();
 		
-		int currentDay = fromDate.getDayOfMonth();
-		while (currentDay <= untilDate.getDayOfMonth()) {
-			// TODO nur eine Range vom ersten bis zum letzten Tag zurückgeben, wenn es keine Hour-Ebene gibt 
-			if (isOnlyOneDay() || isFirstDay(fromDate.getMonth(), currentDay) || isLastDay(untilDate.getMonth(), currentDay)) {
-				dayLevelCrons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfSingleMonth)
-						.setDayDefinition(new CronSpecificDays(Day.fromInt(currentDay)))
-						.build());
-			} else {
-				dayLevelCrons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfSingleMonth)
-						.setDayDefinition(new CronDayRange(Day.fromInt(currentDay), Day.fromInt(untilDate.getDayOfMonth() -1)))
-						.build());
-				currentDay = untilDate.getDayOfMonth() - 1;
+		if (super.cronDefinition.isSingleElement()) {
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
+					.setDayDefinition(getAllDays())
+					.build());
+		} else {
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
+					.setDayDefinition(getAllDaysOfFirstMonth())
+					.build());
+			if (super.cronDefinition.hasIntermediateElements()) {
+				crons.addAll(addEveryDayToIntermediateMonthElements());
 			}
-			currentDay++;
-		}
-
-		return dayLevelCrons;
-	}
-
-	private Collection<SimpleCronDefinition> getDayLevelCronsOfFirstMonth(SimpleCronDefinition cronOfFirstMonth) {
-		Collection<SimpleCronDefinition> crons = new ArrayList<>();
-
-		int currentDay = fromDate.getDayOfMonth();
-		while (currentDay <= fromDate.getMonth().maxLength()) {
-			if (isFirstDay(fromDate.getMonth(), currentDay)) {
-				SimpleCronDefinition cronFirstDay = new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfFirstMonth)
-						.setDayDefinition(new CronSpecificDays(Day.fromInt(currentDay))).build();
-				crons.addAll(getHourLevelCronsOfFirstDay(cronFirstDay));
-			} else {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfFirstMonth)
-						.setHourDefinition(CronHour.EVERY_HOUR)
-						.setDayDefinition(new CronDayRange(Day.fromInt(currentDay), Day.fromInt(fromDate.getMonth().maxLength())))
-						.build());
-				currentDay = fromDate.getMonth().maxLength();
-			}
-			currentDay++;
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(super.cronDefinition.getLastElement())
+					.setDayDefinition(getAllDaysOfLastMonth())
+					.build());
 		}
 
 		return crons;
-	}
-
-	private Collection<SimpleCronDefinition> getDayLevelCronsOfLastMonth(SimpleCronDefinition cronOfLastMonth) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-
-		int currentDay = 1;
-		while (currentDay <= untilDate.getDayOfMonth()) {
-			if (isLastDay(untilDate.getMonth(), currentDay)) {
-				SimpleCronDefinition cronLastDay = new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastMonth)
-						.setDayDefinition(new CronSpecificDays(Day.fromInt(currentDay))).build();
-				crons.addAll(getHourLevelCronsOfLastDay(cronLastDay));
-			} else {
-				crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastMonth)
-						.setHourDefinition(CronHour.EVERY_HOUR)
-						.setDayDefinition(new CronDayRange(Day.fromInt(1), Day.fromInt(untilDate.getDayOfMonth() - 1)))
-						.build());
-				currentDay = untilDate.getDayOfMonth() - 1;
-			}
-			currentDay++;
-		}
-
-		return crons;
-	}
-
-	private Collection<? extends SimpleCronDefinition> getHourLevelCronsOfFirstDay(SimpleCronDefinition cronOfFirstDay) {
-		Collection<SimpleCronDefinition> crons = new ArrayList<>();
-		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfFirstDay)
-				.setHourDefinition(new CronHourRange(Hour.fromInt(fromHour.getIntValue()), Hour.fromInt(fromHour.getMaxValue())))
-				.build());
-
-		return crons;
-	}
-
-	private Collection<? extends SimpleCronDefinition> getHourLevelCronsOfLastDay(SimpleCronDefinition cronOfLastDay) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfLastDay)
-				.setHourDefinition(new CronHourRange(Hour.fromInt(1), Hour.fromInt(untilHour.getIntValue())))
-				.build());
-
-		return crons;
-	}
-
-	private Collection<SimpleCronDefinition> getCronsOfIntermediateMonth(
-			SimpleCronDefinition cronOfIntermediateMonth) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-
-		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfIntermediateMonth)
-				.setDayDefinition(CronDay.EVERY_DAY)
-				.setHourDefinition(CronHour.EVERY_HOUR)
-				.build());
-
-		return crons;
-	}
-
-	private Collection<? extends SimpleCronDefinition> getCronsOfIntermediateDay(
-			SimpleCronDefinition cronOfIntermediateDay) {
-		List<SimpleCronDefinition> crons = new ArrayList<>();
-
-		crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(cronOfIntermediateDay)
-				.setHourDefinition(CronHour.EVERY_HOUR)
-				.build());
-
-		return crons;
-	}
-
-	private boolean isFromHourBeforeUntilHourOnEqualDates() {
-		if (fromDate.isEqual(untilDate)) {
-			return fromHour.isBefore(untilHour);
-		}
-		return true;
-	}
-
-	private boolean isOnlyOneMonth() {
-		int fromMonth = fromDate.getMonthValue();
-		int untilMonth = untilDate.getMonthValue();
-		return fromMonth == untilMonth;
-	}
-
-	private boolean isOnlyOneDay() {
-		int fromDay = fromDate.getDayOfMonth();
-		int untilDay = untilDate.getDayOfMonth();
-		return isOnlyOneMonth() && fromDay == untilDay;
-	}
-
-	private boolean isFirstMonth(int currentMonth) {
-		return fromDate.getMonthValue() == currentMonth;
-	}
-
-	private boolean isFirstDay(Month month, int currentDay) {
-		return isFirstMonth(month.getValue()) && fromDate.getDayOfMonth() == currentDay;
-	}
-
-	private boolean isLastMonth(int month) {
-		return untilDate.getMonthValue() == month;
-	}
-
-	private boolean isLastDay(Month lastMonth, int currentDay) {
-		return isLastMonth(lastMonth.getValue()) && untilDate.getDayOfMonth() == currentDay;
 	}
 
 	public CronDefinition get(int i) {
@@ -314,97 +125,30 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	public Iterator<CronDefinition> iterator() {
 		return crons.iterator();
 	}
-	
-	public static class ComplexCronDefinitionBuilder {
-		private CronMinute minuteDefinition;
-		private CronHour hourDefinition;
-		private Hour fromHour;
-		private Hour untilHour;
 
-		private LocalDate fromDate;
-		private LocalDate untilDate;
-		private CronDayOfWeek dayOfWeekDefinition;
-		
-		public ComplexCronDefinitionBuilder() {
-		}
-		
-		public ComplexCronDefinitionBuilder(DayLevelComplexCronDefinition baseDefinition) {
-			Preconditions.checkArgument(baseDefinition != null);
-			
-			this.minuteDefinition = baseDefinition.baseCronDefinition.getMinuteDefinition();
-			this.hourDefinition = baseDefinition.baseCronDefinition.getHourDefinition();
-			this.fromHour = baseDefinition.fromHour;
-			this.untilHour = baseDefinition.untilHour;
-			this.fromDate = baseDefinition.fromDate;
-			this.untilDate = baseDefinition.untilDate;
-			this.dayOfWeekDefinition = baseDefinition.baseCronDefinition.getDayOfWeekDefinition();
-		}
-		
-		public ComplexCronDefinitionBuilder setMinuteDefinition(CronMinute minuteDefinition) {
-			Preconditions.checkArgument(minuteDefinition != null);
-			this.minuteDefinition = minuteDefinition;
-			return this;
-		}
-		
-		public ComplexCronDefinitionBuilder setHourDefinition(CronHour hourDefinition) {
-			Preconditions.checkArgument(hourDefinition != null);
-			this.hourDefinition = hourDefinition;
-			return this;
-		}
-
-		public ComplexCronDefinitionBuilder setFromDate(LocalDate fromDate) {
-			Preconditions.checkArgument(fromDate != null);
-			this.fromDate = fromDate;
-			return this;
-		}
-		
-		public ComplexCronDefinitionBuilder setUntilDate(LocalDate untilDate) {
-			Preconditions.checkArgument(untilDate != null);
-			this.untilDate = untilDate;
-			return this;
-		}
-		
-		public ComplexCronDefinitionBuilder setFromHour(Hour fromHour) {
-			Preconditions.checkArgument(fromHour != null);
-			this.fromHour = fromHour;
-			return this;
-		}
-		
-		public ComplexCronDefinitionBuilder setUntilHour(Hour untilHour) {
-			Preconditions.checkArgument(untilHour != null);
-			this.untilHour = untilHour;
-			return this;
-		}
-
-		public ComplexCronDefinitionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekDefinition) {
-			Preconditions.checkArgument(dayOfWeekDefinition != null);
-			this.dayOfWeekDefinition = dayOfWeekDefinition;
-			return this;
-		}
-		
-		public DayLevelComplexCronDefinition build() {
-			Preconditions.checkState(fromDate != null);
-			Preconditions.checkState(untilDate != null);
-			ensureEitherHourBasedPeriodOrHourDefinition();
-			if (this.dayOfWeekDefinition == null) {
-				this.dayOfWeekDefinition = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
-			}
-			
-			if ((fromHour == null) || (untilHour == null)) {
-				return new DayLevelComplexCronDefinition(minuteDefinition, hourDefinition, fromDate, untilDate, dayOfWeekDefinition);
+	@Override
+	public int getCountOfElements() {
+		if (super.cronDefinition.getCountOfElements() == 1) {
+			if (fromDay.equals(untilDay)) {
+				return 1;
+			} else if (untilDay.getIntValue() - fromDay.getIntValue() == 1) {
+				return 2;
 			} else {
-				return new DayLevelComplexCronDefinition(minuteDefinition, fromHour, untilHour, fromDate, untilDate, dayOfWeekDefinition);
+				return 3; // first specific month, month range, last specific
 			}
+		} else {
+			return super.cronDefinition.getCountOfElements();
 		}
+	}
 
-		private void ensureEitherHourBasedPeriodOrHourDefinition() {
-			if (hourDefinition != null) {
-				Preconditions.checkState((fromHour == null) && (untilHour == null));
-			} else {
-				Preconditions.checkState((fromHour != null) && (untilHour != null));
-			}
-		}
-		
+	@Override
+	public boolean isSingleElement() {
+		return super.cronDefinition.isSingleElement() && (fromDay.equals(untilDay));
+	}
+
+	@Override
+	public boolean hasIntermediateElements() {
+		return getCountOfElements() == 3;
 	}
 
 }
