@@ -221,11 +221,10 @@ public class CronTest {
 	@Test
 	public void testEveryMinuteEveryHourDatePeriodOverMultipleMonths() {
 		DayLevelComplexCronDefinition cron = Cron.cron().everyMinute().everyHour().from(LocalDate.of(2017, 6, 15)).until(LocalDate.of(2017, 9, 5)).get();
-		assertEquals(4, cron.size());
+		assertEquals(3, cron.size());
 		assertEquals("* * 15-30 6 *", cron.get(0).toString());
-		assertEquals("* * * 7 *", cron.get(1).toString());
-		assertEquals("* * * 8 *", cron.get(2).toString());
-		assertEquals("* * 1-5 9 *", cron.get(3).toString());
+		assertEquals("* * * 7-8 *", cron.get(1).toString());
+		assertEquals("* * 1-5 9 *", cron.get(2).toString());
 	}
 	
 	@Test

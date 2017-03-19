@@ -8,11 +8,13 @@ public interface ComplexCronDefinition {
 
 	SimpleCronDefinition getRangeElement();
 	
-	SimpleCronDefinition getFirstElement();
+	SimpleCronDefinition getFirstElementCronDefinition();
 	
-	List<SimpleCronDefinition> getIntermediateElement();
+	List<SimpleCronDefinition> getIntermediateElementCronDefinition();
 	
-	SimpleCronDefinition getLastElement();
+	SimpleCronDefinition getLastElementCronDefinition();
+	
+	int getMaxValueWithinFirstElement();
 	
 	int getCountOfElements();
 	

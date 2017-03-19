@@ -1,6 +1,5 @@
 package de.cron;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,10 +8,8 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import de.cron.elements.CronDay;
-import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayRange;
-import de.cron.elements.CronHour;
-import de.cron.elements.CronMinute;
+import de.cron.elements.CronSpecificDays;
 import de.cron.units.Day;
 
 /**
@@ -31,7 +28,9 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	
 	public DayLevelComplexCronDefinition(MonthLevelComplexCronDefinition monthLevelCronDefinition, Day fromDay, Day untilDay) {
 		this.monthLevelCronDefinition = monthLevelCronDefinition;
-		Preconditions.checkArgument(fromDay.isBefore(untilDay));
+		if (monthLevelCronDefinition.isSingleElement()) {
+			Preconditions.checkArgument(fromDay.isBefore(untilDay) || fromDay.equals(untilDay));
+		}
 		
 		this.fromDay = fromDay;
 		this.untilDay = untilDay;
@@ -46,30 +45,39 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	}
 	
 	private CronDay getAllDays() {
-		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(untilDay.getIntValue()));
+		if (isSingleElement()) {
+			return new CronSpecificDays(Day.fromInt(fromDay.getIntValue()));
+		} else {
+			return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(untilDay.getIntValue()));
+		}
 	}
 
 	@Override
-	public SimpleCronDefinition getFirstElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getFirstElement())
+	public SimpleCronDefinition getFirstElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getFirstElementCronDefinition())
 				.setDayDefinition(getAllDaysOfFirstMonth())
 				.build();
 	}
 	
 	private CronDay getAllDaysOfFirstMonth() {
-		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(monthLevelCronDefinition.getMaxValueOfNextLevelElement()));
+		return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(monthLevelCronDefinition.getMaxValueWithinFirstElement()));
 	}
 
 	@Override
-	public List<SimpleCronDefinition> getIntermediateElement() {
+	public int getMaxValueWithinFirstElement() {
+		return fromDay.getMaxValue();
+	}
+
+	@Override
+	public List<SimpleCronDefinition> getIntermediateElementCronDefinition() {
 		return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder()
 				.setDayDefinition(new CronDayRange(Day.fromInt(fromDay.getIntValue() + 1), Day.fromInt(untilDay.getIntValue() - 1)))
 				.build());
 	}
 
 	@Override
-	public SimpleCronDefinition getLastElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElement())
+	public SimpleCronDefinition getLastElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElementCronDefinition())
 				.setDayDefinition(getAllDaysOfLastMonth())
 				.build();
 	}
@@ -80,10 +88,10 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 
 	private List<SimpleCronDefinition> addEveryDayToIntermediateMonthElements() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		for (SimpleCronDefinition monthLevelCron : monthLevelCronDefinition.getIntermediateElement()) {
-			new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCron)
+		for (SimpleCronDefinition monthLevelCron : monthLevelCronDefinition.getIntermediateElementCronDefinition()) {
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCron)
 			.setDayDefinition(CronDay.EVERY_DAY)
-			.build();
+			.build());
 		}
 		return crons;
 	}
@@ -91,7 +99,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	@Override
 	public List<SimpleCronDefinition> getCrons() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		SimpleCronDefinition firstMonthDefinition = monthLevelCronDefinition.getFirstElement();
+		SimpleCronDefinition firstMonthDefinition = monthLevelCronDefinition.getFirstElementCronDefinition();
 		
 		if (monthLevelCronDefinition.isSingleElement()) {
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
@@ -104,7 +112,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 			if (monthLevelCronDefinition.hasIntermediateElements()) {
 				crons.addAll(addEveryDayToIntermediateMonthElements());
 			}
-			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElement())
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElementCronDefinition())
 					.setDayDefinition(getAllDaysOfLastMonth())
 					.build());
 		}

@@ -41,21 +41,26 @@ public class MonthLevelComplexCronDefinition implements ComplexCronDefinition {
 	}
 	
 	@Override
-	public SimpleCronDefinition getFirstElement() {
+	public SimpleCronDefinition getFirstElementCronDefinition() {
 		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 				.setMonthDefinition(new CronSpecificMonths(from))
 				.build();
 	}
 	
 	@Override
-	public List<SimpleCronDefinition> getIntermediateElement() {
+	public int getMaxValueWithinFirstElement() {
+		return from.maxLength();
+	}
+	
+	@Override
+	public List<SimpleCronDefinition> getIntermediateElementCronDefinition() {
 		return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 				.setMonthDefinition(new CronMonthRange(Month.of(from.getValue() + 1), Month.of(until.getValue() - 1)))
 				.build());
 	}
 
 	@Override
-	public SimpleCronDefinition getLastElement() {
+	public SimpleCronDefinition getLastElementCronDefinition() {
 		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 					.setMonthDefinition(new CronSpecificMonths(until))
 					.build();
