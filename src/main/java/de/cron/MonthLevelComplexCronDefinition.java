@@ -24,19 +24,14 @@ public class MonthLevelComplexCronDefinition implements ComplexCronDefinition {
 	
 	@Override
 	public List<SimpleCronDefinition> getCrons() {
-		return Arrays.asList(getRangeElement());
-	}
-	
-	@Override
-	public SimpleCronDefinition getRangeElement() {
 		if (isSingleElement()) {
-			return new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
+			return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 					.setMonthDefinition(new CronSpecificMonths(from))
-					.build();
+					.build());
 		} else {
-			return new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
+			return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 					.setMonthDefinition(new CronMonthRange(from, until))
-					.build();
+					.build());
 		}
 	}
 	

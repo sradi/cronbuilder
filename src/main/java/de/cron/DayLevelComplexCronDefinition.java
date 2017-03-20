@@ -38,12 +38,6 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 		crons.addAll(getCrons());
 	}
 
-	@Override
-	public SimpleCronDefinition getRangeElement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	private CronDay getAllDays() {
 		if (isSingleElement()) {
 			return new CronSpecificDays(Day.fromInt(fromDay.getIntValue()));

@@ -6,8 +6,6 @@ public interface ComplexCronDefinition {
 	
 	List<SimpleCronDefinition> getCrons();
 
-	SimpleCronDefinition getRangeElement();
-	
 	SimpleCronDefinition getFirstElementCronDefinition();
 	
 	List<SimpleCronDefinition> getIntermediateElementCronDefinition();
