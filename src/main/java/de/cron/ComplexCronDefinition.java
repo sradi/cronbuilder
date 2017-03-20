@@ -14,10 +14,10 @@ public interface ComplexCronDefinition {
 	
 	int getMaxValueWithinFirstElement();
 	
-	int getCountOfElements();
+	boolean isFromEqualToUntil();
 	
-	boolean isSingleElement();
-	
-	boolean hasIntermediateElements();
+	boolean isFromSeveralBeforeUntil();
+
+	boolean isFromOneBeforeUntil();
 
 }

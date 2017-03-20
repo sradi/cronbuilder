@@ -24,7 +24,7 @@ public class MonthLevelComplexCronDefinition implements ComplexCronDefinition {
 	
 	@Override
 	public List<SimpleCronDefinition> getCrons() {
-		if (isSingleElement()) {
+		if (isFromEqualToUntil()) {
 			return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 					.setMonthDefinition(new CronSpecificMonths(from))
 					.build());
@@ -60,29 +60,25 @@ public class MonthLevelComplexCronDefinition implements ComplexCronDefinition {
 					.setMonthDefinition(new CronSpecificMonths(until))
 					.build();
 	}
+
+	@Override
+	public boolean isFromEqualToUntil() {
+		return from.equals(until);
+	}
 	
 	@Override
-	public int getCountOfElements() {
-		if (from.equals(until)) {
-			return 1;
-		} else if (until.getValue() - from.getValue() == 1) {
-			return 2;
-		} else {
-			return 3; // first specific month, month range, last specific
-		}
+	public boolean isFromOneBeforeUntil() {
+		return !isFromEqualToUntil() && !isFromSeveralBeforeUntil();
 	}
 
 	@Override
-	public boolean isSingleElement() {
-		if (from.equals(until)) {
-			return true;
-		}
-		return false;
+	public boolean isFromSeveralBeforeUntil() {
+		return countElementsBetween() > 1;
 	}
-
-	@Override
-	public boolean hasIntermediateElements() {
-		return getCountOfElements() == 3;
+	
+	private int countElementsBetween() {
+		Preconditions.checkArgument(from.compareTo(until) <= 0);
+		return until.getValue() - from.getValue();
 	}
 
 }

@@ -28,7 +28,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	
 	public DayLevelComplexCronDefinition(MonthLevelComplexCronDefinition monthLevelCronDefinition, Day fromDay, Day untilDay) {
 		this.monthLevelCronDefinition = monthLevelCronDefinition;
-		if (monthLevelCronDefinition.isSingleElement()) {
+		if (monthLevelCronDefinition.isFromEqualToUntil()) {
 			Preconditions.checkArgument(fromDay.isBefore(untilDay) || fromDay.equals(untilDay));
 		}
 		
@@ -39,7 +39,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	}
 
 	private CronDay getAllDays() {
-		if (isSingleElement()) {
+		if (isFromEqualToUntil()) {
 			return new CronSpecificDays(Day.fromInt(fromDay.getIntValue()));
 		} else {
 			return new CronDayRange(Day.fromInt(fromDay.getIntValue()), Day.fromInt(untilDay.getIntValue()));
@@ -95,7 +95,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 		List<SimpleCronDefinition> crons = new ArrayList<>();
 		SimpleCronDefinition firstMonthDefinition = monthLevelCronDefinition.getFirstElementCronDefinition();
 		
-		if (monthLevelCronDefinition.isSingleElement()) {
+		if (monthLevelCronDefinition.isFromEqualToUntil()) {
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
 					.setDayDefinition(getAllDays())
 					.build());
@@ -103,7 +103,7 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstMonthDefinition)
 					.setDayDefinition(getAllDaysOfFirstMonth())
 					.build());
-			if (monthLevelCronDefinition.hasIntermediateElements()) {
+			if (monthLevelCronDefinition.isFromSeveralBeforeUntil()) {
 				crons.addAll(addEveryDayToIntermediateMonthElements());
 			}
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(monthLevelCronDefinition.getLastElementCronDefinition())
@@ -130,28 +130,23 @@ class DayLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<C
 	}
 
 	@Override
-	public int getCountOfElements() {
-		if (monthLevelCronDefinition.getCountOfElements() == 1) {
-			if (fromDay.equals(untilDay)) {
-				return 1;
-			} else if (untilDay.getIntValue() - fromDay.getIntValue() == 1) {
-				return 2;
-			} else {
-				return 3; // first specific month, month range, last specific
-			}
-		} else {
-			return monthLevelCronDefinition.getCountOfElements();
-		}
+	public boolean isFromEqualToUntil() {
+		return monthLevelCronDefinition.isFromEqualToUntil() && (fromDay.equals(untilDay));
+	}
+	
+	@Override
+	public boolean isFromOneBeforeUntil() {
+		return !isFromEqualToUntil() && !isFromSeveralBeforeUntil();
 	}
 
 	@Override
-	public boolean isSingleElement() {
-		return monthLevelCronDefinition.isSingleElement() && (fromDay.equals(untilDay));
+	public boolean isFromSeveralBeforeUntil() {
+		return (!monthLevelCronDefinition.isFromEqualToUntil()) && (countElementsBetween() > 1);
 	}
-
-	@Override
-	public boolean hasIntermediateElements() {
-		return getCountOfElements() == 3;
+	
+	private int countElementsBetween() {
+		Preconditions.checkArgument(fromDay.isBefore(untilDay) || fromDay.equals(untilDay));
+		return untilDay.getIntValue() - fromDay.getIntValue();
 	}
-
+	
 }
