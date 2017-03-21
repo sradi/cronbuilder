@@ -8,7 +8,7 @@ public interface ComplexCronDefinition {
 
 	SimpleCronDefinition getFirstElementCronDefinition();
 	
-	List<SimpleCronDefinition> getIntermediateElementCronDefinition();
+	SimpleCronDefinition getIntermediateElementCronDefinition();
 	
 	SimpleCronDefinition getLastElementCronDefinition();
 	

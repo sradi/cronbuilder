@@ -1,17 +1,20 @@
 package de.cron;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
 
 import de.cron.elements.CronHour;
 import de.cron.elements.CronHourRange;
+import de.cron.elements.CronSpecificHours;
 import de.cron.units.Hour;
 
-public class HourLevelComplexCronDefinition implements ComplexCronDefinition {
+public class HourLevelComplexCronDefinition implements ComplexCronDefinition, Iterable<CronDefinition> {
 	
 	private ComplexCronDefinition dayLevelCronDefinition;
+	private List<CronDefinition> crons = new ArrayList<>();
 	private Hour fromHour;
 	private Hour untilHour;
 	
@@ -21,21 +24,21 @@ public class HourLevelComplexCronDefinition implements ComplexCronDefinition {
 		
 		this.fromHour = fromHour;
 		this.untilHour = untilHour;
+		
+		this.crons.addAll(getCrons());
 	}
 
-	@Override
-	public SimpleCronDefinition getRangeElement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	private CronHour getAllHours() {
-		return new CronHourRange(fromHour, untilHour);
+		if (isFromEqualToUntil()) {
+			return new CronSpecificHours(fromHour);
+		} else {
+			return new CronHourRange(fromHour, untilHour);
+		}
 	}
 
 	@Override
-	public SimpleCronDefinition getFirstElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getFirstElement())
+	public SimpleCronDefinition getFirstElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getFirstElementCronDefinition())
 				.setHourDefinition(getAllHoursOfFirstDay())
 				.build();
 	}
@@ -45,14 +48,15 @@ public class HourLevelComplexCronDefinition implements ComplexCronDefinition {
 	}
 
 	@Override
-	public List<SimpleCronDefinition> getIntermediateElement() {
-		// TODO Auto-generated method stub
-		return null;
+	public SimpleCronDefinition getIntermediateElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder()
+				.setHourDefinition(new CronHourRange(Hour.fromInt(fromHour.getIntValue() + 1), Hour.fromInt(untilHour.getIntValue() - 1)))
+				.build();
 	}
 
 	@Override
-	public SimpleCronDefinition getLastElement() {
-		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getLastElement())
+	public SimpleCronDefinition getLastElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getLastElementCronDefinition())
 				.setHourDefinition(getAllHoursOfLastDay())
 				.build();
 	}
@@ -63,20 +67,18 @@ public class HourLevelComplexCronDefinition implements ComplexCronDefinition {
 
 	private List<SimpleCronDefinition> addEveryHourToIntermediateDayElements() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		for (SimpleCronDefinition dayLevelCron : dayLevelCronDefinition.getIntermediateElement()) {
-			new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCron)
-			.setHourDefinition(CronHour.EVERY_HOUR)
-			.build();
-		}
+		new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getIntermediateElementCronDefinition())
+		.setHourDefinition(CronHour.EVERY_HOUR)
+		.build();
 		return crons;
 	}
 
 	@Override
 	public List<SimpleCronDefinition> getCrons() {
 		List<SimpleCronDefinition> crons = new ArrayList<>();
-		SimpleCronDefinition firstDayDefinition = dayLevelCronDefinition.getFirstElement();
+		SimpleCronDefinition firstDayDefinition = dayLevelCronDefinition.getFirstElementCronDefinition();
 		
-		if (dayLevelCronDefinition.isSingleElement()) {
+		if (dayLevelCronDefinition.isFromEqualToUntil()) {
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstDayDefinition)
 					.setHourDefinition(getAllHours())
 					.build());
@@ -84,32 +86,54 @@ public class HourLevelComplexCronDefinition implements ComplexCronDefinition {
 			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(firstDayDefinition)
 					.setHourDefinition(getAllHoursOfFirstDay())
 					.build());
-			if (dayLevelCronDefinition.hasIntermediateElements()) {
+			if (dayLevelCronDefinition.isFromSeveralBeforeUntil()) {
 				crons.addAll(addEveryHourToIntermediateDayElements());
 			}
-			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getLastElement())
+			crons.add(new SimpleCronDefinition.SimpleCronDefinitionBuilder(dayLevelCronDefinition.getLastElementCronDefinition())
 					.setHourDefinition(getAllHoursOfLastDay())
 					.build());
 		}
 		return crons;
 	}
-
+	
 	@Override
-	public int getCountOfElements() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getMaxValueWithinFirstElement() {
+		return fromHour.getMaxValue();
 	}
 
 	@Override
-	public boolean isSingleElement() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isFromEqualToUntil() {
+		return dayLevelCronDefinition.isFromEqualToUntil() && (fromHour.equals(untilHour));
+	}
+	
+	@Override
+	public boolean isFromOneBeforeUntil() {
+		return !isFromEqualToUntil() && !isFromSeveralBeforeUntil();
 	}
 
 	@Override
-	public boolean hasIntermediateElements() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isFromSeveralBeforeUntil() {
+		return (!dayLevelCronDefinition.isFromEqualToUntil()) && (countElementsBetween() > 1);
+	}
+	
+	private int countElementsBetween() {
+		Preconditions.checkArgument(fromHour.isBefore(untilHour) || fromHour.equals(untilHour));
+		return untilHour.getIntValue() - fromHour.getIntValue();
+	}
+
+	@Override
+	public Iterator<CronDefinition> iterator() {
+		return crons.iterator();
+	}
+	
+	public int size() {
+		return crons.size();
+	}
+
+	public CronDefinition get(int i) {
+		// TODO return copy of CronDefinition, in order to make this class
+		// immutable
+		return crons.get(i);
 	}
 
 }

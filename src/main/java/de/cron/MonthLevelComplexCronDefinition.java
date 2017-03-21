@@ -48,10 +48,10 @@ public class MonthLevelComplexCronDefinition implements ComplexCronDefinition {
 	}
 	
 	@Override
-	public List<SimpleCronDefinition> getIntermediateElementCronDefinition() {
-		return Arrays.asList(new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
+	public SimpleCronDefinition getIntermediateElementCronDefinition() {
+		return new SimpleCronDefinition.SimpleCronDefinitionBuilder(baseCronDefinition)
 				.setMonthDefinition(new CronMonthRange(Month.of(from.getValue() + 1), Month.of(until.getValue() - 1)))
-				.build());
+				.build();
 	}
 
 	@Override
