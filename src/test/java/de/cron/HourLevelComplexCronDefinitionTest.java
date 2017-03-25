@@ -18,10 +18,10 @@ import de.cron.units.Minute;
 @SuppressWarnings("unused")
 public class HourLevelComplexCronDefinitionTest {
 	
-	private DayLevelComplexCronDefinition singleDaySingleMonth;
-	private DayLevelComplexCronDefinition twoDaysSingleMonth;
-	private DayLevelComplexCronDefinition severalDaysSingleMonth;
-	private DayLevelComplexCronDefinition sameDayTwoMonths;
+	private ComplexCronDefinition singleDaySingleMonth;
+	private ComplexCronDefinition twoDaysSingleMonth;
+	private ComplexCronDefinition severalDaysSingleMonth;
+	private ComplexCronDefinition sameDayTwoMonths;
 
 	@Before
 	public void setupSimpleCronDefinitions() {
@@ -32,10 +32,10 @@ public class HourLevelComplexCronDefinitionTest {
 		MonthLevelComplexCronDefinition twoMonthsCronDef = new MonthLevelComplexCronDefinition(everyMinuteCron, Month.MARCH, Month.APRIL);
 		MonthLevelComplexCronDefinition severalMonthsCronDef = new MonthLevelComplexCronDefinition(everyMinuteCron, Month.MARCH, Month.JULY); 
 		
-		this.singleDaySingleMonth = new DayLevelComplexCronDefinition(singleMonthCronDef, Day.fromInt(6), Day.fromInt(6));
-		this.twoDaysSingleMonth = new DayLevelComplexCronDefinition(singleMonthCronDef, Day.fromInt(6), Day.fromInt(7));
-		this.severalDaysSingleMonth = new DayLevelComplexCronDefinition(singleMonthCronDef, Day.fromInt(2), Day.fromInt(5));
-		this.sameDayTwoMonths = new DayLevelComplexCronDefinition(twoMonthsCronDef, Day.fromInt(20), Day.fromInt(20));
+		this.singleDaySingleMonth = new ComplexCronDefinition(singleMonthCronDef, Day.fromInt(6), Day.fromInt(6));
+		this.twoDaysSingleMonth = new ComplexCronDefinition(singleMonthCronDef, Day.fromInt(6), Day.fromInt(7));
+		this.severalDaysSingleMonth = new ComplexCronDefinition(singleMonthCronDef, Day.fromInt(2), Day.fromInt(5));
+		this.sameDayTwoMonths = new ComplexCronDefinition(twoMonthsCronDef, Day.fromInt(20), Day.fromInt(20));
 	}
 
 	@Test

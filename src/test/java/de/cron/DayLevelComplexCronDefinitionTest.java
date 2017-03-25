@@ -34,7 +34,7 @@ public class DayLevelComplexCronDefinitionTest {
 	@Test
 	public void testFromDayAfterUntilDay_singleMonth() {
 		try {
-			new DayLevelComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(5), Day.fromInt(4));
+			new ComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(5), Day.fromInt(4));
 			fail("'from' is after 'until' in the same month");
 		} catch (Exception e) {
 		}
@@ -42,7 +42,7 @@ public class DayLevelComplexCronDefinitionTest {
 
 	@Test
 	public void testFromDayAfterUntilDay_twoMonths() {
-		DayLevelComplexCronDefinition crons = new DayLevelComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(5), Day.fromInt(4));
+		ComplexCronDefinition crons = new ComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(5), Day.fromInt(4));
 		assertEquals(2, crons.size());
 		assertEquals("* * 5-31 3 *", crons.get(0).toString());
 		assertEquals("* * 1-4 4 *", crons.get(1).toString());
@@ -50,7 +50,7 @@ public class DayLevelComplexCronDefinitionTest {
 	
 	@Test
 	public void testFromDayAfterUntilDay_severalMonths() {
-		DayLevelComplexCronDefinition crons = new DayLevelComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(5), Day.fromInt(4));
+		ComplexCronDefinition crons = new ComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(5), Day.fromInt(4));
 		assertEquals(3, crons.size());
 		assertEquals("* * 5-31 3 *", crons.get(0).toString());
 		assertEquals("* * * 4-5 *", crons.get(1).toString());
@@ -60,7 +60,7 @@ public class DayLevelComplexCronDefinitionTest {
 	//********************************************************
 	@Test
 	public void testSameDay_singleMonth() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(2), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(2), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(1, crons.size());
 		assertEquals("* * 2 3 *", crons.get(0).toString());
@@ -68,7 +68,7 @@ public class DayLevelComplexCronDefinitionTest {
 
 	@Test
 	public void testSameDay_twoMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(2), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(2), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(2, crons.size());
 		assertEquals("* * 2-31 3 *", crons.get(0).toString());
@@ -77,7 +77,7 @@ public class DayLevelComplexCronDefinitionTest {
 	
 	@Test
 	public void testSameDay_severalMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(2), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(2), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 //		assertEquals(3, crons.size());
 		for (SimpleCronDefinition cron : crons) {
@@ -91,7 +91,7 @@ public class DayLevelComplexCronDefinitionTest {
 	//********************************************************
 	@Test
 	public void testTwoDayPeriod_singleMonth() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(1), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(1), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(1, crons.size());
 		assertEquals("* * 1-2 3 *", crons.get(0).toString());
@@ -99,7 +99,7 @@ public class DayLevelComplexCronDefinitionTest {
 
 	@Test
 	public void testTwoDayPeriod_twoMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(2, crons.size());
 		assertEquals("* * 1-31 3 *", crons.get(0).toString());
@@ -108,7 +108,7 @@ public class DayLevelComplexCronDefinitionTest {
 	
 	@Test
 	public void testTwoDayPeriod_severalMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(2));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(2));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(3, crons.size());
 		assertEquals("* * 1-31 3 *", crons.get(0).toString());
@@ -119,7 +119,7 @@ public class DayLevelComplexCronDefinitionTest {
 	//********************************************************
 	@Test
 	public void testSeveralDaysPeriod_singleMonth() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(1), Day.fromInt(5));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(singleMonthComplexCronDef, Day.fromInt(1), Day.fromInt(5));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(1, crons.size());
 		assertEquals("* * 1-5 3 *", crons.get(0).toString());
@@ -127,7 +127,7 @@ public class DayLevelComplexCronDefinitionTest {
 
 	@Test
 	public void testSeveralDaysPeriod_twoMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(5));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(twoMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(5));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(2, crons.size());
 		assertEquals("* * 1-31 3 *", crons.get(0).toString());
@@ -136,7 +136,7 @@ public class DayLevelComplexCronDefinitionTest {
 	
 	@Test
 	public void testSeveralDaysPeriod_severalMonths() {
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(5));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(severalMonthsComplexCronDef, Day.fromInt(1), Day.fromInt(5));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(3, crons.size());
 		assertEquals("* * 1-31 3 *", crons.get(0).toString());
@@ -150,7 +150,7 @@ public class DayLevelComplexCronDefinitionTest {
 				.setMinuteDefinition(new CronSpecificMinutes(Minute.fromInt(15), Minute.fromInt(30), Minute.fromInt(45)))
 				.build();
 		MonthLevelComplexCronDefinition monthLevelCron = new MonthLevelComplexCronDefinition(specificMinutesCron, Month.MARCH, Month.JUNE);
-		DayLevelComplexCronDefinition dayLevelCron = new DayLevelComplexCronDefinition(monthLevelCron, Day.fromInt(1), Day.fromInt(5));
+		ComplexCronDefinition dayLevelCron = new ComplexCronDefinition(monthLevelCron, Day.fromInt(1), Day.fromInt(5));
 		List<SimpleCronDefinition> crons = dayLevelCron.getCrons();
 		assertEquals(3, crons.size());
 		assertEquals("15,30,45 * 1-31 3 *", crons.get(0).toString());
