@@ -1,6 +1,6 @@
 package de.cron.elements;
 
-public interface CronHour {
+public interface CronHour extends CronElement {
 
 	public static final CronHour EVERY_HOUR = new CronEveryHour();
 
