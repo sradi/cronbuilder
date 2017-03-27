@@ -11,18 +11,23 @@ public class ComplexCronImpl implements ComplexCron {
 	
 	private List<CronElement> parts = new ArrayList<>();
 	
+	private ComplexCronImpl() {
+	}
+	
 	public ComplexCronImpl(CronElement firstPart) {
 		this.parts.add(firstPart);
 	}
 	
-	private ComplexCronImpl(ComplexCronImpl base) {
-		this.parts = base.parts;
-	}
-	
+	/**
+	 * Always return an immutable copy of the current object
+	 */
 	@Override
-	public ComplexCron prepend(CronElement part) {
-		ComplexCronImpl complexCron = new ComplexCronImpl(this);
-		complexCron.parts.add(0, part);
+	public ComplexCron prepend(CronElement newPart) {
+		ComplexCronImpl complexCron = new ComplexCronImpl();
+		for (CronElement p : parts) {
+			complexCron.parts.add(p);
+		}
+		complexCron.parts.add(0, newPart);
 		return complexCron;
 	}
 

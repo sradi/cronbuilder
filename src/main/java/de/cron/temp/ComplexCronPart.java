@@ -10,14 +10,10 @@ public interface ComplexCronPart {
 	 */
 	List<ComplexCron> getParts();
 	
-	ComplexCron getFirstPart();
-
-	List<ComplexCron> getIntermediateParts();
-	
-	ComplexCron getLastPart();
-	
-	boolean hasIntermediateParts();
+	List<ComplexCron> getPartsInternal();
 	
 	boolean isFromEqualToUntil();
+	
+	boolean hasIntermediateParts();
 
 }

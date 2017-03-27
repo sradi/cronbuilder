@@ -1,11 +1,13 @@
 package de.cron.temp;
 
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
 
+import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;
 
@@ -24,29 +26,56 @@ public class ComplexCronMonthPart implements ComplexCronPart {
 	public List<ComplexCron> getParts() {
 		ComplexCron part;
 		if (isFromEqualToUntil()) {
-			part = new ComplexCronImpl(new CronSpecificMonths(from));
+			part = new ComplexCronImpl(getFromElement());
 		} else {
-			part = new ComplexCronImpl(new CronMonthRange(from, until));
+			part = new ComplexCronImpl(getFullRangeElement());
 		}
 		return Arrays.asList(part);
 	}
-	
+
 	@Override
-	public ComplexCron getFirstPart() {
-		return new ComplexCronImpl(new CronSpecificMonths(from));
+	public List<ComplexCron> getPartsInternal() {
+		List<ComplexCron> parts = new ArrayList<>();
+		parts.add(new ComplexCronImpl(getFromElement()));
+		
+		if (isFromEqualToUntil()) {
+			return parts;
+		}
+		
+		if (hasIntermediateParts()) {
+			parts.add(new ComplexCronImpl(getIntermediateElement()));
+		}
+		
+		parts.add(new ComplexCronImpl(getUntilElement()));
+		return parts;
 	}
 	
-	@Override
-	public List<ComplexCron> getIntermediateParts() {
-		Preconditions.checkState(hasIntermediateParts());
-		ComplexCron part = new ComplexCronImpl(new CronMonthRange(from.plus(1), until.minus(1)));
-		return Arrays.asList(part);
+	private CronElement getFromElement() {
+		return new CronSpecificMonths(from);
 	}
-	
-	@Override
-	public ComplexCron getLastPart() {
-		ComplexCron part = new ComplexCronImpl(new CronSpecificMonths(until));
+
+	private CronElement getUntilElement() {
+		CronSpecificMonths part = new CronSpecificMonths(until);
 		return part;
+	}
+	
+	private CronElement getFullRangeElement() {
+		if (isFromEqualToUntil()) {
+			return getFromElement();
+		} else {
+			return new CronMonthRange(from, until);
+		}
+	}
+	
+	private CronElement getIntermediateElement() {
+		Preconditions.checkState(hasIntermediateParts());;
+		Month intermediateFrom = from.plus(1);
+		Month intermediateUntil = until.minus(1);
+		if (intermediateFrom.equals(intermediateUntil)) {
+			return new CronSpecificMonths(intermediateFrom); 
+		} else {
+			return new CronMonthRange(intermediateFrom, intermediateUntil);
+		}
 	}
 	
 	@Override

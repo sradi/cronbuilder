@@ -7,6 +7,7 @@ import java.time.Month;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("unused")
@@ -40,23 +41,10 @@ public class ComplexCronMonthPartTest {
 	}
 	
 	@Test
-	public void testSameMonth_getFirstPart() {
-		ComplexCron firstPart = singleMonthPart.getFirstPart();
-		assertEquals("3", firstPart.toString());
-	}
-	
-	@Test
-	public void testSameMonth_getIntermediateParts() {
-		try {
-			singleMonthPart.getIntermediateParts();
-			fail("no intermediate parts expected");
-		} catch (Exception e) {}
-	}
-	
-	@Test
-	public void testSameMonth_getLastPart() {
-		ComplexCron lastPart = singleMonthPart.getLastPart();
-		assertEquals("3", lastPart.toString());
+	public void testSameMonth_getPartsInternal() {
+		List<ComplexCron> parts = singleMonthPart.getPartsInternal();
+		assertEquals(1, parts.size());
+		assertEquals("3", parts.get(0).toString());
 	}
 	
 	// ********************************
@@ -68,23 +56,11 @@ public class ComplexCronMonthPartTest {
 	}
 	
 	@Test
-	public void testTwoMonthPeriod_getFirstPart() {
-		ComplexCron firstPart = twoMonthPart.getFirstPart();
-		assertEquals("3", firstPart.toString());
-	}
-	
-	@Test
-	public void testTwoMonthPeriod_getIntermediateParts() {
-		try {
-			twoMonthPart.getIntermediateParts();
-			fail("no intermediate parts expected");
-		} catch (Exception e) {}
-	}
-	
-	@Test
-	public void testTwoMonthPeriod_getLastPart() {
-		ComplexCron lastPart = twoMonthPart.getLastPart();
-		assertEquals("4", lastPart.toString());
+	public void testTwoMonthPeriod_getPartsInternal() {
+		List<ComplexCron> intermediateParts = twoMonthPart.getPartsInternal();
+		assertEquals(2, intermediateParts.size());
+		assertEquals("3", intermediateParts.get(0).toString());
+		assertEquals("4", intermediateParts.get(1).toString());
 	}
 	
 	// ********************************
@@ -96,22 +72,12 @@ public class ComplexCronMonthPartTest {
 	}
 	
 	@Test
-	public void testSeveralMonthsPeriod_getFirstPart() {
-		ComplexCron firstPart = severalMonthsPart.getFirstPart();
-		assertEquals("4", firstPart.toString());
+	public void testSeveralMonthsPeriod_getPartsInternal() {
+		List<ComplexCron> intermediateParts = severalMonthsPart.getPartsInternal();
+		assertEquals(3, intermediateParts.size());
+		assertEquals("4", intermediateParts.get(0).toString());
+		assertEquals("5-6", intermediateParts.get(1).toString());
+		assertEquals("7", intermediateParts.get(2).toString());
 	}
 	
-	@Test
-	public void testSeveralMonthsPeriod_getIntermediateParts() {
-		List<ComplexCron> intermediateParts = severalMonthsPart.getIntermediateParts();
-		assertEquals(1, intermediateParts.size());
-		assertEquals("5-6", intermediateParts.get(0).toString());
-	}
-	
-	@Test
-	public void testSeveralMonthsPeriod_getLastPart() {
-		ComplexCron lastPart = severalMonthsPart.getLastPart();
-		assertEquals("7", lastPart.toString());
-	}
-
 }

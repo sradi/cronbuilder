@@ -53,26 +53,12 @@ public class ComplexCronDayPartTest {
 	}
 
 	@Test
-	public void testSameDay_getFirstPart() {
-		ComplexCron crons = singleDayCron.getFirstPart();
-		assertEquals("2 3", crons.toString());
+	public void testSameDay_getPartsInternal() {
+		List<ComplexCron> crons = singleDayCron.getPartsInternal();
+		assertEquals(1, crons.size());
+		assertEquals("2 3", crons.get(0).toString());
 	}
 	
-	@Test
-	public void testSameDay_getIntermediateParts() {
-		try {
-			singleDayCron.getIntermediateParts();
-			fail("no intermediate parts expected");
-		} catch (Exception e) {
-		}
-	}
-	
-	@Test
-	public void testSameDay_getLastPart() {
-		ComplexCron crons = singleDayCron.getLastPart();
-		assertEquals("2 3", crons.toString());
-	}
-
 	//********************************************************
 	@Test
 	public void testTwoDayPeriod_getParts() {
@@ -82,24 +68,11 @@ public class ComplexCronDayPartTest {
 	}
 
 	@Test
-	public void testTwoDayPeriod_getFirstPart() {
-		ComplexCron crons = twoDaysCron.getFirstPart();
-		assertEquals("5 3", crons.toString());
-	}
-	
-	@Test
-	public void testTwoDayPeriod_getIntermediateParts() {
-		try {
-			twoDaysCron.getIntermediateParts();
-			fail("no intermediate parts expected");
-		} catch (Exception e) {
-		}
-	}
-	
-	@Test
-	public void testTwoDayPeriod_getLastPart() {
-		ComplexCron crons = twoDaysCron.getLastPart();
-		assertEquals("6 3", crons.toString());
+	public void testTwoDayPeriod_getPartsInternal() {
+		List<ComplexCron> crons = twoDaysCron.getPartsInternal();
+		assertEquals(2, crons.size());
+		assertEquals("5 3", crons.get(0).toString());
+		assertEquals("6 3", crons.get(1).toString());
 	}
 	
 	//********************************************************
@@ -111,24 +84,12 @@ public class ComplexCronDayPartTest {
 	}
 	
 	@Test
-	public void testSeveralDaysInSingleMonthPeriod_getFirstPart() {
-		ComplexCron crons = severalDaysInSingleMonthCron.getFirstPart();
-		assertEquals("3 3", crons.toString());
-	}
-	
-	@Test
-	public void testSeveralDaysInSingleMonthPeriod_getIntermediateParts() {
-		List<ComplexCron> crons = severalDaysInSingleMonthCron.getIntermediateParts();
+	public void testSeveralDaysInSingleMonthPeriod_getPartsInternal() {
+		List<ComplexCron> crons = severalDaysInSingleMonthCron.getPartsInternal();
 		assertEquals(3, crons.size());
 		assertEquals("3 3", crons.get(0).toString());
 		assertEquals("4-6 3", crons.get(1).toString());
 		assertEquals("7 3", crons.get(2).toString());
-	}
-	
-	@Test
-	public void testSeveralDaysInSingleMonthPeriod_getLastPart() {
-		ComplexCron crons = severalDaysInSingleMonthCron.getLastPart();
-		assertEquals("7 3", crons.toString());
 	}
 	
 	//********************************************************
@@ -141,25 +102,13 @@ public class ComplexCronDayPartTest {
 	}
 	
 	@Test
-	public void testSeveralDaysInTwoMonthsPeriod_getFirstPart() {
-		ComplexCron crons = severalDaysInTwoMonthsCron.getFirstPart();
-		assertEquals("3 3", crons.toString());
-	}
-	
-	@Test
-	public void testSeveralDaysInTwoMonthsPeriod_getIntermediateParts() {
-		List<ComplexCron> crons = severalDaysInTwoMonthsCron.getIntermediateParts();
+	public void testSeveralDaysInTwoMonthsPeriod_getPartsInternal() {
+		List<ComplexCron> crons = severalDaysInTwoMonthsCron.getPartsInternal();
 		assertEquals(4, crons.size());
 		assertEquals("3 3", crons.get(0).toString());
 		assertEquals("4-31 3", crons.get(1).toString());
 		assertEquals("1-6 4", crons.get(2).toString());
 		assertEquals("7 4", crons.get(3).toString());
-	}
-	
-	@Test
-	public void testSeveralDaysInTwoMonthsPeriod_getLastPart() {
-		ComplexCron crons = severalDaysInTwoMonthsCron.getLastPart();
-		assertEquals("7 4", crons.toString());
 	}
 	
 	//********************************************************
@@ -173,14 +122,8 @@ public class ComplexCronDayPartTest {
 	}
 	
 	@Test
-	public void testSeveralDaysInSeveralMonthsPeriod_getFirstPart() {
-		ComplexCron crons = severalDaysInSeveralMonthsCron.getFirstPart();
-		assertEquals("3 3", crons.toString());
-	}
-	
-	@Test
-	public void testSeveralDaysInSeveralMonthsPeriod_getIntermediateParts() {
-		List<ComplexCron> crons = severalDaysInSeveralMonthsCron.getIntermediateParts();
+	public void testSeveralDaysInSeveralMonthsPeriod_getPartsInternal() {
+		List<ComplexCron> crons = severalDaysInSeveralMonthsCron.getPartsInternal();
 		assertEquals(5, crons.size());
 		assertEquals("3 3", crons.get(0).toString());
 		assertEquals("4-31 3", crons.get(1).toString());
@@ -189,10 +132,4 @@ public class ComplexCronDayPartTest {
 		assertEquals("7 8", crons.get(4).toString());
 	}
 	
-	@Test
-	public void testSeveralDaysInSeveralMonthsPeriod_getLastPart() {
-		ComplexCron crons = severalDaysInSeveralMonthsCron.getLastPart();
-		assertEquals("7 8", crons.toString());
-	}
-
 }
