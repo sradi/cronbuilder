@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 public class Hour extends CronUnit<Hour> {
 
 	private Hour(int hour) {
-		this.setUnit(hour, 0, 24);
+		this.setUnit(hour, 0, 23);
 	}
 	
 	public static Hour fromInt(int hour) {

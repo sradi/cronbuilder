@@ -62,6 +62,7 @@ public class ComplexCronDayPart implements ComplexCronPart {
 		ComplexCron firstMonthPart = monthPartsIterator.next();
 		ComplexCron lastMonthPart = monthParts.get(monthParts.size()-1);
 		monthPartsIterator.remove();
+		
 		parts.add(firstMonthPart.prepend(getFromElement()));
 
 		if (isFromEqualToUntil()) {
@@ -85,8 +86,6 @@ public class ComplexCronDayPart implements ComplexCronPart {
 					}
 					parts.add(intermediateMonthPart.prepend(CronDay.EVERY_DAY));
 				}
-			} else {
-//				lastMonthPart = monthPartsIterator.next();
 			}
 			
 			// intermediate Tage in verschiedenen Monaten: 1. bis x. Tag des letzten Monats
