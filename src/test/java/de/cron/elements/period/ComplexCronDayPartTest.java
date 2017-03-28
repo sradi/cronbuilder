@@ -9,6 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.cron.elements.period.CronExpression;
+import de.cron.elements.period.CronPeriodDayPart;
+import de.cron.elements.period.CronPeriodMonthPart;
 import de.cron.units.Day;
 
 public class ComplexCronDayPartTest {
