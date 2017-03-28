@@ -30,12 +30,12 @@ public class ComplexCronHourPart extends BaseComplecCronPart {
 		List<ComplexCron> parts = new ArrayList<>();
 		if (isFromEqualToUntil()) {
 			List<ComplexCron> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
-			dayParts.forEach(p -> parts.add(p.prepend(new CronSpecificHours(from))));
+			dayParts.forEach(p -> parts.add(p.prepend(getFromElement())));
 		} else {
 			if (dayPart.isFromEqualToUntil()) {
 				// zwei oder mehr Stunden am gleichen Tag...
 				List<ComplexCron> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
-				dayParts.forEach(p -> parts.add(p.prepend(new CronHourRange(from, until))));
+				dayParts.forEach(p -> parts.add(p.prepend(getFullRangeElement())));
 			} else {
 				// zwei oder mehr Stunden über zwei oder mehrere Tage
 				List<ComplexCron> intermediateParts = dayPart.getPartsInternal();
