@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
+import de.cron.CronExpression;
+import de.cron.CronExpressionImpl;
 import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;

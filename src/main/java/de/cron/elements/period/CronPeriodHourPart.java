@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
+import de.cron.CronExpression;
 import de.cron.elements.CronDay;
 import de.cron.elements.CronElement;
 import de.cron.elements.CronHourRange;

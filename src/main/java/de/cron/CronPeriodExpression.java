@@ -2,18 +2,18 @@ package de.cron;
 
 import java.time.LocalDate;
 
-import de.cron.ComplexCronDefinition.ComplexCronDefinitionBuilder;
+import de.cron.CronPeriodExpression.ComplexCronDefinitionBuilder;
 import de.cron.SimpleCronDefinition.SimpleCronDefinitionBuilder;
 import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronMinute;
 import de.cron.units.Hour;
 
-public interface ComplexCronDefinition {
+public interface CronPeriodExpression {
 
 	public static class ComplexCronDefinitionBuilder {
 
-		public ComplexCronDefinitionBuilder(ComplexCronDefinition currentComplexCronDefinition) {
+		public ComplexCronDefinitionBuilder(CronPeriodExpression currentComplexCronDefinition) {
 			// TODO Auto-generated constructor stub
 		}
 
@@ -26,7 +26,7 @@ public interface ComplexCronDefinition {
 			return this;
 		}
 
-		public ComplexCronDefinition build() {
+		public CronPeriodExpression build() {
 			// TODO Auto-generated method stub
 			return null;
 		}

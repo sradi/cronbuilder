@@ -2,6 +2,8 @@ package de.cron.elements.period;
 
 import java.util.List;
 
+import de.cron.CronExpression;
+
 public interface CronPeriodPart {
 	
 	/**

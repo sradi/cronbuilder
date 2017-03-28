@@ -1,4 +1,4 @@
-package de.cron.elements.period;
+package de.cron;
 
 import java.util.ArrayList;
 import java.util.List;

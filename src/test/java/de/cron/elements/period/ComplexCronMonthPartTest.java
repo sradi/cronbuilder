@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.cron.elements.period.CronExpression;
+import de.cron.CronExpression;
 import de.cron.elements.period.CronPeriodMonthPart;
 
 @SuppressWarnings("unused")

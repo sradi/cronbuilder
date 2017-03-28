@@ -1,4 +1,4 @@
-package de.cron.elements.period;
+package de.cron;
 
 import de.cron.elements.CronElement;
 
