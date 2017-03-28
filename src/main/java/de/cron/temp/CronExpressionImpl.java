@@ -5,16 +5,16 @@ import java.util.List;
 
 import de.cron.elements.CronElement;
 
-public class ComplexCronImpl implements ComplexCron {
+public class CronExpressionImpl implements CronExpression {
 	
 	private static final String CRON_ELEMENT_SEPARATOR = " ";
 	
 	private List<CronElement> parts = new ArrayList<>();
 	
-	private ComplexCronImpl() {
+	private CronExpressionImpl() {
 	}
 	
-	public ComplexCronImpl(CronElement firstPart) {
+	public CronExpressionImpl(CronElement firstPart) {
 		this.parts.add(firstPart);
 	}
 	
@@ -22,8 +22,8 @@ public class ComplexCronImpl implements ComplexCron {
 	 * Always return an immutable copy of the current object
 	 */
 	@Override
-	public ComplexCron prepend(CronElement newPart) {
-		ComplexCronImpl complexCron = new ComplexCronImpl();
+	public CronExpression prepend(CronElement newPart) {
+		CronExpressionImpl complexCron = new CronExpressionImpl();
 		for (CronElement p : parts) {
 			complexCron.parts.add(p);
 		}

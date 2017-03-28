@@ -8,9 +8,9 @@ public interface ComplexCronPart {
 	 * Wird nur aufgerufen, wenn die nächstfeinere Ebene nicht mehr zum Zeitraum gehört.
 	 * @return
 	 */
-	List<ComplexCron> getParts();
+	List<CronExpression> getParts();
 	
-	List<ComplexCron> getPartsInternal();
+	List<CronExpression> getPartsInternal();
 	
 	boolean isFromEqualToUntil();
 	

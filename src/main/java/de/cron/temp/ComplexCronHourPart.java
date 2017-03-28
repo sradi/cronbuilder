@@ -26,21 +26,21 @@ public class ComplexCronHourPart extends BaseComplecCronPart {
 	}
 
 	@Override
-	public List<ComplexCron> getParts() {
-		List<ComplexCron> parts = new ArrayList<>();
+	public List<CronExpression> getParts() {
+		List<CronExpression> parts = new ArrayList<>();
 		if (isFromEqualToUntil()) {
-			List<ComplexCron> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
+			List<CronExpression> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
 			dayParts.forEach(p -> parts.add(p.prepend(getFromElement())));
 		} else {
 			if (dayPart.isFromEqualToUntil()) {
 				// zwei oder mehr Stunden am gleichen Tag...
-				List<ComplexCron> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
+				List<CronExpression> dayParts = dayPart.getParts(); // hier kann nur ein DayPart zurueckkommen
 				dayParts.forEach(p -> parts.add(p.prepend(getFullRangeElement())));
 			} else {
 				// zwei oder mehr Stunden über zwei oder mehrere Tage
-				List<ComplexCron> intermediateParts = dayPart.getPartsInternal();
+				List<CronExpression> intermediateParts = dayPart.getPartsInternal();
 				for (int i = 0; i < intermediateParts.size(); i++) {
-					ComplexCron part = intermediateParts.get(i);
+					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
 						parts.add(part.prepend(new CronHourRange(from, Hour.fromInt(from.getMaxValue()))));
 					} else if (i==(intermediateParts.size()-1)) {
@@ -55,13 +55,13 @@ public class ComplexCronHourPart extends BaseComplecCronPart {
 	}
 	
 	@Override
-	public List<ComplexCron> getPartsInternal() {
-		List<ComplexCron> parts = new ArrayList<>();
-		List<ComplexCron> dayParts = dayPart.getPartsInternal();
-		Iterator<ComplexCron> dayPartsIterator = dayParts.iterator();
+	public List<CronExpression> getPartsInternal() {
+		List<CronExpression> parts = new ArrayList<>();
+		List<CronExpression> dayParts = dayPart.getPartsInternal();
+		Iterator<CronExpression> dayPartsIterator = dayParts.iterator();
 		
-		ComplexCron firstDayPart = dayPartsIterator.next();
-		ComplexCron lastDayPart = dayParts.get(dayParts.size()-1);
+		CronExpression firstDayPart = dayPartsIterator.next();
+		CronExpression lastDayPart = dayParts.get(dayParts.size()-1);
 		dayPartsIterator.remove();
 		
 		parts.add(firstDayPart.prepend(getFromElement()));
@@ -80,7 +80,7 @@ public class ComplexCronHourPart extends BaseComplecCronPart {
 			if (dayPart.hasIntermediateParts()) {
 				// jeden Intermediate (ohne den ersten und den letzten) der naechsten Ebene mit "every" anreichern
 				while (dayPartsIterator.hasNext()) {
-					ComplexCron intermediateDayPart = dayPartsIterator.next();
+					CronExpression intermediateDayPart = dayPartsIterator.next();
 					if (!dayPartsIterator.hasNext()) {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;

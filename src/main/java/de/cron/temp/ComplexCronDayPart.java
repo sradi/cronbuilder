@@ -26,9 +26,9 @@ public class ComplexCronDayPart extends BaseComplecCronPart {
 	}
 
 	@Override
-	public List<ComplexCron> getParts() {
-		List<ComplexCron> parts = new ArrayList<>();
-		List<ComplexCron> monthParts = monthPart.getPartsInternal();
+	public List<CronExpression> getParts() {
+		List<CronExpression> parts = new ArrayList<>();
+		List<CronExpression> monthParts = monthPart.getPartsInternal();
 
 		if (isFromEqualToUntil()) {
 			monthParts.forEach(p -> parts.add(p.prepend(getFromElement())));
@@ -39,7 +39,7 @@ public class ComplexCronDayPart extends BaseComplecCronPart {
 			} else {
 				// über zwei oder mehrere Monate
 				for (int i = 0; i < monthParts.size(); i++) {
-					ComplexCron part = monthParts.get(i);
+					CronExpression part = monthParts.get(i);
 					if (i==0) {
 						parts.add(part.prepend(new CronDayRange(from, Day.fromInt(from.getMaxValue()))));
 					} else if (i==(monthParts.size()-1)) {
@@ -54,13 +54,13 @@ public class ComplexCronDayPart extends BaseComplecCronPart {
 	}
 	
 	@Override
-	public List<ComplexCron> getPartsInternal() {
-		List<ComplexCron> parts = new ArrayList<>();
-		List<ComplexCron> monthParts = monthPart.getPartsInternal();
-		Iterator<ComplexCron> monthPartsIterator = monthParts.iterator();
+	public List<CronExpression> getPartsInternal() {
+		List<CronExpression> parts = new ArrayList<>();
+		List<CronExpression> monthParts = monthPart.getPartsInternal();
+		Iterator<CronExpression> monthPartsIterator = monthParts.iterator();
 		
-		ComplexCron firstMonthPart = monthPartsIterator.next();
-		ComplexCron lastMonthPart = monthParts.get(monthParts.size()-1);
+		CronExpression firstMonthPart = monthPartsIterator.next();
+		CronExpression lastMonthPart = monthParts.get(monthParts.size()-1);
 		monthPartsIterator.remove();
 		
 		parts.add(firstMonthPart.prepend(getFromElement()));
@@ -79,7 +79,7 @@ public class ComplexCronDayPart extends BaseComplecCronPart {
 			if (monthPart.hasIntermediateParts()) {
 				// jeden Intermediate (ohne den ersten und den letzten) der naechsten Ebene mit "every" anreichern
 				while (monthPartsIterator.hasNext()) {
-					ComplexCron intermediateMonthPart = monthPartsIterator.next();
+					CronExpression intermediateMonthPart = monthPartsIterator.next();
 					if (!monthPartsIterator.hasNext()) {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;

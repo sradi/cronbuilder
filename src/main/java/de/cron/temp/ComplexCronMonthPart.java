@@ -23,30 +23,30 @@ public class ComplexCronMonthPart extends BaseComplecCronPart {
 	}
 
 	@Override
-	public List<ComplexCron> getParts() {
-		ComplexCron part;
+	public List<CronExpression> getParts() {
+		CronExpression part;
 		if (isFromEqualToUntil()) {
-			part = new ComplexCronImpl(getFromElement());
+			part = new CronExpressionImpl(getFromElement());
 		} else {
-			part = new ComplexCronImpl(getFullRangeElement());
+			part = new CronExpressionImpl(getFullRangeElement());
 		}
 		return Arrays.asList(part);
 	}
 
 	@Override
-	public List<ComplexCron> getPartsInternal() {
-		List<ComplexCron> parts = new ArrayList<>();
-		parts.add(new ComplexCronImpl(getFromElement()));
+	public List<CronExpression> getPartsInternal() {
+		List<CronExpression> parts = new ArrayList<>();
+		parts.add(new CronExpressionImpl(getFromElement()));
 		
 		if (isFromEqualToUntil()) {
 			return parts;
 		}
 		
 		if (hasIntermediateParts()) {
-			parts.add(new ComplexCronImpl(getIntermediateElement()));
+			parts.add(new CronExpressionImpl(getIntermediateElement()));
 		}
 		
-		parts.add(new ComplexCronImpl(getUntilElement()));
+		parts.add(new CronExpressionImpl(getUntilElement()));
 		return parts;
 	}
 	
