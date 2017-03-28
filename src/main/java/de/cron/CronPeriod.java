@@ -6,12 +6,12 @@ import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayOfWeekRange;
 import de.cron.elements.CronSpecificDaysOfWeek;
 
-public class ComplexCron implements ComplexCronDayOfWeekPartOne, ComplexCronDayOfWeekPartTwo {
+public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOfWeekPartTwo {
 
 	private ComplexCronDefinition currentComplexCronDefinition;
 	private DayOfWeek fromDayOfWeek;
 
-	public ComplexCron(ComplexCronDefinition complexCronDefinition) {
+	public CronPeriod(ComplexCronDefinition complexCronDefinition) {
 		this.currentComplexCronDefinition = complexCronDefinition;
 	}
 	

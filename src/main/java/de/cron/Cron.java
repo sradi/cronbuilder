@@ -88,7 +88,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	@Override
 	public ComplexCronLastPart until(int hour, LocalDate until) {
-		return new ComplexCron(new ComplexCronDefinition.ComplexCronDefinitionBuilder()
+		return new CronPeriod(new ComplexCronDefinition.ComplexCronDefinitionBuilder()
 				.setMinuteDefinition(currentCronDefinition.getMinuteDefinition())
 				.setFromHour(fromHour)
 				.setUntilHour(Hour.fromInt(hour))
@@ -139,7 +139,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	@Override
 	public ComplexCronDayOfWeekPartOne until(LocalDate until) {
-		return new ComplexCron(new ComplexCronDefinition.ComplexCronDefinitionBuilder()
+		return new CronPeriod(new ComplexCronDefinition.ComplexCronDefinitionBuilder()
 				.setMinuteDefinition(currentCronDefinition.getMinuteDefinition())
 				.setHourDefinition(currentCronDefinition.getHourDefinition())
 				.setFromDate(fromDate)
