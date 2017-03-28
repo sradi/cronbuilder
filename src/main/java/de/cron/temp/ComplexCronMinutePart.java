@@ -12,7 +12,7 @@ import de.cron.elements.CronMinuteRange;
 import de.cron.elements.CronSpecificMinutes;
 import de.cron.units.Minute;
 
-public class ComplexCronMinutePart extends BaseComplecCronPart {
+public class ComplexCronMinutePart extends BaseCronPeriodElement {
 	
 	private ComplexCronHourPart hourPart;
 	private Minute from;
