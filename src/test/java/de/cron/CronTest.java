@@ -10,26 +10,26 @@ import org.junit.Test;
 
 import de.cron.CronPeriodExpression;
 import de.cron.Cron;
-import de.cron.CronDefinition;
+import de.cron.CronExpression;
 
 public class CronTest {
 
 	@Test
 	public void testEveryMinuteEveryHourEveryDayEveryMonthEveryDayOfWeek() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("* * * * *", cron.toString());
 	}
 	
 	//*************************************************
 	@Test
 	public void testSeveralSpecificMinutes() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(0, 3, 59).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().inTheseMinutes(0, 3, 59).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("0,3,59 * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificMinute() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(30).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().inTheseMinutes(30).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("30 * * * *", cron.toString());
 	}
 	
@@ -53,7 +53,7 @@ public class CronTest {
 	
 	@Test
 	public void testMinuteRange() {
-		CronDefinition cron = Cron.cron().fromMinute(2).untilMinute(3).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().fromMinute(2).untilMinute(3).everyHour().everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("2-3 * * * *", cron.toString());
 	}
 	
@@ -150,13 +150,13 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testSeveralSpecificHours() {
-		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(6, 12, 18).everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().inTheseHours(6, 12, 18).everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("* 6,12,18 * * *", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificHour() {
-		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(6).everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().inTheseHours(6).everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("* 6 * * *", cron.toString());
 	}
 	
@@ -180,7 +180,7 @@ public class CronTest {
 	
 	@Test
 	public void testHourRange() {
-		CronDefinition cron = Cron.cron().everyMinute().fromHour(6).untilHour(12).everyDay().everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().fromHour(6).untilHour(12).everyDay().everyMonth().everyDayOfWeek().get();
 		assertEquals("* 6-12 * * *", cron.toString());
 	}
 	
@@ -256,13 +256,13 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testSeveralSpecificDays() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(1, 15, 31).everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().onTheseDays(1, 15, 31).everyMonth().everyDayOfWeek().get();
 		assertEquals("* * 1,15,31 * *", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificDay() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().onTheseDays(13).everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().onTheseDays(13).everyMonth().everyDayOfWeek().get();
 		assertEquals("* * 13 * *", cron.toString());
 	}
 	
@@ -286,7 +286,7 @@ public class CronTest {
 	
 	@Test
 	public void testDayRange() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().fromDay(30).untilDay(31).everyMonth().everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().fromDay(30).untilDay(31).everyMonth().everyDayOfWeek().get();
 		assertEquals("* * 30-31 * *", cron.toString());
 	}
 	
@@ -311,13 +311,13 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testSeveralSpecificMonths() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().inTheseMonths(Month.JANUARY, Month.MARCH, Month.DECEMBER).everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().inTheseMonths(Month.JANUARY, Month.MARCH, Month.DECEMBER).everyDayOfWeek().get();
 		assertEquals("* * * 1,3,12 *", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificMonth() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().inTheseMonths(Month.JULY).everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().inTheseMonths(Month.JULY).everyDayOfWeek().get();
 		assertEquals("* * * 7 *", cron.toString());
 	}
 	
@@ -332,7 +332,7 @@ public class CronTest {
 	
 	@Test
 	public void testMonthRange() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.MAY).untilMonth(Month.JUNE).everyDayOfWeek().get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().fromMonth(Month.MAY).untilMonth(Month.JUNE).everyDayOfWeek().get();
 		assertEquals("* * * 5-6 *", cron.toString());
 	}
 	
@@ -357,13 +357,13 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testSeveralSpecificDaysOfTheWeek() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().onTheseDaysOfTheWeek(DayOfWeek.MONDAY, DayOfWeek.THURSDAY, DayOfWeek.SUNDAY).get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().onTheseDaysOfTheWeek(DayOfWeek.MONDAY, DayOfWeek.THURSDAY, DayOfWeek.SUNDAY).get();
 		assertEquals("* * * * 1,4,7", cron.toString());
 	}
 	
 	@Test
 	public void testOneSpecificDayOfTheWeek() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().onTheseDaysOfTheWeek(DayOfWeek.SATURDAY).get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().onTheseDaysOfTheWeek(DayOfWeek.SATURDAY).get();
 		assertEquals("* * * * 6", cron.toString());
 	}
 	
@@ -378,7 +378,7 @@ public class CronTest {
 	
 	@Test
 	public void testDayOfWeekRange() {
-		CronDefinition cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY).get();
+		CronExpression cron = Cron.cron().everyMinute().everyHour().everyDay().everyMonth().fromDayOfWeek(DayOfWeek.SATURDAY).untilDayOfWeek(DayOfWeek.SUNDAY).get();
 		assertEquals("* * * * 6-7", cron.toString());
 	}
 	
@@ -403,73 +403,73 @@ public class CronTest {
 	//*************************************************
 	@Test
 	public void testEveryMinuteWithDefaultValues() {
-		CronDefinition cron = Cron.cron().everyMinute().get();
+		CronExpression cron = Cron.cron().everyMinute().get();
 		assertEquals("* * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testSpecificMinutesWithDefaultValues() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(2, 12, 22).get();
+		CronExpression cron = Cron.cron().inTheseMinutes(2, 12, 22).get();
 		assertEquals("2,12,22 * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testMinuteRangeWithDefaultValues() {
-		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).get();
+		CronExpression cron = Cron.cron().fromMinute(22).untilMinute(24).get();
 		assertEquals("22-24 * * * *", cron.toString());
 	}
 
 	@Test
 	public void testEveryHourWithDefaultValues() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(0,59).everyHour().get();
+		CronExpression cron = Cron.cron().inTheseMinutes(0,59).everyHour().get();
 		assertEquals("0,59 * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testSpecificHoursWithDefaultValues() {
-		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).get();
+		CronExpression cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).get();
 		assertEquals("* 19,21,23 * * *", cron.toString());
 	}
 	
 	@Test
 	public void testHourRangeWithDefaultValues() {
-		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).get();
+		CronExpression cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).get();
 		assertEquals("22-24 6-9 * * *", cron.toString());
 	}
 
 	@Test
 	public void testEveryDayWithDefaultValues() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().get();
+		CronExpression cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().get();
 		assertEquals("0,59 * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testSpecificDaysWithDefaultValues() {
-		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).onTheseDays(1, 2, 3).get();
+		CronExpression cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).onTheseDays(1, 2, 3).get();
 		assertEquals("* 19,21,23 1,2,3 * *", cron.toString());
 	}
 	
 	@Test
 	public void testDayRangeWithDefaultValues() {
-		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).fromDay(2).untilDay(4).get();
+		CronExpression cron = Cron.cron().fromMinute(22).untilMinute(24).fromHour(6).untilHour(9).fromDay(2).untilDay(4).get();
 		assertEquals("22-24 6-9 2-4 * *", cron.toString());
 	}
 
 	@Test
 	public void testEveryMonthWithDefaultValues() {
-		CronDefinition cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().everyMonth().get();
+		CronExpression cron = Cron.cron().inTheseMinutes(0,59).everyHour().everyDay().everyMonth().get();
 		assertEquals("0,59 * * * *", cron.toString());
 	}
 	
 	@Test
 	public void testSpecificMonthsWithDefaultValues() {
-		CronDefinition cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).everyDay().inTheseMonths(Month.MARCH, Month.JUNE).get();
+		CronExpression cron = Cron.cron().everyMinute().inTheseHours(19, 21, 23).everyDay().inTheseMonths(Month.MARCH, Month.JUNE).get();
 		assertEquals("* 19,21,23 * 3,6 *", cron.toString());
 	}
 	
 	@Test
 	public void testMonthRangeWithDefaultValues() {
-		CronDefinition cron = Cron.cron().fromMinute(22).untilMinute(24).everyHour().fromDay(2).untilDay(4).fromMonth(Month.APRIL).untilMonth(Month.SEPTEMBER).get();
+		CronExpression cron = Cron.cron().fromMinute(22).untilMinute(24).everyHour().fromDay(2).untilDay(4).fromMonth(Month.APRIL).untilMonth(Month.SEPTEMBER).get();
 		assertEquals("22-24 * 2-4 4-9 *", cron.toString());
 	}
 }

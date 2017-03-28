@@ -8,7 +8,6 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import de.cron.CronExpression;
-import de.cron.CronExpressionImpl;
 import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;
@@ -28,9 +27,9 @@ public class CronPeriodMonthPart extends BaseCronPeriodPart {
 	public List<CronExpression> getParts() {
 		CronExpression part;
 		if (isFromEqualToUntil()) {
-			part = new CronExpressionImpl(getFromElement());
+			part = new CronExpression(getFromElement());
 		} else {
-			part = new CronExpressionImpl(getFullRangeElement());
+			part = new CronExpression(getFullRangeElement());
 		}
 		return Arrays.asList(part);
 	}
@@ -38,17 +37,17 @@ public class CronPeriodMonthPart extends BaseCronPeriodPart {
 	@Override
 	public List<CronExpression> getPartsInternal() {
 		List<CronExpression> parts = new ArrayList<>();
-		parts.add(new CronExpressionImpl(getFromElement()));
+		parts.add(new CronExpression(getFromElement()));
 		
 		if (isFromEqualToUntil()) {
 			return parts;
 		}
 		
 		if (hasIntermediateParts()) {
-			parts.add(new CronExpressionImpl(getIntermediateElement()));
+			parts.add(new CronExpression(getIntermediateElement()));
 		}
 		
-		parts.add(new CronExpressionImpl(getUntilElement()));
+		parts.add(new CronExpression(getUntilElement()));
 		return parts;
 	}
 	

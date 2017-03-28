@@ -2,6 +2,6 @@ package de.cron;
 
 interface SimpleCronLastPart {
 	
-	CronDefinition get();
+	CronExpression get();
 
 }
