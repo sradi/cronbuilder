@@ -2,7 +2,7 @@ package de.cron.temp;
 
 import java.util.List;
 
-public interface ComplexCronPart {
+public interface CronPeriodPart {
 	
 	/**
 	 * Wird nur aufgerufen, wenn die nächstfeinere Ebene nicht mehr zum Zeitraum gehört.

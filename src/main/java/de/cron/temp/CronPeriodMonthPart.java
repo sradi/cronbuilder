@@ -11,12 +11,12 @@ import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;
 
-public class ComplexCronMonthPart extends BaseCronPeriodElement {
+public class CronPeriodMonthPart extends BaseCronPeriodPart {
 
 	private Month from;
 	private Month until;
 
-	public ComplexCronMonthPart(Month from, Month until) {
+	public CronPeriodMonthPart(Month from, Month until) {
 		Preconditions.checkArgument(from.compareTo(until) <= 0);
 		this.from = from;
 		this.until = until;

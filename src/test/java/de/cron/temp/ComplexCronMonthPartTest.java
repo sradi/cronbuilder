@@ -13,21 +13,21 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class ComplexCronMonthPartTest {
 	
-	private ComplexCronMonthPart singleMonthPart;
-	private ComplexCronMonthPart twoMonthPart;
-	private ComplexCronMonthPart severalMonthsPart;
+	private CronPeriodMonthPart singleMonthPart;
+	private CronPeriodMonthPart twoMonthPart;
+	private CronPeriodMonthPart severalMonthsPart;
 
 	@Before
 	public void setUp() {
-		singleMonthPart = new ComplexCronMonthPart(Month.MARCH, Month.MARCH);
-		twoMonthPart = new ComplexCronMonthPart(Month.MARCH, Month.APRIL);
-		severalMonthsPart = new ComplexCronMonthPart(Month.APRIL, Month.JULY);
+		singleMonthPart = new CronPeriodMonthPart(Month.MARCH, Month.MARCH);
+		twoMonthPart = new CronPeriodMonthPart(Month.MARCH, Month.APRIL);
+		severalMonthsPart = new CronPeriodMonthPart(Month.APRIL, Month.JULY);
 	}
 	
 	@Test
 	public void testFromAfterUntil() {
 		try {
-			new ComplexCronMonthPart(Month.MARCH, Month.FEBRUARY);
+			new CronPeriodMonthPart(Month.MARCH, Month.FEBRUARY);
 			fail("'from' is after 'until'");
 		} catch (Exception e) {
 		}

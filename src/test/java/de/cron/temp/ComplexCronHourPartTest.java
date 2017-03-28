@@ -14,42 +14,42 @@ import de.cron.units.Hour;
 
 public class ComplexCronHourPartTest {
 	
-	private ComplexCronDayPart singleDayCron;
+	private CronPeriodDayPart singleDayCron;
 	
-	private ComplexCronHourPart singleHourCron;
-	private ComplexCronHourPart twoHoursCron;
-	private ComplexCronHourPart severalHoursOnSingleDayCron;
-	private ComplexCronHourPart severalHoursOnTwoDaysCron;
-	private ComplexCronHourPart severalHoursInSeveralDaysInSameMonthCron;
-	private ComplexCronHourPart severalHoursInSeveralDaysInTwoMonthsCron;
-	private ComplexCronHourPart severalHoursInSeveralDaysInSeveralMonthsCron;
+	private CronPeriodHourPart singleHourCron;
+	private CronPeriodHourPart twoHoursCron;
+	private CronPeriodHourPart severalHoursOnSingleDayCron;
+	private CronPeriodHourPart severalHoursOnTwoDaysCron;
+	private CronPeriodHourPart severalHoursInSeveralDaysInSameMonthCron;
+	private CronPeriodHourPart severalHoursInSeveralDaysInTwoMonthsCron;
+	private CronPeriodHourPart severalHoursInSeveralDaysInSeveralMonthsCron;
 
 	@Before
 	public void setupSimpleCronDefinitions() {
-		ComplexCronMonthPart singleMonthCron = new ComplexCronMonthPart(Month.MARCH, Month.MARCH);
-		ComplexCronMonthPart twoMonthsCron = new ComplexCronMonthPart(Month.MARCH, Month.APRIL);
-		ComplexCronMonthPart severalMonthsCron = new ComplexCronMonthPart(Month.MARCH, Month.AUGUST);
+		CronPeriodMonthPart singleMonthCron = new CronPeriodMonthPart(Month.MARCH, Month.MARCH);
+		CronPeriodMonthPart twoMonthsCron = new CronPeriodMonthPart(Month.MARCH, Month.APRIL);
+		CronPeriodMonthPart severalMonthsCron = new CronPeriodMonthPart(Month.MARCH, Month.AUGUST);
 
-		this.singleDayCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(2));
-		ComplexCronDayPart twoDaysCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(3));
-		ComplexCronDayPart severalDaysSameMonthCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(15));
-		ComplexCronDayPart severalDaysTwoMonthsCron = new ComplexCronDayPart(twoMonthsCron, Day.fromInt(2), Day.fromInt(15));
-		ComplexCronDayPart severalDaysSeveralsMonthsCron = new ComplexCronDayPart(severalMonthsCron, Day.fromInt(2), Day.fromInt(15));
+		this.singleDayCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(2));
+		CronPeriodDayPart twoDaysCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(3));
+		CronPeriodDayPart severalDaysSameMonthCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(15));
+		CronPeriodDayPart severalDaysTwoMonthsCron = new CronPeriodDayPart(twoMonthsCron, Day.fromInt(2), Day.fromInt(15));
+		CronPeriodDayPart severalDaysSeveralsMonthsCron = new CronPeriodDayPart(severalMonthsCron, Day.fromInt(2), Day.fromInt(15));
 		
-		this.singleHourCron = new ComplexCronHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(20));
-		this.twoHoursCron = new ComplexCronHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(21));
-		this.severalHoursOnSingleDayCron = new ComplexCronHourPart(singleDayCron, Hour.fromInt(19), Hour.fromInt(23));
-		this.severalHoursOnTwoDaysCron = new ComplexCronHourPart(twoDaysCron, Hour.fromInt(19), Hour.fromInt(23));
-		this.severalHoursInSeveralDaysInSameMonthCron = new ComplexCronHourPart(severalDaysSameMonthCron, Hour.fromInt(19), Hour.fromInt(23));
-		this.severalHoursInSeveralDaysInTwoMonthsCron = new ComplexCronHourPart(severalDaysTwoMonthsCron, Hour.fromInt(19), Hour.fromInt(23));
-		this.severalHoursInSeveralDaysInSeveralMonthsCron = new ComplexCronHourPart(severalDaysSeveralsMonthsCron, Hour.fromInt(19), Hour.fromInt(23));
+		this.singleHourCron = new CronPeriodHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(20));
+		this.twoHoursCron = new CronPeriodHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(21));
+		this.severalHoursOnSingleDayCron = new CronPeriodHourPart(singleDayCron, Hour.fromInt(19), Hour.fromInt(23));
+		this.severalHoursOnTwoDaysCron = new CronPeriodHourPart(twoDaysCron, Hour.fromInt(19), Hour.fromInt(23));
+		this.severalHoursInSeveralDaysInSameMonthCron = new CronPeriodHourPart(severalDaysSameMonthCron, Hour.fromInt(19), Hour.fromInt(23));
+		this.severalHoursInSeveralDaysInTwoMonthsCron = new CronPeriodHourPart(severalDaysTwoMonthsCron, Hour.fromInt(19), Hour.fromInt(23));
+		this.severalHoursInSeveralDaysInSeveralMonthsCron = new CronPeriodHourPart(severalDaysSeveralsMonthsCron, Hour.fromInt(19), Hour.fromInt(23));
 	}
 
 	@SuppressWarnings("unused")
 	@Test
 	public void testFromHourAfterUntilHour() {
 		try {
-			new ComplexCronHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(19));
+			new CronPeriodHourPart(singleDayCron, Hour.fromInt(20), Hour.fromInt(19));
 			fail("'from' is after 'until' on the same day");
 		} catch (Exception e) {
 		}

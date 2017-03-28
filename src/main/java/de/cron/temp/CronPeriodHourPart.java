@@ -12,13 +12,13 @@ import de.cron.elements.CronHourRange;
 import de.cron.elements.CronSpecificHours;
 import de.cron.units.Hour;
 
-public class ComplexCronHourPart extends BaseCronPeriodElement {
+public class CronPeriodHourPart extends BaseCronPeriodPart {
 	
-	private ComplexCronDayPart dayPart;
+	private CronPeriodDayPart dayPart;
 	private Hour from;
 	private Hour until;
 
-	public ComplexCronHourPart(ComplexCronDayPart dayPart, Hour from, Hour until) {
+	public CronPeriodHourPart(CronPeriodDayPart dayPart, Hour from, Hour until) {
 		Preconditions.checkArgument(until.getIntValue() - from.getIntValue() >= 0 || !dayPart.isFromEqualToUntil()); // wenn gleicher Monat, mind. gleicher Tag 
 		this.dayPart = dayPart;
 		this.from = from;

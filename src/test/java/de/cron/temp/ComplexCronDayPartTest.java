@@ -13,32 +13,32 @@ import de.cron.units.Day;
 
 public class ComplexCronDayPartTest {
 	
-	private ComplexCronMonthPart singleMonthCron;
+	private CronPeriodMonthPart singleMonthCron;
 
-	private ComplexCronDayPart singleDayCron;
-	private ComplexCronDayPart twoDaysCron;
-	private ComplexCronDayPart severalDaysInSingleMonthCron;
-	private ComplexCronDayPart severalDaysInTwoMonthsCron;
-	private ComplexCronDayPart severalDaysInSeveralMonthsCron;
+	private CronPeriodDayPart singleDayCron;
+	private CronPeriodDayPart twoDaysCron;
+	private CronPeriodDayPart severalDaysInSingleMonthCron;
+	private CronPeriodDayPart severalDaysInTwoMonthsCron;
+	private CronPeriodDayPart severalDaysInSeveralMonthsCron;
 
 	@Before
 	public void setupSimpleCronDefinitions() {
-		singleMonthCron = new ComplexCronMonthPart(Month.MARCH, Month.MARCH);
-		ComplexCronMonthPart twoMonthsCron = new ComplexCronMonthPart(Month.MARCH, Month.APRIL);
-		ComplexCronMonthPart severalMonthsCron = new ComplexCronMonthPart(Month.MARCH, Month.AUGUST);
+		singleMonthCron = new CronPeriodMonthPart(Month.MARCH, Month.MARCH);
+		CronPeriodMonthPart twoMonthsCron = new CronPeriodMonthPart(Month.MARCH, Month.APRIL);
+		CronPeriodMonthPart severalMonthsCron = new CronPeriodMonthPart(Month.MARCH, Month.AUGUST);
 
-		singleDayCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(2));
-		twoDaysCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(5), Day.fromInt(6));
-		severalDaysInSingleMonthCron = new ComplexCronDayPart(singleMonthCron, Day.fromInt(3), Day.fromInt(7));
-		severalDaysInTwoMonthsCron = new ComplexCronDayPart(twoMonthsCron, Day.fromInt(3), Day.fromInt(7));
-		severalDaysInSeveralMonthsCron = new ComplexCronDayPart(severalMonthsCron, Day.fromInt(3), Day.fromInt(7));
+		singleDayCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(2), Day.fromInt(2));
+		twoDaysCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(5), Day.fromInt(6));
+		severalDaysInSingleMonthCron = new CronPeriodDayPart(singleMonthCron, Day.fromInt(3), Day.fromInt(7));
+		severalDaysInTwoMonthsCron = new CronPeriodDayPart(twoMonthsCron, Day.fromInt(3), Day.fromInt(7));
+		severalDaysInSeveralMonthsCron = new CronPeriodDayPart(severalMonthsCron, Day.fromInt(3), Day.fromInt(7));
 	}
 
 	@SuppressWarnings("unused")
 	@Test
 	public void testFromDayAfterUntilDay() {
 		try {
-			new ComplexCronDayPart(singleMonthCron, Day.fromInt(5), Day.fromInt(4));
+			new CronPeriodDayPart(singleMonthCron, Day.fromInt(5), Day.fromInt(4));
 			fail("'from' is after 'until' in the same month");
 		} catch (Exception e) {
 		}
