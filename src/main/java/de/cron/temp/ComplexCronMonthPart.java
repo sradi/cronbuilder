@@ -11,7 +11,7 @@ import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;
 
-public class ComplexCronMonthPart implements ComplexCronPart {
+public class ComplexCronMonthPart extends BaseComplecCronPart {
 
 	private Month from;
 	private Month until;

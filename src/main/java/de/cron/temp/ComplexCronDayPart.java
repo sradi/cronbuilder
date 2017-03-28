@@ -12,7 +12,7 @@ import de.cron.elements.CronElement;
 import de.cron.elements.CronSpecificDays;
 import de.cron.units.Day;
 
-public class ComplexCronDayPart implements ComplexCronPart {
+public class ComplexCronDayPart extends BaseComplecCronPart {
 	
 	private ComplexCronMonthPart monthPart;
 	private Day from;
