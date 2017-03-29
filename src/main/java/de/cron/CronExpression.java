@@ -41,11 +41,24 @@ public class CronExpression {
 	public CronExpression prepend(CronElement newPart) {
 		Preconditions.checkArgument(newPart != null);
 		
+		CronExpression complexCron = cloneCurrentCrons();
+		complexCron.parts.add(0, newPart);
+		return complexCron;
+	}
+	
+	public CronExpression append(CronElement newPart) {
+		Preconditions.checkArgument(newPart != null);
+		
+		CronExpression complexCron = cloneCurrentCrons();
+		complexCron.parts.add(newPart);
+		return complexCron;
+	}
+	
+	private CronExpression cloneCurrentCrons() {
 		CronExpression complexCron = new CronExpression();
 		for (CronElement p : parts) {
 			complexCron.parts.add(p);
 		}
-		complexCron.parts.add(0, newPart);
 		return complexCron;
 	}
 	
