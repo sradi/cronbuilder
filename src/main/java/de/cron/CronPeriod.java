@@ -70,6 +70,10 @@ public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOf
 
 	@Override
 	public CronPeriodExpression get() {
+		if (this.dayOfWeekElement == null) {
+			this.dayOfWeekElement = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+		}
+
 		return new CronPeriodExpression.CronPeriodExpressionBuilder()
 				.setMinuteDefinition(minuteElement)
 				.setHourDefinition(hourElement)

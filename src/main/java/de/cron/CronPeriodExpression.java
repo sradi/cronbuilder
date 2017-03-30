@@ -1,6 +1,7 @@
 package de.cron;
 
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import de.cron.units.Minute;
 
 public class CronPeriodExpression implements Iterable<CronExpression> {
 	
-	private List<CronExpression> crons;
+	private List<CronExpression> crons = new ArrayList<>();
 
 	private CronPeriodExpression(CronMinute minuteElement, CronHour hourElement, CronDay dayElement,
 			CronPeriodPart cronPeriodMonth, CronDayOfWeek dayOfWeekElement) {
@@ -37,7 +38,12 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 	private CronPeriodExpression(CronMinute minuteElement, CronPeriodHourPart cronPeriodHourPart,
 			CronDayOfWeek dayOfWeekElement) {
 		List<CronExpression> hourPeriodExpression = cronPeriodHourPart.getParts();
-		hourPeriodExpression.forEach(expr -> crons.add(expr.prepend(minuteElement).append(dayOfWeekElement)));
+		for (CronExpression expr : hourPeriodExpression) {
+			CronExpression x = expr.prepend(minuteElement);
+			CronExpression y = x.append(dayOfWeekElement);
+			crons.add(y);
+		}
+//		hourPeriodExpression.forEach(expr -> crons.add(expr.prepend(minuteElement).append(dayOfWeekElement)));
 	}
 
 	private CronPeriodExpression(CronPeriodMinutePart cronPeriodMinutePart, CronDayOfWeek dayOfWeekElement) {
@@ -75,83 +81,93 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 		private Month fromMonth;
 		private Month untilMonth;
 
-		public CronPeriodExpressionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekElement) {
-			Preconditions.checkArgument(dayOfWeekElement != null);
-			this.dayOfWeekElement = dayOfWeekElement;
-			return this;
-		}
-
 		public CronPeriodExpressionBuilder setMinuteDefinition(CronMinute minuteElement) {
-			Preconditions.checkArgument(minuteElement != null);
+//			Preconditions.checkArgument(minuteElement != null);
 			this.minuteElement = minuteElement;
 			return this;
 		}
 		
 		public CronPeriodExpressionBuilder setHourDefinition(CronHour hourElement) {
-			Preconditions.checkArgument(hourElement != null);
+//			Preconditions.checkArgument(hourElement != null);
 			this.hourElement = hourElement;
 			return this;
 		}
 		
 		public CronPeriodExpressionBuilder setDayDefinition(CronDay dayElement) {
-			Preconditions.checkArgument(dayElement != null);
+//			Preconditions.checkArgument(dayElement != null);
 			this.dayElement = dayElement;
 			return this;
 		}
 
+		public CronPeriodExpressionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekElement) {
+//			Preconditions.checkArgument(dayOfWeekElement != null);
+			this.dayOfWeekElement = dayOfWeekElement;
+			return this;
+		}
+
 		public CronPeriodExpressionBuilder setFromMinute(Minute fromMinute) {
-			Preconditions.checkArgument(fromMinute != null);
+//			Preconditions.checkArgument(fromMinute != null);
 			this.fromMinute = fromMinute;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setUntilMinute(Minute untilMinute) {
-			Preconditions.checkArgument(untilMinute != null);
+//			Preconditions.checkArgument(untilMinute != null);
 			this.untilMinute = untilMinute;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setFromHour(Hour fromHour) {
-			Preconditions.checkArgument(fromHour != null);
+//			Preconditions.checkArgument(fromHour != null);
 			this.fromHour = fromHour;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setUntilHour(Hour untilHour) {
-			Preconditions.checkArgument(untilHour != null);
+//			Preconditions.checkArgument(untilHour != null);
 			this.untilHour = untilHour;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setFromDay(Day fromDay) {
-			Preconditions.checkArgument(fromDay != null);
+//			Preconditions.checkArgument(fromDay != null);
 			this.fromDay = fromDay;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setUntilDay(Day untilDay) {
-			Preconditions.checkArgument(untilDay != null);
+//			Preconditions.checkArgument(untilDay != null);
 			this.untilDay = untilDay;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setFromMonth(Month fromMonth) {
-			Preconditions.checkArgument(fromMonth != null);
+//			Preconditions.checkArgument(fromMonth != null);
 			this.fromMonth = fromMonth;
 			return this;
 		}
 
 		public CronPeriodExpressionBuilder setUntilMonth(Month untilMonth) {
-			Preconditions.checkArgument(untilMonth != null);
+//			Preconditions.checkArgument(untilMonth != null);
 			this.untilMonth = untilMonth;
 			return this;
 		}
 		
 		public CronPeriodExpression build() {
 			Preconditions.checkState(isMonthLevelPeriod() || isDayLevelPeriod() || isHourLevelPeriod() || isMinuteLevelPeriod());
+			
 			if (isMonthLevelPeriod()) {
+				if (this.hourElement == null) {
+					this.hourElement = CronHour.EVERY_HOUR;
+				}
+				if (this.dayElement == null) {
+					this.dayElement = CronDay.EVERY_DAY;
+				}
 				return new CronPeriodExpression(minuteElement, hourElement, dayElement, new CronPeriodMonthPart(fromMonth, untilMonth), dayOfWeekElement);
 			} else if (isDayLevelPeriod()) {
+				if (this.hourElement == null) {
+					this.hourElement = CronHour.EVERY_HOUR;
+				}
 				return new CronPeriodExpression(
 						minuteElement,
 						hourElement,
@@ -191,8 +207,8 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 
 		private boolean isMonthLevelPeriod() {
 			return minuteElement != null
-					&& hourElement != null
-					&& dayElement != null
+//					&& hourElement != null
+//					&& dayElement != null
 					&& fromMinute == null
 					&& untilMinute == null
 					&& fromHour == null
@@ -205,7 +221,7 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 
 		private boolean isDayLevelPeriod() {
 			return minuteElement != null
-					&& hourElement != null
+//					&& hourElement != null
 					&& dayElement == null
 					&& fromMinute == null
 					&& untilMinute == null

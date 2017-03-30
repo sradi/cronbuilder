@@ -120,42 +120,32 @@ public class CronExpression {
 		private CronMonth monthDefinition;
 		private CronDayOfWeek dayOfWeekDefinition;
 		
-//		public SimpleCronDefinitionBuilder(CronExpression baseExpression) {
-//			Preconditions.checkArgument(baseExpression != null);
-//			
-//			this.minuteDefinition = baseExpression.minuteDefinition;
-//			this.hourDefinition = baseExpression.hourDefinition;
-//			this.dayDefinition = baseExpression.dayDefinition;
-//			this.monthDefinition = baseExpression.monthDefinition;
-//			this.dayOfWeekDefinition = baseExpression.dayOfWeekDefinition;
-//		}
-		
 		public CronExpressionBuilder setMinuteDefinition(CronMinute minuteDefinition) {
-			Preconditions.checkArgument(minuteDefinition != null);
+//			Preconditions.checkArgument(minuteDefinition != null);
 			this.minuteDefinition = minuteDefinition;
 			return this;
 		}
 
 		public CronExpressionBuilder setHourDefinition(CronHour hourDefinition) {
-			Preconditions.checkArgument(hourDefinition != null);
+//			Preconditions.checkArgument(hourDefinition != null);
 			this.hourDefinition = hourDefinition;
 			return this;
 		}
 
 		public CronExpressionBuilder setDayDefinition(CronDay dayDefinition) {
-			Preconditions.checkArgument(dayDefinition != null);
+//			Preconditions.checkArgument(dayDefinition != null);
 			this.dayDefinition = dayDefinition;
 			return this;
 		}
 
 		public CronExpressionBuilder setMonthDefinition(CronMonth monthDefinition) {
-			Preconditions.checkArgument(monthDefinition != null);
+//			Preconditions.checkArgument(monthDefinition != null);
 			this.monthDefinition = monthDefinition;
 			return this;
 		}
 
 		public CronExpressionBuilder setDayOfWeekDefinition(CronDayOfWeek dayOfWeekDefinition) {
-			Preconditions.checkArgument(dayOfWeekDefinition != null);
+//			Preconditions.checkArgument(dayOfWeekDefinition != null);
 			this.dayOfWeekDefinition = dayOfWeekDefinition;
 			return this;
 		}
