@@ -5,11 +5,13 @@ abstract class CronUnit<U> {
 	private int unit;
 	private int minValue;
 	private int maxValue;
+	private int length;
 	
-	protected void setUnit(int unit, int minValue, int maxValue) {
+	protected void setUnit(int unit, int minValue, int maxValue, int length) {
 		this.unit = unit;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
+		this.length = length;
 	}
 
 	public int getIntValue() {
@@ -22,6 +24,10 @@ abstract class CronUnit<U> {
 	
 	public int getMaxValue() {
 		return maxValue;
+	}
+	
+	public int getLength() {
+		return length;
 	}
 
 	public boolean isBefore(CronUnit<U> minute2) {

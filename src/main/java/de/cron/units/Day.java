@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 public class Day extends CronUnit<Day> {
 
 	private Day(int day) {
-		this.setUnit(day, 1, 31);
+		this.setUnit(day, 1, 31, 24);
 	}
 	
 	public static Day fromInt(int day) {

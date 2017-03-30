@@ -42,7 +42,7 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 				for (int i = 0; i < monthParts.size(); i++) {
 					CronExpression part = monthParts.get(i);
 					if (i==0) {
-						parts.add(part.prepend(new CronDayRange(from, Day.fromInt(from.getMaxValue()))));
+						parts.add(part.prepend(new CronDayRange(from, Day.fromInt(monthPart.getLengthOfFromUnit()))));
 					} else if (i==(monthParts.size()-1)) {
 						parts.add(part.prepend(new CronDayRange(Day.fromInt(until.getMinValue()), until)));
 					} else {
@@ -99,7 +99,7 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 
 	private CronElement getRestOfFromElement() {
 		Day intermediateFrom = Day.fromInt(from.getIntValue() + 1);
-		Day maxFrom = Day.fromInt(from.getMaxValue());
+		Day maxFrom = Day.fromInt(monthPart.getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
 			return new CronSpecificDays(intermediateFrom); 
 		} else {
@@ -152,6 +152,11 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 	@Override
 	public boolean hasIntermediateParts() {
 		return until.getIntValue() - from.getIntValue() > 1 || monthPart.hasIntermediateParts();
+	}
+
+	@Override
+	int getLengthOfFromUnit() {
+		return from.getLength();
 	}
 	
 }

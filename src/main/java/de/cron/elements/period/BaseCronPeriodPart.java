@@ -4,4 +4,6 @@ public abstract class BaseCronPeriodPart implements CronPeriodPart {
 	
 //	public abstract ComplexCronPart getNextLevelPart();
 	
+	abstract int getLengthOfFromUnit();
+	
 }

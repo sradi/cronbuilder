@@ -43,7 +43,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
-						parts.add(part.prepend(new CronMinuteRange(from, Minute.fromInt(from.getMaxValue()))));
+						parts.add(part.prepend(new CronMinuteRange(from, Minute.fromInt(hourPart.getLengthOfFromUnit()))));
 					} else if (i==(intermediateParts.size()-1)) {
 						parts.add(part.prepend(new CronMinuteRange(Minute.fromInt(until.getMinValue()), until)));
 					} else {
@@ -100,7 +100,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 
 	private CronElement getRestOfFromElement() {
 		Minute intermediateFrom = Minute.fromInt(from.getIntValue() + 1);
-		Minute maxFrom = Minute.fromInt(from.getMaxValue());
+		Minute maxFrom = Minute.fromInt(hourPart.getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
 			return new CronSpecificMinutes(intermediateFrom); 
 		} else {
@@ -153,6 +153,11 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 	@Override
 	public boolean hasIntermediateParts() {
 		return until.getIntValue() - from.getIntValue() > 1 || hourPart.hasIntermediateParts();
+	}
+
+	@Override
+	int getLengthOfFromUnit() {
+		return from.getLength();
 	}
 	
 }

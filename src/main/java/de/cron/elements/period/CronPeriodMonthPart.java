@@ -89,4 +89,9 @@ public class CronPeriodMonthPart extends BaseCronPeriodPart {
 		return from.equals(until);
 	}
 
+	@Override
+	int getLengthOfFromUnit() {
+		return from.maxLength();
+	}
+
 }
