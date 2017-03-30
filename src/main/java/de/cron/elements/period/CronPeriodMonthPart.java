@@ -12,7 +12,7 @@ import de.cron.elements.CronElement;
 import de.cron.elements.CronMonthRange;
 import de.cron.elements.CronSpecificMonths;
 
-public class CronPeriodMonthPart extends BaseCronPeriodPart {
+public class CronPeriodMonthPart implements CronPeriodPart {
 
 	private Month from;
 	private Month until;
@@ -90,7 +90,7 @@ public class CronPeriodMonthPart extends BaseCronPeriodPart {
 	}
 
 	@Override
-	int getLengthOfFromUnit() {
+	public int getLengthOfFromUnit() {
 		return from.maxLength();
 	}
 

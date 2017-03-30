@@ -30,20 +30,20 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 	public List<CronExpression> getParts() {
 		List<CronExpression> parts = new ArrayList<>();
 		if (isFromEqualToUntil()) {
-			List<CronExpression> hourParts = hourPart.getParts(); // hier kann nur ein DayPart zurueckkommen
+			List<CronExpression> hourParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
 			hourParts.forEach(p -> parts.add(p.prepend(getFromElement())));
 		} else {
-			if (hourPart.isFromEqualToUntil()) {
+			if (getNextLevelPart().isFromEqualToUntil()) {
 				// zwei oder mehr Stunden am gleichen Tag...
-				List<CronExpression> hourParts = hourPart.getParts(); // hier kann nur ein DayPart zurueckkommen
+				List<CronExpression> hourParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
 				hourParts.forEach(p -> parts.add(p.prepend(getFullRangeElement())));
 			} else {
 				// zwei oder mehr Stunden über zwei oder mehrere Tage
-				List<CronExpression> intermediateParts = hourPart.getPartsInternal();
+				List<CronExpression> intermediateParts = getNextLevelPart().getPartsInternal();
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
-						parts.add(part.prepend(new CronMinuteRange(from, Minute.fromInt(hourPart.getLengthOfFromUnit()))));
+						parts.add(part.prepend(new CronMinuteRange(from, Minute.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
 					} else if (i==(intermediateParts.size()-1)) {
 						parts.add(part.prepend(new CronMinuteRange(Minute.fromInt(until.getMinValue()), until)));
 					} else {
@@ -58,7 +58,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 	@Override
 	public List<CronExpression> getPartsInternal() {
 		List<CronExpression> parts = new ArrayList<>();
-		List<CronExpression> hourParts = hourPart.getPartsInternal();
+		List<CronExpression> hourParts = getNextLevelPart().getPartsInternal();
 		Iterator<CronExpression> hourPartsIterator = hourParts.iterator();
 		
 		CronExpression firstDayPart = hourPartsIterator.next();
@@ -71,14 +71,14 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 			return parts; // gleicher Tag im gleichen Monat
 		}
 		
-		if ((hourPart.isFromEqualToUntil()) && (hasIntermediateParts())) {
+		if ((getNextLevelPart().isFromEqualToUntil()) && (hasIntermediateParts())) {
 			// intermediate Tage im gleichen Monat: ganze Range, ohne den ersten und letzten Tag
 			parts.add(firstDayPart.prepend(getIntermediatePart()));
-		} else if (!hourPart.isFromEqualToUntil()) {
+		} else if (!getNextLevelPart().isFromEqualToUntil()) {
 			// intermediate Tage in verschiedenen Monaten: Restliche Tage des 1. Monats
 			parts.add(firstDayPart.prepend(getRestOfFromElement()));
 		
-			if (hourPart.hasIntermediateParts()) {
+			if (getNextLevelPart().hasIntermediateParts()) {
 				// jeden Intermediate (ohne den ersten und den letzten) der naechsten Ebene mit "every" anreichern
 				while (hourPartsIterator.hasNext()) {
 					CronExpression intermediateDayPart = hourPartsIterator.next();
@@ -100,7 +100,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 
 	private CronElement getRestOfFromElement() {
 		Minute intermediateFrom = Minute.fromInt(from.getIntValue() + 1);
-		Minute maxFrom = Minute.fromInt(hourPart.getLengthOfFromUnit());
+		Minute maxFrom = Minute.fromInt(getNextLevelPart().getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
 			return new CronSpecificMinutes(intermediateFrom); 
 		} else {
@@ -144,19 +144,24 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 			return new CronMinuteRange(intermediateFrom, intermediateUntil);
 		}
 	}
+	
+	@Override
+	public CronPeriodPart getNextLevelPart() {
+		return hourPart;
+	}
 
 	@Override
 	public boolean isFromEqualToUntil() {
-		return from.equals(until) && hourPart.isFromEqualToUntil();
+		return from.equals(until) && getNextLevelPart().isFromEqualToUntil();
 	}
 
 	@Override
 	public boolean hasIntermediateParts() {
-		return until.getIntValue() - from.getIntValue() > 1 || hourPart.hasIntermediateParts();
+		return until.getIntValue() - from.getIntValue() > 1 || getNextLevelPart().hasIntermediateParts();
 	}
 
 	@Override
-	int getLengthOfFromUnit() {
+	public int getLengthOfFromUnit() {
 		return from.getLength();
 	}
 	

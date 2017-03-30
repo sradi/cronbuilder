@@ -14,6 +14,8 @@ public interface CronPeriodPart {
 	
 	List<CronExpression> getPartsInternal();
 	
+	int getLengthOfFromUnit();
+	
 	boolean isFromEqualToUntil();
 	
 	boolean hasIntermediateParts();
