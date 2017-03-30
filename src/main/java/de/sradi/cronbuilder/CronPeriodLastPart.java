@@ -1,6 +1,6 @@
 package de.sradi.cronbuilder;
 
-interface ComplexCronLastPart {
+interface CronPeriodLastPart {
 	
 	CronPeriodExpression get();
 

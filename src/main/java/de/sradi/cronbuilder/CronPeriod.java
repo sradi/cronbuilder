@@ -14,7 +14,7 @@ import de.sradi.cronbuilder.units.Day;
 import de.sradi.cronbuilder.units.Hour;
 import de.sradi.cronbuilder.units.Minute;
 
-public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOfWeekPartTwo {
+public class CronPeriod implements CronPeriodDayOfWeekPartOne, CronPeriodDayOfWeekPartTwo {
 
 	private DayOfWeek fromDayOfWeek;
 
@@ -46,25 +46,25 @@ public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOf
 	}
 
 	@Override
-	public ComplexCronLastPart everyDayOfWeek() {
+	public CronPeriodLastPart everyDayOfWeek() {
 		this.dayOfWeekElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 	
 	@Override
-	public ComplexCronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
+	public CronPeriodLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		this.dayOfWeekElement = new CronSpecificDaysOfWeek(daysOfWeek);
 		return this;
 	}
 	
 	@Override
-	public ComplexCronDayOfWeekPartTwo fromDayOfWeek(DayOfWeek fromDayOfWeek) {
+	public CronPeriodDayOfWeekPartTwo fromDayOfWeek(DayOfWeek fromDayOfWeek) {
 		this.fromDayOfWeek = fromDayOfWeek;
 		return this;
 	}
 
 	@Override
-	public ComplexCronLastPart untilDayOfWeek(DayOfWeek untilDayOfWeek) {
+	public CronPeriodLastPart untilDayOfWeek(DayOfWeek untilDayOfWeek) {
 		this.dayOfWeekElement = new CronDayOfWeekRange(fromDayOfWeek, untilDayOfWeek);
 		return this;
 	}

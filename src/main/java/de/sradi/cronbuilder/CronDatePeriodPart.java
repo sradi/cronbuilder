@@ -4,6 +4,6 @@ import java.time.LocalDate;
 
 interface CronDatePeriodPart {
 	
-	ComplexCronDayOfWeekPartOne until(LocalDate until);
+	CronPeriodDayOfWeekPartOne until(LocalDate until);
 
 }

@@ -10,5 +10,5 @@ interface CronHourPartOne extends SimpleCronLastPart {
 	
 	CronHourPartTwo fromHour(int hour);
 
-	CronDayAndDatePeriodPartOne from(int hour, LocalDate from);
+	CronHourBasedPeriodPartOne from(int hour, LocalDate from);
 }
