@@ -3,6 +3,7 @@ package de.cron.elements.period;
 import java.util.List;
 
 import de.cron.CronExpression;
+import de.cron.elements.CronElement;
 
 public interface CronPeriodPart {
 	
@@ -13,6 +14,12 @@ public interface CronPeriodPart {
 	List<CronExpression> getParts();
 	
 	List<CronExpression> getPartsInternal();
+	
+	CronElement getFromElement();
+	
+	CronElement getIntermediateElement();
+	
+	CronElement getUntilElement();
 	
 	int getLengthOfFromUnit();
 	

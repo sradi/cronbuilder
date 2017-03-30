@@ -51,11 +51,13 @@ public class CronPeriodMonthPart implements CronPeriodPart {
 		return parts;
 	}
 	
-	private CronElement getFromElement() {
+	@Override
+	public CronElement getFromElement() {
 		return new CronSpecificMonths(from);
 	}
 
-	private CronElement getUntilElement() {
+	@Override
+	public CronElement getUntilElement() {
 		CronSpecificMonths part = new CronSpecificMonths(until);
 		return part;
 	}
@@ -68,7 +70,8 @@ public class CronPeriodMonthPart implements CronPeriodPart {
 		}
 	}
 	
-	private CronElement getIntermediateElement() {
+	@Override
+	public CronElement getIntermediateElement() {
 		Preconditions.checkState(hasIntermediateParts());;
 		Month intermediateFrom = from.plus(1);
 		Month intermediateUntil = until.minus(1);

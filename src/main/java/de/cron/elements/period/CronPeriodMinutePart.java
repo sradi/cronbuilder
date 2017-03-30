@@ -1,7 +1,6 @@
 package de.cron.elements.period;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -54,51 +53,9 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 		}
 		return periodParts;
 	}
-	
+
 	@Override
-	public List<CronExpression> getPartsInternal() {
-		List<CronExpression> periodParts = new ArrayList<>();
-		List<CronExpression> nextLevelParts = getNextLevelPart().getPartsInternal();
-		Iterator<CronExpression> nextLevelPartsIterator = nextLevelParts.iterator();
-		
-		CronExpression firstPart = nextLevelPartsIterator.next();
-		CronExpression lastPart = nextLevelParts.get(nextLevelParts.size()-1);
-		nextLevelPartsIterator.remove();
-		
-		periodParts.add(firstPart.prepend(getFromElement()));
-
-		if (isFromEqualToUntil()) {
-			return periodParts; // gleicher Tag im gleichen Monat
-		}
-		
-		if ((getNextLevelPart().isFromEqualToUntil()) && (hasIntermediateParts())) {
-			// intermediate Tage im gleichen Monat: ganze Range, ohne den ersten und letzten Tag
-			periodParts.add(firstPart.prepend(getIntermediatePart()));
-		} else if (!getNextLevelPart().isFromEqualToUntil()) {
-			// intermediate Tage in verschiedenen Monaten: Restliche Tage des 1. Monats
-			periodParts.add(firstPart.prepend(getRestOfFromElement()));
-		
-			if (getNextLevelPart().hasIntermediateParts()) {
-				// jeden Intermediate (ohne den ersten und den letzten) der naechsten Ebene mit "every" anreichern
-				while (nextLevelPartsIterator.hasNext()) {
-					CronExpression intermediateDayPart = nextLevelPartsIterator.next();
-					if (!nextLevelPartsIterator.hasNext()) {
-						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
-						break;
-					}
-					periodParts.add(intermediateDayPart.prepend(CronElementEvery.INSTANCE));
-				}
-			}
-			
-			// intermediate Tage in verschiedenen Monaten: 1. bis x. Tag des letzten Monats
-			periodParts.add(lastPart.prepend(getBeginningOfUntilElement()));
-		}
-
-		periodParts.add(lastPart.prepend(getUntilElement()));
-		return periodParts;
-	}
-
-	private CronElement getRestOfFromElement() {
+	protected CronElement getRestOfFromElement() {
 		Minute intermediateFrom = Minute.fromInt(from.getIntValue() + 1);
 		Minute maxFrom = Minute.fromInt(getNextLevelPart().getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
@@ -108,7 +65,8 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 		}
 	}
 	
-	private CronElement getBeginningOfUntilElement() {
+	@Override
+	protected CronElement getBeginningOfUntilElement() {
 		Minute minFrom = Minute.fromInt(until.getMinValue());
 		Minute intermediateUntil = Minute.fromInt(until.getIntValue() - 1);
 		if (minFrom.equals(intermediateUntil)) {
@@ -118,11 +76,13 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 		}
 	}
 
-	private CronElement getFromElement() {
+	@Override
+	public CronElement getFromElement() {
 		return new CronSpecificMinutes(from);
 	}
 	
-	private CronElement getUntilElement() {
+	@Override
+	public CronElement getUntilElement() {
 		return new CronSpecificMinutes(until);
 	}
 	
@@ -134,7 +94,8 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 		}
 	}
 	
-	private CronElement getIntermediatePart() {
+	@Override
+	public CronElement getIntermediateElement() {
 		Preconditions.checkState(hasIntermediateParts());;
 		Minute intermediateFrom = Minute.fromInt(from.getIntValue() + 1);
 		Minute intermediateUntil = Minute.fromInt(until.getIntValue() - 1);
