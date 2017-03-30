@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import de.cron.elements.CronDay;
 import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronElement;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronMinute;
 import de.cron.elements.CronMonth;
@@ -154,16 +155,16 @@ public class CronExpression {
 			Preconditions.checkArgument(minuteDefinition != null);
 			
 			if (this.hourDefinition == null) {
-				this.hourDefinition = CronHour.EVERY_HOUR;
+				this.hourDefinition = CronElementEvery.INSTANCE;
 			}
 			if (this.dayDefinition == null) {
-				this.dayDefinition = CronDay.EVERY_DAY;
+				this.dayDefinition = CronElementEvery.INSTANCE;
 			}
 			if (this.monthDefinition == null) {
-				this.monthDefinition = CronMonth.EVERY_MONTH;
+				this.monthDefinition = CronElementEvery.INSTANCE;
 			}
 			if (this.dayOfWeekDefinition == null) {
-				this.dayOfWeekDefinition = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+				this.dayOfWeekDefinition = CronElementEvery.INSTANCE;
 			}
 			return new CronExpression(minuteDefinition, hourDefinition, dayDefinition, monthDefinition, dayOfWeekDefinition);
 		}

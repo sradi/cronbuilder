@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import de.cron.elements.CronDay;
 import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayOfWeekRange;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronMinute;
 import de.cron.elements.CronSpecificDaysOfWeek;
@@ -46,7 +47,7 @@ public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOf
 
 	@Override
 	public ComplexCronLastPart everyDayOfWeek() {
-		this.dayOfWeekElement = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+		this.dayOfWeekElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 	
@@ -71,7 +72,7 @@ public class CronPeriod implements ComplexCronDayOfWeekPartOne, ComplexCronDayOf
 	@Override
 	public CronPeriodExpression get() {
 		if (this.dayOfWeekElement == null) {
-			this.dayOfWeekElement = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+			this.dayOfWeekElement = CronElementEvery.INSTANCE;
 		}
 
 		return new CronPeriodExpression.CronPeriodExpressionBuilder()

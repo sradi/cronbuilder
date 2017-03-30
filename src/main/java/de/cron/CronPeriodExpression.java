@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 
 import de.cron.elements.CronDay;
 import de.cron.elements.CronDayOfWeek;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronMinute;
 import de.cron.elements.period.CronPeriodDayPart;
@@ -153,15 +154,15 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 			
 			if (isMonthLevelPeriod()) {
 				if (this.hourElement == null) {
-					this.hourElement = CronHour.EVERY_HOUR;
+					this.hourElement = CronElementEvery.INSTANCE;
 				}
 				if (this.dayElement == null) {
-					this.dayElement = CronDay.EVERY_DAY;
+					this.dayElement = CronElementEvery.INSTANCE;
 				}
 				return new CronPeriodExpression(minuteElement, hourElement, dayElement, new CronPeriodMonthPart(fromMonth, untilMonth), dayOfWeekElement);
 			} else if (isDayLevelPeriod()) {
 				if (this.hourElement == null) {
-					this.hourElement = CronHour.EVERY_HOUR;
+					this.hourElement = CronElementEvery.INSTANCE;
 				}
 				return new CronPeriodExpression(
 						minuteElement,

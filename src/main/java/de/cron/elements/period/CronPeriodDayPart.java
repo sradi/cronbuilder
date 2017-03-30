@@ -7,9 +7,9 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import de.cron.CronExpression;
-import de.cron.elements.CronDay;
 import de.cron.elements.CronDayRange;
 import de.cron.elements.CronElement;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronSpecificDays;
 import de.cron.units.Day;
 
@@ -46,7 +46,7 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 					} else if (i==(nextLevelParts.size()-1)) {
 						periodParts.add(part.prepend(new CronDayRange(Day.fromInt(until.getMinValue()), until)));
 					} else {
-						periodParts.add(part.prepend(CronDayRange.EVERY_DAY));
+						periodParts.add(part.prepend(CronElementEvery.INSTANCE));
 					}
 				}
 			}
@@ -85,7 +85,7 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;
 					}
-					periodParts.add(intermediateMonthPart.prepend(CronDay.EVERY_DAY));
+					periodParts.add(intermediateMonthPart.prepend(CronElementEvery.INSTANCE));
 				}
 			}
 			

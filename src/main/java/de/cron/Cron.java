@@ -11,6 +11,7 @@ import de.cron.elements.CronDay;
 import de.cron.elements.CronDayOfWeek;
 import de.cron.elements.CronDayOfWeekRange;
 import de.cron.elements.CronDayRange;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronHour;
 import de.cron.elements.CronHourRange;
 import de.cron.elements.CronMinute;
@@ -53,7 +54,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 
 	@Override
 	public CronHourPartOne everyMinute() {
-		this.minuteElement = CronMinute.EVERY_MINUTE;
+		this.minuteElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 
@@ -98,7 +99,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	// ***************************************************************
 	@Override
 	public CronDayPartOne everyHour() {
-		this.hourElement = CronHour.EVERY_HOUR;
+		this.hourElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 
@@ -141,7 +142,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	// ***************************************************************
 	@Override
 	public CronMonthPartOne everyDay() {
-		this.dayElement = CronDay.EVERY_DAY;
+		this.dayElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 
@@ -168,7 +169,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	// ***************************************************************
 	@Override
 	public CronDayOfWeekPartOne everyMonth() {
-		this.monthElement = CronMonth.EVERY_MONTH;
+		this.monthElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 
@@ -195,7 +196,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	// ***************************************************************
 	@Override
 	public SimpleCronLastPart everyDayOfWeek() {
-		this.dayOfWeekElement = CronDayOfWeek.EVERY_DAY_OF_THE_WEEK;
+		this.dayOfWeekElement = CronElementEvery.INSTANCE;
 		return this;
 	}
 

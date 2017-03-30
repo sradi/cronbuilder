@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 
 import de.cron.CronExpression;
 import de.cron.elements.CronElement;
-import de.cron.elements.CronHour;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronHourRange;
 import de.cron.elements.CronSpecificHours;
 import de.cron.units.Hour;
@@ -47,7 +47,7 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 					} else if (i==(intermediateParts.size()-1)) {
 						periodParts.add(part.prepend(new CronHourRange(Hour.fromInt(until.getMinValue()), until)));
 					} else {
-						periodParts.add(part.prepend(CronHourRange.EVERY_HOUR));
+						periodParts.add(part.prepend(CronElementEvery.INSTANCE));
 					}
 				}
 			}
@@ -86,7 +86,7 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;
 					}
-					periodParts.add(intermediateDayPart.prepend(CronHour.EVERY_HOUR));
+					periodParts.add(intermediateDayPart.prepend(CronElementEvery.INSTANCE));
 				}
 			}
 			

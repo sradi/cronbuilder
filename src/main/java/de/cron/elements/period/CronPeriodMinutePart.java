@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 
 import de.cron.CronExpression;
 import de.cron.elements.CronElement;
-import de.cron.elements.CronMinute;
+import de.cron.elements.CronElementEvery;
 import de.cron.elements.CronMinuteRange;
 import de.cron.elements.CronSpecificMinutes;
 import de.cron.units.Minute;
@@ -47,7 +47,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 					} else if (i==(intermediateParts.size()-1)) {
 						periodParts.add(part.prepend(new CronMinuteRange(Minute.fromInt(until.getMinValue()), until)));
 					} else {
-						periodParts.add(part.prepend(CronMinuteRange.EVERY_MINUTE));
+						periodParts.add(part.prepend(CronElementEvery.INSTANCE));
 					}
 				}
 			}
@@ -86,7 +86,7 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;
 					}
-					periodParts.add(intermediateDayPart.prepend(CronMinute.EVERY_MINUTE));
+					periodParts.add(intermediateDayPart.prepend(CronElementEvery.INSTANCE));
 				}
 			}
 			
