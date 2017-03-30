@@ -4,6 +4,6 @@ import java.time.LocalDate;
 
 public interface CronHourBasedPeriodPartOne {
 	
-	CronPeriodLastPart until(int hour, LocalDate until);
+	CronPeriodDayOfWeekPartOne until(int hour, LocalDate until);
 
 }

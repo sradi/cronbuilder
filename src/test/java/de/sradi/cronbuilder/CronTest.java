@@ -77,6 +77,109 @@ public class CronTest {
 	
 	//*************************************************
 	@Test
+	public void testMinutePeriod_singleMinute() {
+		LocalDate date = LocalDate.of(2017, 6, 15);
+		CronPeriodExpression cron = Cron.cron().from(25, 15, date).until(25, 15, date).get();
+		assertEquals(1, cron.size());
+		assertEquals("25 15 15 6 *", cron.get(0).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_twoMinutes() {
+		LocalDate date = LocalDate.of(2017, 6, 15);
+		CronPeriodExpression cron = Cron.cron().from(25, 15, date).until(26, 15, date).get();
+		assertEquals(1, cron.size());
+		assertEquals("25-26 15 15 6 *", cron.get(0).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_singleHour() {
+		LocalDate date = LocalDate.of(2017, 6, 15);
+		CronPeriodExpression cron = Cron.cron().from(25, 15, date).until(50, 15, date).get();
+		assertEquals(1, cron.size());
+		assertEquals("25-50 15 15 6 *", cron.get(0).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_twoHours() {
+		LocalDate date = LocalDate.of(2017, 6, 15);
+		CronPeriodExpression cron = Cron.cron().from(25, 15, date).until(25, 16, date).get();
+		assertEquals(2, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("0-25 16 15 6 *", cron.get(1).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_singleDay() {
+		LocalDate date = LocalDate.of(2017, 6, 15);
+		CronPeriodExpression cron = Cron.cron().from(25, 15, date).until(25, 21, date).get();
+		assertEquals(3, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("* 16-20 15 6 *", cron.get(1).toString());
+		assertEquals("0-25 21 15 6 *", cron.get(2).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_twoDays() {
+		CronPeriodExpression cron = Cron.cron().from(25, 15, LocalDate.of(2017, 6, 15)).until(25, 21, LocalDate.of(2017, 6, 16)).get();
+		assertEquals(4, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("* 16-24 15 6 *", cron.get(1).toString());
+		assertEquals("* 1-20 16 6 *", cron.get(2).toString());
+		assertEquals("0-25 21 16 6 *", cron.get(3).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_severalDays_singleMonth() {
+		CronPeriodExpression cron = Cron.cron().from(25, 15, LocalDate.of(2017, 6, 15)).until(25, 21, LocalDate.of(2017, 6, 27)).get();
+		assertEquals(5, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("* 16-24 15 6 *", cron.get(1).toString());
+		assertEquals("* * 16-26 6 *", cron.get(2).toString());
+		assertEquals("* 1-20 27 6 *", cron.get(3).toString());
+		assertEquals("0-25 21 27 6 *", cron.get(4).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_severalDays_twoMonths() {
+		CronPeriodExpression cron = Cron.cron().from(25, 15, LocalDate.of(2017, 6, 15)).until(25, 21, LocalDate.of(2017, 7, 27)).get();
+		assertEquals(6, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("* 16-24 15 6 *", cron.get(1).toString());
+		assertEquals("* * 16-30 6 *", cron.get(2).toString());
+		assertEquals("* * 1-26 7 *", cron.get(3).toString());
+		assertEquals("* 1-20 27 7 *", cron.get(4).toString());
+		assertEquals("0-25 21 27 7 *", cron.get(5).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_severalDays_severalMonths() {
+		CronPeriodExpression cron = Cron.cron().from(25, 15, LocalDate.of(2017, 6, 15)).until(25, 21, LocalDate.of(2017, 11, 27)).get();
+		assertEquals(7, cron.size());
+		assertEquals("25-59 15 15 6 *", cron.get(0).toString());
+		assertEquals("* 16-24 15 6 *", cron.get(1).toString());
+		assertEquals("* * 16-30 6 *", cron.get(2).toString());
+		assertEquals("* * * 7-10 *", cron.get(3).toString());
+		assertEquals("* * 1-26 11 *", cron.get(4).toString());
+		assertEquals("* 1-20 27 11 *", cron.get(5).toString());
+		assertEquals("0-25 21 27 11 *", cron.get(6).toString());
+	}
+	
+	@Test
+	public void testMinutePeriod_severalMinutes_severalHours_severalDays_severalMonths_specificDaysOfTheWeek() {
+		CronPeriodExpression cron = Cron.cron().from(25, 15, LocalDate.of(2017, 6, 15)).until(25, 21, LocalDate.of(2017, 11, 27)).onTheseDaysOfTheWeek(DayOfWeek.MONDAY, DayOfWeek.FRIDAY).get();
+		assertEquals(7, cron.size());
+		assertEquals("25-59 15 15 6 1,5", cron.get(0).toString());
+		assertEquals("* 16-24 15 6 1,5", cron.get(1).toString());
+		assertEquals("* * 16-30 6 1,5", cron.get(2).toString());
+		assertEquals("* * * 7-10 1,5", cron.get(3).toString());
+		assertEquals("* * 1-26 11 1,5", cron.get(4).toString());
+		assertEquals("* 1-20 27 11 1,5", cron.get(5).toString());
+		assertEquals("0-25 21 27 11 1,5", cron.get(6).toString());
+	}
+	
+	//*************************************************
+	@Test
 	public void testEveryMinuteWithDayAndDatePeriodWithinOneDay() {
 		CronPeriodExpression cron = Cron.cron().everyMinute().from(12, LocalDate.of(2017, 6, 15)).until(20, LocalDate.of(2017, 6, 15)).get();
 		assertEquals(1, cron.size());

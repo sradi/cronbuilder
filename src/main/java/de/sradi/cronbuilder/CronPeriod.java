@@ -29,6 +29,15 @@ public class CronPeriod implements CronPeriodDayOfWeekPartOne, CronPeriodDayOfWe
 	private Hour untilHour;
 	private LocalDate fromDate;
 	private LocalDate untilDate;
+	
+	CronPeriod(Minute fromMinute, Minute untilMinute, Hour fromHour, Hour untilHour, LocalDate fromDate, LocalDate untilDate) {
+		this.fromMinute = fromMinute;
+		this.untilMinute = untilMinute;
+		this.fromHour = fromHour;
+		this.untilHour = untilHour;
+		this.fromDate = fromDate;
+		this.untilDate = untilDate;
+	}
 
 	CronPeriod(CronMinute minuteElement, Hour fromHour, Hour untilHour, LocalDate fromDate, LocalDate untilDate) {
 		this.minuteElement = minuteElement;

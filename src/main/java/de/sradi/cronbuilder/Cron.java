@@ -27,7 +27,7 @@ import de.sradi.cronbuilder.units.Day;
 import de.sradi.cronbuilder.units.Hour;
 import de.sradi.cronbuilder.units.Minute;
 
-public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartOne, CronHourPartTwo, CronHourBasedPeriodPartOne, CronDayPartOne,
+public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBasedPeriodPartOne, CronHourPartOne, CronHourPartTwo, CronHourBasedPeriodPartOne, CronDayPartOne,
 		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,
 		CronDayOfWeekPartTwo {
 
@@ -52,22 +52,24 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 		return new Cron();
 	}
 	
-//	@Override
-//	public CronDayAndDatePeriodPartOne from(int minute, int hour, LocalDate from) {
-//		this.fromHour = Hour.fromInt(hour);
-//		this.fromDate = from;
-//		return this;
-//	}
-//
-//	@Override
-//	public ComplexCronLastPart until(int, minute, int hour, LocalDate until) {
-//		return new CronPeriod(
-//				minuteElement,
-//				fromHour,
-//				Hour.fromInt(hour),
-//				fromDate,
-//				until);
-//	}
+	@Override
+	public CronMinuteBasedPeriodPartOne from(int minute, int hour, LocalDate from) {
+		this.fromMinute = Minute.fromInt(minute);
+		this.fromHour = Hour.fromInt(hour);
+		this.fromDate = from;
+		return this;
+	}
+
+	@Override
+	public CronPeriodDayOfWeekPartOne until(int minute, int hour, LocalDate until) {
+		return new CronPeriod(
+				fromMinute,
+				Minute.fromInt(minute),
+				fromHour,
+				Hour.fromInt(hour),
+				fromDate,
+				until);
+	}
 
 	@Override
 	public CronHourPartOne everyMinute() {
@@ -104,7 +106,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronHourPartO
 	}
 
 	@Override
-	public CronPeriodLastPart until(int hour, LocalDate until) {
+	public CronPeriodDayOfWeekPartOne until(int hour, LocalDate until) {
 		return new CronPeriod(
 				minuteElement,
 				fromHour,
