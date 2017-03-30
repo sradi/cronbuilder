@@ -38,12 +38,7 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 	private CronPeriodExpression(CronMinute minuteElement, CronPeriodHourPart cronPeriodHourPart,
 			CronDayOfWeek dayOfWeekElement) {
 		List<CronExpression> hourPeriodExpression = cronPeriodHourPart.getParts();
-		for (CronExpression expr : hourPeriodExpression) {
-			CronExpression x = expr.prepend(minuteElement);
-			CronExpression y = x.append(dayOfWeekElement);
-			crons.add(y);
-		}
-//		hourPeriodExpression.forEach(expr -> crons.add(expr.prepend(minuteElement).append(dayOfWeekElement)));
+		hourPeriodExpression.forEach(expr -> crons.add(expr.prepend(minuteElement).append(dayOfWeekElement)));
 	}
 
 	private CronPeriodExpression(CronPeriodMinutePart cronPeriodMinutePart, CronDayOfWeek dayOfWeekElement) {
