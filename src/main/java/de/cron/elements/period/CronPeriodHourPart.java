@@ -7,8 +7,8 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import de.cron.CronExpression;
-import de.cron.elements.CronDay;
 import de.cron.elements.CronElement;
+import de.cron.elements.CronHour;
 import de.cron.elements.CronHourRange;
 import de.cron.elements.CronSpecificHours;
 import de.cron.units.Hour;
@@ -28,74 +28,74 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 
 	@Override
 	public List<CronExpression> getParts() {
-		List<CronExpression> parts = new ArrayList<>();
+		List<CronExpression> periodParts = new ArrayList<>();
+		List<CronExpression> nextLevelParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
+		
 		if (isFromEqualToUntil()) {
-			List<CronExpression> dayParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
-			dayParts.forEach(p -> parts.add(p.prepend(getFromElement())));
+			nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFromElement())));
 		} else {
 			if (getNextLevelPart().isFromEqualToUntil()) {
 				// zwei oder mehr Stunden am gleichen Tag...
-				List<CronExpression> dayParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
-				dayParts.forEach(p -> parts.add(p.prepend(getFullRangeElement())));
+				nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFullRangeElement())));
 			} else {
 				// zwei oder mehr Stunden über zwei oder mehrere Tage
 				List<CronExpression> intermediateParts = getNextLevelPart().getPartsInternal();
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
-						parts.add(part.prepend(new CronHourRange(from, Hour.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
+						periodParts.add(part.prepend(new CronHourRange(from, Hour.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
 					} else if (i==(intermediateParts.size()-1)) {
-						parts.add(part.prepend(new CronHourRange(Hour.fromInt(until.getMinValue()), until)));
+						periodParts.add(part.prepend(new CronHourRange(Hour.fromInt(until.getMinValue()), until)));
 					} else {
-						parts.add(part.prepend(CronHourRange.EVERY_HOUR));
+						periodParts.add(part.prepend(CronHourRange.EVERY_HOUR));
 					}
 				}
 			}
 		}
-		return parts;
+		return periodParts;
 	}
 	
 	@Override
 	public List<CronExpression> getPartsInternal() {
-		List<CronExpression> parts = new ArrayList<>();
-		List<CronExpression> dayParts = getNextLevelPart().getPartsInternal();
-		Iterator<CronExpression> dayPartsIterator = dayParts.iterator();
+		List<CronExpression> periodParts = new ArrayList<>();
+		List<CronExpression> nextLevelParts = getNextLevelPart().getPartsInternal();
+		Iterator<CronExpression> nextLevelPartsIterator = nextLevelParts.iterator();
 		
-		CronExpression firstDayPart = dayPartsIterator.next();
-		CronExpression lastDayPart = dayParts.get(dayParts.size()-1);
-		dayPartsIterator.remove();
+		CronExpression firstPart = nextLevelPartsIterator.next();
+		CronExpression lastPart = nextLevelParts.get(nextLevelParts.size()-1);
+		nextLevelPartsIterator.remove();
 		
-		parts.add(firstDayPart.prepend(getFromElement()));
+		periodParts.add(firstPart.prepend(getFromElement()));
 
 		if (isFromEqualToUntil()) {
-			return parts; // gleicher Tag im gleichen Monat
+			return periodParts; // gleicher Tag im gleichen Monat
 		}
 		
 		if ((getNextLevelPart().isFromEqualToUntil()) && (hasIntermediateParts())) {
 			// intermediate Tage im gleichen Monat: ganze Range, ohne den ersten und letzten Tag
-			parts.add(firstDayPart.prepend(getIntermediatePart()));
+			periodParts.add(firstPart.prepend(getIntermediatePart()));
 		} else if (!getNextLevelPart().isFromEqualToUntil()) {
 			// intermediate Tage in verschiedenen Monaten: Restliche Tage des 1. Monats
-			parts.add(firstDayPart.prepend(getRestOfFromElement()));
+			periodParts.add(firstPart.prepend(getRestOfFromElement()));
 		
 			if (getNextLevelPart().hasIntermediateParts()) {
 				// jeden Intermediate (ohne den ersten und den letzten) der naechsten Ebene mit "every" anreichern
-				while (dayPartsIterator.hasNext()) {
-					CronExpression intermediateDayPart = dayPartsIterator.next();
-					if (!dayPartsIterator.hasNext()) {
+				while (nextLevelPartsIterator.hasNext()) {
+					CronExpression intermediateDayPart = nextLevelPartsIterator.next();
+					if (!nextLevelPartsIterator.hasNext()) {
 						// wir sind beim vorletzten Intermediate angekommen. Abbruch.
 						break;
 					}
-					parts.add(intermediateDayPart.prepend(CronDay.EVERY_DAY));
+					periodParts.add(intermediateDayPart.prepend(CronHour.EVERY_HOUR));
 				}
 			}
 			
 			// intermediate Tage in verschiedenen Monaten: 1. bis x. Tag des letzten Monats
-			parts.add(lastDayPart.prepend(getBeginningOfUntilElement()));
+			periodParts.add(lastPart.prepend(getBeginningOfUntilElement()));
 		}
 
-		parts.add(lastDayPart.prepend(getUntilElement()));
-		return parts;
+		periodParts.add(lastPart.prepend(getUntilElement()));
+		return periodParts;
 	}
 
 	private CronElement getRestOfFromElement() {
