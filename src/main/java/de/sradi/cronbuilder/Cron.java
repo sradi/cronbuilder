@@ -11,6 +11,7 @@ import de.sradi.cronbuilder.elements.CronDay;
 import de.sradi.cronbuilder.elements.CronDayOfWeek;
 import de.sradi.cronbuilder.elements.CronDayOfWeekRange;
 import de.sradi.cronbuilder.elements.CronDayRange;
+import de.sradi.cronbuilder.elements.CronElementAny;
 import de.sradi.cronbuilder.elements.CronElementEvery;
 import de.sradi.cronbuilder.elements.CronHour;
 import de.sradi.cronbuilder.elements.CronHourRange;
@@ -76,6 +77,12 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.minuteElement = CronElementEvery.INSTANCE;
 		return this;
 	}
+	
+	@Override
+	public CronHourPartOne aRandomMinute() {
+		this.minuteElement = CronElementAny.INSTANCE;
+		return this;
+	}
 
 	@Override
 	public CronHourPartOne inTheseMinutes(int... minutes) {
@@ -123,6 +130,12 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	}
 
 	@Override
+	public CronDayPartOne aRandomHour() {
+		this.hourElement = CronElementAny.INSTANCE;
+		return this;
+	}
+
+	@Override
 	public CronDayPartOne inTheseHours(int... hours) {
 		Preconditions.checkArgument(hours.length > 0);
 		
@@ -166,6 +179,12 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	}
 
 	@Override
+	public CronMonthPartOne aRandomDay() {
+		this.dayElement = CronElementAny.INSTANCE;
+		return this;
+	}
+	
+	@Override
 	public CronMonthPartOne onTheseDays(int... days) {
 		Preconditions.checkArgument(days.length > 0);
 		
@@ -193,6 +212,12 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	}
 
 	@Override
+	public CronDayOfWeekPartOne aRandomMonth() {
+		this.monthElement = CronElementAny.INSTANCE;
+		return this;
+	}
+	
+	@Override
 	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
 		Preconditions.checkArgument(months.length > 0);
 		
@@ -219,6 +244,12 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		return this;
 	}
 
+	@Override
+	public SimpleCronLastPart aRandomDayOfWeek() {
+		this.dayOfWeekElement = CronElementAny.INSTANCE;
+		return this;
+	}
+	
 	@Override
 	public SimpleCronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		Preconditions.checkArgument(daysOfWeek.length > 0);

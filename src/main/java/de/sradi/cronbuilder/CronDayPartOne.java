@@ -6,6 +6,8 @@ interface CronDayPartOne extends SimpleCronLastPart {
 	
 	CronMonthPartOne everyDay();
 	
+	CronMonthPartOne aRandomDay();
+	
 	CronMonthPartOne onTheseDays(int... days);
 	
 	CronDayPartTwo fromDay(int day);

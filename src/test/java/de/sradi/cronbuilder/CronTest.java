@@ -571,4 +571,11 @@ public class CronTest {
 		CronExpression cron = Cron.cron().fromMinute(22).untilMinute(24).everyHour().fromDay(2).untilDay(4).fromMonth(Month.APRIL).untilMonth(Month.SEPTEMBER).get();
 		assertEquals("22-24 * 2-4 4-9 *", cron.toString());
 	}
+	
+	//*************************************************
+	@Test
+	public void testARandom() {
+		CronExpression cron = Cron.cron().aRandomMinute().aRandomHour().aRandomDay().aRandomMonth().aRandomDayOfWeek().get();
+		assertEquals("H H H H H", cron.toString());
+	}
 }

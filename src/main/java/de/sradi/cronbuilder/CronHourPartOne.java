@@ -6,6 +6,8 @@ interface CronHourPartOne extends SimpleCronLastPart {
 	
 	CronDayPartOne everyHour();
 	
+	CronDayPartOne aRandomHour();
+	
 	CronDayPartOne inTheseHours(int... hours);
 	
 	CronHourPartTwo fromHour(int hour);
