@@ -1,11 +1,6 @@
+/*--- (C) 1999-2017 Techniker Krankenkasse ---*/
+
 package de.sradi.cronbuilder;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.stream.IntStream;
-
-import com.google.common.base.Preconditions;
 
 import de.sradi.cronbuilder.elements.CronDay;
 import de.sradi.cronbuilder.elements.CronDayOfWeek;
@@ -28,9 +23,18 @@ import de.sradi.cronbuilder.units.Day;
 import de.sradi.cronbuilder.units.Hour;
 import de.sradi.cronbuilder.units.Minute;
 
-public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBasedPeriodPartOne, CronHourPartOne, CronHourPartTwo, CronHourBasedPeriodPartOne, CronDayPartOne,
-		CronDayPartTwo, CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,
-		CronDayOfWeekPartTwo {
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.stream.IntStream;
+
+import com.google.common.base.Preconditions;
+
+public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBasedPeriodPartOne,
+	CronHourPartOne, CronHourPartTwo, CronHourBasedPeriodPartOne, CronDayPartOne, CronDayPartTwo,
+	CronDatePeriodPart, CronMonthPartOne, CronMonthPartTwo, CronDayOfWeekPartOne,
+	CronDayOfWeekPartTwo
+{
 
 	private Minute fromMinute;
 	private Hour fromHour;
@@ -39,7 +43,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	private DayOfWeek fromDayOfWeek;
 
 	private LocalDate fromDate;
-	
+
 	private CronMinute minuteElement;
 	private CronHour hourElement;
 	private CronDay dayElement;
@@ -52,7 +56,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	public static CronMinutePartOne cron() {
 		return new Cron();
 	}
-	
+
 	@Override
 	public CronMinuteBasedPeriodPartOne from(int minute, int hour, LocalDate from) {
 		this.fromMinute = Minute.fromInt(minute);
@@ -64,12 +68,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	@Override
 	public CronPeriodDayOfWeekPartOne until(int minute, int hour, LocalDate until) {
 		return new CronPeriod(
-				fromMinute,
-				Minute.fromInt(minute),
-				fromHour,
-				Hour.fromInt(hour),
-				fromDate,
-				until);
+			fromMinute,
+			Minute.fromInt(minute),
+			fromHour,
+			Hour.fromInt(hour),
+			fromDate,
+			until
+		);
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.minuteElement = CronElementEvery.INSTANCE;
 		return this;
 	}
-	
+
 	@Override
 	public CronHourPartOne aRandomMinute() {
 		this.minuteElement = CronElementAny.INSTANCE;
@@ -87,9 +92,11 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	@Override
 	public CronHourPartOne inTheseMinutes(int... minutes) {
 		Preconditions.checkArgument(minutes.length > 0);
-		
-		this.minuteElement = new CronSpecificMinutes(
-						IntStream.of(minutes).mapToObj(Minute::fromInt).toArray(s -> new Minute[s]));
+
+		this.minuteElement =
+			new CronSpecificMinutes(
+				IntStream.of(minutes).mapToObj(Minute::fromInt).toArray(Minute[]::new)
+			);
 		return this;
 	}
 
@@ -104,7 +111,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.minuteElement = new CronMinuteRange(fromMinute, Minute.fromInt(minute));
 		return this;
 	}
-	
+
 	@Override
 	public CronHourBasedPeriodPartOne from(int hour, LocalDate from) {
 		this.fromHour = Hour.fromInt(hour);
@@ -114,12 +121,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 
 	@Override
 	public CronPeriodDayOfWeekPartOne until(int hour, LocalDate until) {
-		return new CronPeriod(
-				minuteElement,
-				fromHour,
-				Hour.fromInt(hour),
-				fromDate,
-				until);
+		return new CronPeriod(minuteElement, fromHour, Hour.fromInt(hour), fromDate, until);
 	}
 
 	// ***************************************************************
@@ -138,9 +140,9 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 	@Override
 	public CronDayPartOne inTheseHours(int... hours) {
 		Preconditions.checkArgument(hours.length > 0);
-		
-		this.hourElement = new CronSpecificHours(
-						IntStream.of(hours).mapToObj(Hour::fromInt).toArray(s -> new Hour[s]));
+
+		this.hourElement =
+			new CronSpecificHours(IntStream.of(hours).mapToObj(Hour::fromInt).toArray(Hour[]::new));
 		return this;
 	}
 
@@ -164,11 +166,7 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 
 	@Override
 	public CronPeriodDayOfWeekPartOne until(LocalDate until) {
-		return new CronPeriod(
-				minuteElement,
-				hourElement,
-				fromDate,
-				until);
+		return new CronPeriod(minuteElement, hourElement, fromDate, until);
 	}
 
 	// ***************************************************************
@@ -183,12 +181,13 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.dayElement = CronElementAny.INSTANCE;
 		return this;
 	}
-	
+
 	@Override
 	public CronMonthPartOne onTheseDays(int... days) {
 		Preconditions.checkArgument(days.length > 0);
-		
-		this.dayElement = new CronSpecificDays(IntStream.of(days).mapToObj(Day::fromInt).toArray(s -> new Day[s]));
+
+		this.dayElement =
+			new CronSpecificDays(IntStream.of(days).mapToObj(Day::fromInt).toArray(Day[]::new));
 		return this;
 	}
 
@@ -216,11 +215,11 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.monthElement = CronElementAny.INSTANCE;
 		return this;
 	}
-	
+
 	@Override
 	public CronDayOfWeekPartOne inTheseMonths(Month... months) {
 		Preconditions.checkArgument(months.length > 0);
-		
+
 		this.monthElement = new CronSpecificMonths(months);
 		return this;
 	}
@@ -249,11 +248,11 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 		this.dayOfWeekElement = CronElementAny.INSTANCE;
 		return this;
 	}
-	
+
 	@Override
 	public SimpleCronLastPart onTheseDaysOfTheWeek(DayOfWeek... daysOfWeek) {
 		Preconditions.checkArgument(daysOfWeek.length > 0);
-		
+
 		this.dayOfWeekElement = new CronSpecificDaysOfWeek(daysOfWeek);
 		return this;
 	}
@@ -274,13 +273,14 @@ public class Cron implements CronMinutePartOne, CronMinutePartTwo, CronMinuteBas
 
 	@Override
 	public CronExpression get() {
-		return new CronExpression.CronExpressionBuilder()
-				.setMinuteDefinition(minuteElement)
-				.setHourDefinition(hourElement)
-				.setDayDefinition(dayElement)
-				.setMonthDefinition(monthElement)
-				.setDayOfWeekDefinition(dayOfWeekElement)
-				.build();
+		return new CronExpression.CronExpressionBuilder().setMinuteDefinition(minuteElement)
+														 .setHourDefinition(hourElement)
+														 .setDayDefinition(dayElement)
+														 .setMonthDefinition(monthElement)
+														 .setDayOfWeekDefinition(dayOfWeekElement)
+														 .build();
 	}
 
 }
+
+/*--- Formatiert nach TK Code Konventionen vom 05.03.2002 ---*/
