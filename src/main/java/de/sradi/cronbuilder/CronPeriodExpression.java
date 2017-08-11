@@ -49,8 +49,7 @@ public class CronPeriodExpression implements Iterable<CronExpression> {
 
 	@Override
 	public Iterator<CronExpression> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return crons.iterator();
 	}
 	
 	public int size() {

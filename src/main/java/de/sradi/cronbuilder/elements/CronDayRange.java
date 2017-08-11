@@ -7,7 +7,10 @@ import de.sradi.cronbuilder.units.Day;
 public class CronDayRange extends CronElementRange<Day> implements CronDay {
 
 	public CronDayRange(Day fromDay, Day untilDay) {
-		Preconditions.checkArgument(fromDay.isBefore(untilDay));
+		Preconditions.checkArgument(
+			fromDay.isBefore(untilDay),
+			String.format("'%s' is not before '%s'", fromDay, untilDay)
+		);
 		this.setRange(fromDay, untilDay);
 	}
 
@@ -17,3 +20,4 @@ public class CronDayRange extends CronElementRange<Day> implements CronDay {
 	}
 
 }
+

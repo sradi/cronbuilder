@@ -42,7 +42,14 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
-						periodParts.add(part.prepend(new CronHourRange(from, Hour.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
+						if (isFromEqualToUntil()) {
+							periodParts.add(part.prepend(new CronSpecificHours(
+									from)));
+						} else {
+							periodParts.add(part.prepend(new CronHourRange(
+									from, Hour.fromInt(getNextLevelPart()
+											.getLengthOfFromUnit()))));
+						}
 					} else if (i==(intermediateParts.size()-1)) {
 						periodParts.add(part.prepend(new CronHourRange(Hour.fromInt(until.getMinValue()), until)));
 					} else {
