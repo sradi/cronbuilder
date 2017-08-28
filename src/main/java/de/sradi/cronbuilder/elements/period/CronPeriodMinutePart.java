@@ -42,7 +42,9 @@ public class CronPeriodMinutePart extends BaseCronPeriodPart {
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
 					if (i==0) {
-						if (isFromEqualToUntil()) {
+						if (isFromEqualToUntil()
+								|| (from.getIntValue() == getNextLevelPart()
+										.getLengthOfFromUnit())) {
 							periodParts.add(part
 									.prepend(new CronSpecificMinutes(from)));
 						} else {

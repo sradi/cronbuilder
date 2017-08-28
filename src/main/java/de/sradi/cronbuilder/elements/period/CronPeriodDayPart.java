@@ -41,7 +41,9 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 				for (int i = 0; i < nextLevelParts.size(); i++) {
 					CronExpression part = nextLevelParts.get(i);
 					if (i==0) {
-						if (isFromEqualToUntil()) {
+						if (isFromEqualToUntil()
+								|| (from.getIntValue() == getNextLevelPart()
+										.getLengthOfFromUnit())) {
 							periodParts.add(part.prepend(new CronSpecificDays(from)));
 						} else {
 							periodParts.add(part.prepend(new CronDayRange(from, Day.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
