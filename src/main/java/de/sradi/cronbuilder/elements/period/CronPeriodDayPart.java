@@ -13,7 +13,7 @@ import de.sradi.cronbuilder.elements.CronSpecificDays;
 import de.sradi.cronbuilder.units.Day;
 
 public class CronPeriodDayPart extends BaseCronPeriodPart {
-	
+
 	private CronPeriodMonthPart monthPart;
 	private Day from;
 	private Day until;
@@ -34,13 +34,15 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 			nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFromElement())));
 		} else {
 			if (getNextLevelPart().isFromEqualToUntil()) {
+
 				// zwei oder mehr Tage im gleichen Monat...
 				nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFullRangeElement())));
 			} else {
+
 				// über zwei oder mehrere Monate
 				for (int i = 0; i < nextLevelParts.size(); i++) {
 					CronExpression part = nextLevelParts.get(i);
-					if (i==0) {
+					if (i == 0) {
 						if (isFromEqualToUntil()
 								|| (from.getIntValue() == getNextLevelPart()
 										.getLengthOfFromUnit())) {
@@ -48,8 +50,19 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 						} else {
 							periodParts.add(part.prepend(new CronDayRange(from, Day.fromInt(getNextLevelPart().getLengthOfFromUnit()))));
 						}
-					} else if (i==(nextLevelParts.size()-1)) {
-						periodParts.add(part.prepend(new CronDayRange(Day.fromInt(until.getMinValue()), until)));
+					} else if (i == (nextLevelParts.size() - 1)) {
+
+						// Zeitraum dauert nur bis zum ersten Tag des letzten
+						// Monats
+						if (until.getIntValue() == 1) {
+							periodParts.add(part.prepend(new CronSpecificDays(until)));
+						} else {
+							periodParts.add(
+								part.prepend(
+									new CronDayRange(Day.fromInt(until.getMinValue()), until)
+								)
+							);
+						}
 					} else {
 						periodParts.add(part.prepend(CronElementEvery.INSTANCE));
 					}
@@ -64,18 +77,18 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 		Day intermediateFrom = Day.fromInt(from.getIntValue() + 1);
 		Day maxFrom = Day.fromInt(getNextLevelPart().getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
-			return new CronSpecificDays(intermediateFrom); 
+			return new CronSpecificDays(intermediateFrom);
 		} else {
 			return new CronDayRange(intermediateFrom, maxFrom);
 		}
 	}
-	
+
 	@Override
 	protected CronElement getBeginningOfUntilElement() {
 		Day minFrom = Day.fromInt(1);
 		Day intermediateUntil = Day.fromInt(until.getIntValue() - 1);
 		if (minFrom.equals(intermediateUntil)) {
-			return new CronSpecificDays(minFrom); 
+			return new CronSpecificDays(minFrom);
 		} else {
 			return new CronDayRange(minFrom, intermediateUntil);
 		}
@@ -85,12 +98,12 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 	public CronElement getFromElement() {
 		return new CronSpecificDays(from);
 	}
-	
+
 	@Override
 	public CronElement getUntilElement() {
 		return new CronSpecificDays(until);
 	}
-	
+
 	private CronElement getFullRangeElement() {
 		if (isFromEqualToUntil()) {
 			return getFromElement();
@@ -98,19 +111,19 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 			return new CronDayRange(from, until);
 		}
 	}
-	
+
 	@Override
 	public CronElement getIntermediateElement() {
 		Preconditions.checkState(hasIntermediateParts());;
 		Day intermediateFrom = Day.fromInt(from.getIntValue() + 1);
 		Day intermediateUntil = Day.fromInt(until.getIntValue() - 1);
 		if (intermediateFrom.equals(intermediateUntil)) {
-			return new CronSpecificDays(intermediateFrom); 
+			return new CronSpecificDays(intermediateFrom);
 		} else {
 			return new CronDayRange(intermediateFrom, intermediateUntil);
 		}
 	}
-	
+
 	@Override
 	public CronPeriodPart getNextLevelPart() {
 		return monthPart;
@@ -130,5 +143,7 @@ public class CronPeriodDayPart extends BaseCronPeriodPart {
 	public int getLengthOfFromUnit() {
 		return from.getLength();
 	}
-	
+
 }
+
+/*--- Formatiert nach TK Code Konventionen vom 05.03.2002 ---*/

@@ -13,7 +13,7 @@ import de.sradi.cronbuilder.elements.CronSpecificHours;
 import de.sradi.cronbuilder.units.Hour;
 
 public class CronPeriodHourPart extends BaseCronPeriodPart {
-	
+
 	private CronPeriodDayPart dayPart;
 	private Hour from;
 	private Hour until;
@@ -29,19 +29,21 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 	public List<CronExpression> getParts() {
 		List<CronExpression> periodParts = new ArrayList<>();
 		List<CronExpression> nextLevelParts = getNextLevelPart().getParts(); // hier kann nur ein DayPart zurueckkommen
-		
+
 		if (isFromEqualToUntil()) {
 			nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFromElement())));
 		} else {
 			if (getNextLevelPart().isFromEqualToUntil()) {
+
 				// zwei oder mehr Stunden am gleichen Tag...
 				nextLevelParts.forEach(p -> periodParts.add(p.prepend(getFullRangeElement())));
 			} else {
+
 				// zwei oder mehr Stunden über zwei oder mehrere Tage
 				List<CronExpression> intermediateParts = getNextLevelPart().getPartsInternal();
 				for (int i = 0; i < intermediateParts.size(); i++) {
 					CronExpression part = intermediateParts.get(i);
-					if (i==0) {
+					if (i == 0) {
 						if (isFromEqualToUntil()
 								|| (from.getIntValue() == getNextLevelPart()
 										.getLengthOfFromUnit())) {
@@ -52,8 +54,16 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 									from, Hour.fromInt(getNextLevelPart()
 											.getLengthOfFromUnit()))));
 						}
-					} else if (i==(intermediateParts.size()-1)) {
-						periodParts.add(part.prepend(new CronHourRange(Hour.fromInt(until.getMinValue()), until)));
+					} else if (i == (intermediateParts.size() - 1)) {
+						if (until.getIntValue() == 1) {
+							periodParts.add(part.prepend(new CronSpecificHours(until)));
+						} else {
+							periodParts.add(
+								part.prepend(
+									new CronHourRange(Hour.fromInt(until.getMinValue()), until)
+								)
+							);
+						}
 					} else {
 						periodParts.add(part.prepend(CronElementEvery.INSTANCE));
 					}
@@ -68,18 +78,18 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 		Hour intermediateFrom = Hour.fromInt(from.getIntValue() + 1);
 		Hour maxFrom = Hour.fromInt(getNextLevelPart().getLengthOfFromUnit());
 		if (intermediateFrom.equals(maxFrom)) {
-			return new CronSpecificHours(intermediateFrom); 
+			return new CronSpecificHours(intermediateFrom);
 		} else {
 			return new CronHourRange(intermediateFrom, maxFrom);
 		}
 	}
-	
+
 	@Override
 	protected CronElement getBeginningOfUntilElement() {
 		Hour minFrom = Hour.fromInt(until.getMinValue());
 		Hour intermediateUntil = Hour.fromInt(until.getIntValue() - 1);
 		if (minFrom.equals(intermediateUntil)) {
-			return new CronSpecificHours(minFrom); 
+			return new CronSpecificHours(minFrom);
 		} else {
 			return new CronHourRange(minFrom, intermediateUntil);
 		}
@@ -89,12 +99,12 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 	public CronElement getFromElement() {
 		return new CronSpecificHours(from);
 	}
-	
+
 	@Override
 	public CronElement getUntilElement() {
 		return new CronSpecificHours(until);
 	}
-	
+
 	private CronElement getFullRangeElement() {
 		if (isFromEqualToUntil()) {
 			return getFromElement();
@@ -102,19 +112,19 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 			return new CronHourRange(from, until);
 		}
 	}
-	
+
 	@Override
 	public CronElement getIntermediateElement() {
 		Preconditions.checkState(hasIntermediateParts());;
 		Hour intermediateFrom = Hour.fromInt(from.getIntValue() + 1);
 		Hour intermediateUntil = Hour.fromInt(until.getIntValue() - 1);
 		if (intermediateFrom.equals(intermediateUntil)) {
-			return new CronSpecificHours(intermediateFrom); 
+			return new CronSpecificHours(intermediateFrom);
 		} else {
 			return new CronHourRange(intermediateFrom, intermediateUntil);
 		}
 	}
-	
+
 	@Override
 	public CronPeriodPart getNextLevelPart() {
 		return dayPart;
@@ -134,5 +144,5 @@ public class CronPeriodHourPart extends BaseCronPeriodPart {
 	public int getLengthOfFromUnit() {
 		return from.getLength();
 	}
-	
+
 }
